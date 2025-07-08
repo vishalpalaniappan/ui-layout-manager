@@ -1,8 +1,6 @@
 # ui-layout-manager
 A react component to manage layouts in complex applications.
 
-> Note: This readme is informal right now but I will formalize it as the component is implemented.
-
 ## Background
 
 As I began scoping out the observability platform from the ground up, it quickly became clear that the UI tools would become increasingly complex. The current approach of hardcoding UI layouts is not practical for managing more complex applications. This realization underscored the need for a layout manager, which motivated the development of this React component.
