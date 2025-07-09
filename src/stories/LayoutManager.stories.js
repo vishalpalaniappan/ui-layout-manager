@@ -27,5 +27,5 @@ const Template = (args) => {
 export const Default = Template.bind({})
 
 Default.args = {
-    layout: Layout1
+    layout: Layout2
 }
