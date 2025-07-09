@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useArgs } from "@storybook/preview-api";
 import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
-import Layout1 from "./data/Layout1.json"
+import Layout2 from "./data/Layout2.json"
 
 export default {
     title: 'LayoutManager', 
@@ -17,7 +17,9 @@ export default {
 const Template = (args) => {
 
     return (
-        <LayoutManager  {...args}/> 
+        <div style={{"position":"absolute", "top": 0, left:0, right:0, bottom:0}}>
+            <LayoutManager  {...args}/> 
+        </div>
     )
 }
 
