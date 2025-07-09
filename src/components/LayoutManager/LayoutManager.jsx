@@ -9,12 +9,12 @@ import PropTypes from 'prop-types';
  * @return {JSX}
  */
 export const LayoutManager = ({layout}) => {
-    
+    const text = "Placeholder Text"
     return (
         // TEMPORARY
         <div style={{"backgroundColor":"black","width":"100%","height":"100%"}}>
             <div style={{"color":"white"}}>
-                Placeholder Text
+                {text}
             </div>
         </div>
     );
