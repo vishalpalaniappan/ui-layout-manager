@@ -1,5 +1,5 @@
 # ui-layout-manager
-A react component to manage layouts in complex applications.
+A react component to manage layouts and themes in single page applications.
 
 ## Background
 
