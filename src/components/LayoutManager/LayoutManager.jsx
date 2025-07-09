@@ -9,13 +9,11 @@ import PropTypes from 'prop-types';
  * @return {JSX}
  */
 export const LayoutManager = ({layout}) => {
-    const text = "Placeholder Text"
+    const text = "Placeholder Textasdf"
     return (
         // TEMPORARY
-        <div style={{"backgroundColor":"black","width":"100%","height":"100%"}}>
-            <div style={{"color":"white"}}>
-                {text}
-            </div>
+        <div className="sample">
+            {text}
         </div>
     );
 }
