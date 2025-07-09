@@ -2,6 +2,10 @@
 A react component to manage layouts and themes in single page applications.
 
 ## Developing
+Install Libraries:
+```
+npm i
+```
 
 Run Storybook:
 ```
