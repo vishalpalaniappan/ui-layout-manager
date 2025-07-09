@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useArgs } from "@storybook/preview-api";
 import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
+import Layout1 from "./data/Layout1.json"
 
 export default {
     title: 'LayoutManager', 
@@ -24,5 +25,5 @@ const Template = (args) => {
 export const Default = Template.bind({})
 
 Default.args = {
-    layout: {}
+    layout: Layout1
 }

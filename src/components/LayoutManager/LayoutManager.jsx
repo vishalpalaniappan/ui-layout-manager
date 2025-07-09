@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
  * @return {JSX}
  */
 export const LayoutManager = ({layout}) => {
+    console.log(layout);
     const text = "Placeholder Textasdf"
     return (
         // TEMPORARY
