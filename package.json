@@ -1,0 +1,61 @@
+{
+  "name": "ui-layout-manager",
+  "version": "0.0.1",
+  "description": "A react component to manage layout and themes in single page applications.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "build": "rollup -c",
+    "predeploy": "npm run build-storybook",
+    "deploy-storybook": "gh-pages -d storybook-static"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vishalpalaniappan/ui-layout-manager.git"
+  },
+  "author": "Vishal Palaniappan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vishalpalaniappan/ui-layout-manager/issues"
+  },
+  "homepage": "https://github.com/vishalpalaniappan/ui-layout-manager.git",
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-react": "^7.26.3",
+    "@chromatic-com/storybook": "^3.2.6",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@storybook/addon-actions": "^8.6.11",
+    "@storybook/addon-essentials": "^8.6.8",
+    "@storybook/addon-interactions": "^8.6.8",
+    "@storybook/addon-onboarding": "^8.6.8",
+    "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
+    "@storybook/blocks": "^8.6.8",
+    "@storybook/manager-api": "^8.6.11",
+    "@storybook/preset-scss": "^1.0.3",
+    "@storybook/react": "^8.6.8",
+    "@storybook/react-webpack5": "^8.6.8",
+    "@storybook/test": "^8.6.11",
+    "@storybook/theming": "^8.6.11",
+    "css-loader": "^7.1.2",
+    "gh-pages": "^6.3.0",
+    "prop-types": "^15.8.1",
+    "rollup": "^4.37.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "sass": "^1.86.0",
+    "sass-loader": "^16.0.5",
+    "storybook": "^8.6.8",
+    "style-loader": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
