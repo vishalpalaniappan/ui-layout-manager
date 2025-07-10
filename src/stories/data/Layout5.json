@@ -1,0 +1,76 @@
+{
+    "layout": [
+        {
+            "id": 1,
+            "type": "column",
+            "width": "75",
+            "childType":"row",
+            "children": [
+                {
+                    "id": 2,
+                    "type": "row",
+                    "height": 25,
+                    "childType":"row",
+                    "children": []
+                    },
+                {
+                    "id": 3,
+                    "type": "row",
+                    "height": 50,
+                    "childType":"none",
+                    "children": []
+                },
+                {
+                    "id": 4,
+                    "type": "row",
+                    "height": 25,
+                    "childType":"none",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "type": "column",
+            "width": "25",
+            "childType":"none",
+            "children": [
+                {
+                    "id": 7,
+                    "type": "row",
+                    "height": 20,
+                    "childType":"none",
+                    "children": []
+                },
+                {
+                    "id": 8,
+                    "type": "row",
+                    "height": 20,
+                    "childType":"none",
+                    "children": []
+                },
+                {
+                    "id": 9,
+                    "type": "row",
+                    "height": 20,
+                    "childType":"none",
+                    "children": []
+                },
+                {
+                    "id": 10,
+                    "type": "row",
+                    "height": 20,
+                    "childType":"none",
+                    "children": []
+                },
+                {
+                    "id": 11,
+                    "type": "row",
+                    "height": 20,
+                    "childType":"none",
+                    "children": []
+                }
+            ]
+        }
+    ]
+}

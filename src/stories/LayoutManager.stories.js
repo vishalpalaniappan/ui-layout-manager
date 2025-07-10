@@ -4,6 +4,8 @@ import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
 import Layout2 from "./data/Layout2.json"
 import Layout3 from "./data/Layout3.json"
+import Layout4 from "./data/Layout4.json"
+import Layout5 from "./data/Layout5.json"
 
 export default {
     title: 'LayoutManager', 
@@ -25,9 +27,10 @@ const Template = (args) => {
 }
 
 
-export const Default = Template.bind({})
+export const rowcollayout = Template.bind({})
 
-Default.args = {
+rowcollayout.args = {
+    title:"asdf",
     layout: Layout2
 }
 
@@ -35,4 +38,16 @@ export const colrowlayout = Template.bind({})
 
 colrowlayout.args = {
     layout: Layout3
+}
+
+export const mixedlayout = Template.bind({})
+
+mixedlayout.args = {
+    layout: Layout4
+}
+
+export const denseLayout = Template.bind({})
+
+denseLayout.args = {
+    layout: Layout5
 }
