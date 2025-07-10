@@ -40,13 +40,13 @@ const processContainer = (container) => {
     const containers = [];
 
     container.forEach((panel, index) => {
-        if (panel.type == "row") {
+        if (panel.type === "row") {
             containers.push(
                 <RowContainer key={panel.id} height={panel.height + "%"}>
                     {checkForChildren(panel)}
                 </RowContainer>
             );
-        } else if (panel.type == "column") {
+        } else if (panel.type === "column") {
             containers.push(
                 <ColumnContainer key={panel.id} width={panel.width + "%"}>
                     {checkForChildren(panel)}
