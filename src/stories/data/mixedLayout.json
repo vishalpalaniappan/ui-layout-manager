@@ -1,4 +1,5 @@
 {
+    "title": "Mixed Layout",
     "layout": [
         {
             "id": 0,
@@ -19,7 +20,25 @@
                 {
                     "id": 3,
                     "type": "row",
-                    "height": 50
+                    "height": 50,
+                    "childType":"column",
+                    "children": [
+                        {
+                            "id": 12,
+                            "type": "column",
+                            "width": 33
+                        },
+                        {
+                            "id": 13,
+                            "type": "column",
+                            "width": 33
+                        },
+                        {
+                            "id": 14,
+                            "type": "column",
+                            "width": 34
+                        }
+                    ]
                 },
                 {
                     "id": 4,
