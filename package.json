@@ -2,8 +2,8 @@
   "name": "ui-layout-manager",
   "version": "0.0.1",
   "description": "A react component to manage layout and themes in single page applications.",
-  "main": "dist/esm/index.js",
-  "module": "dist/cjs/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
