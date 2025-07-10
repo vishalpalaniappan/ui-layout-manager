@@ -9,9 +9,7 @@ import { getPlaceHolder } from "./getPlaceHolder";
  * @returns 
  */
 export function generateContainers(jsonLayout) {
-    return <div style={{width:"100%",height:"100%"}}>
-        {processContainer(jsonLayout.layout)}
-    </div>
+    return processContainer(jsonLayout.layout)
 }
 
 /**
@@ -26,23 +24,25 @@ const processContainer = (container) => {
 
     container.forEach((panel, index) => {
         if (panel.type == "row") {
-            const el = <RowContainer key={panel.id} height={panel.height + "%"}>
-                {
-                    panel.children.length > 0 ? 
-                    processContainer(panel.children):
-                    getPlaceHolder(panel)
-                }
-            </RowContainer>
-            containers.push(el);
+            containers.push(
+                <RowContainer key={panel.id} height={panel.height + "%"}>
+                    {
+                        panel.children.length > 0 ? 
+                        processContainer(panel.children):
+                        getPlaceHolder(panel)
+                    }
+                </RowContainer>
+            );
         } else if (panel.type == "column") {
-            const el = <ColumnContainer key={panel.id} width={panel.width + "%"}>
-                {
-                    panel.children.length > 0 ? 
-                    processContainer(panel.children):
-                    getPlaceHolder(panel)
-                }
-            </ColumnContainer>
-            containers.push(el);
+            containers.push(
+                <ColumnContainer key={panel.id} width={panel.width + "%"}>
+                    {
+                        panel.children.length > 0 ? 
+                        processContainer(panel.children):
+                        getPlaceHolder(panel)
+                    }
+                </ColumnContainer>
+            );
         }
     });
 

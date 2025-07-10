@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useArgs } from "@storybook/preview-api";
 import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
-import rowCollLayoutJSON from "./data/row-coll-Layout.json"
-import Layout3 from "./data/Layout3.json"
+import colRowLayoutJSON from "./data/colRowLayout.json"
+import rowColLayoutJSON from "./data/rowColLayout.json"
 import mixedLayoutJSON from "./data/mixedLayout.json"
 import denseLayoutJSON from "./data/denseLayout.json"
 import vsCodeLayoutJSON from "./data/vsCodeLayout.json"
@@ -28,21 +28,21 @@ const Template = (args) => {
 }
 
 
-export const rowcollayout = Template.bind({})
+export const rowColLayout = Template.bind({})
 
-rowcollayout.args = {
-    layout: rowCollLayoutJSON
+rowColLayout.args = {
+    layout: rowColLayoutJSON
 }
 
-export const colrowlayout = Template.bind({})
+export const colRowLayout = Template.bind({})
 
-colrowlayout.args = {
-    layout: Layout3
+colRowLayout.args = {
+    layout: colRowLayoutJSON
 }
 
-export const mixedlayout = Template.bind({})
+export const mixedLayout = Template.bind({})
 
-mixedlayout.args = {
+mixedLayout.args = {
     layout: mixedLayoutJSON
 }
 

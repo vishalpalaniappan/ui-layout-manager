@@ -4,7 +4,7 @@
             "id": 0,
             "type": "column",
             "width": "8",
-            "childType":"row",
+            "childType":"none",
             "children": []
         },
         {
@@ -17,7 +17,7 @@
                     "id": 2,
                     "type": "row",
                     "height": 25,
-                    "childType":"row",
+                    "childType":"none",
                     "children": []
                     },
                 {
