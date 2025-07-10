@@ -3,6 +3,7 @@ import { useArgs } from "@storybook/preview-api";
 import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
 import Layout2 from "./data/Layout2.json"
+import Layout3 from "./data/Layout3.json"
 
 export default {
     title: 'LayoutManager', 
@@ -28,4 +29,10 @@ export const Default = Template.bind({})
 
 Default.args = {
     layout: Layout2
+}
+
+export const colrowlayout = Template.bind({})
+
+colrowlayout.args = {
+    layout: Layout3
 }
