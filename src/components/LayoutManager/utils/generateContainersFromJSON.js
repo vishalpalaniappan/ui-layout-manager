@@ -40,6 +40,9 @@ const processContainer = (container) => {
     const containers = [];
 
     container.forEach((panel, index) => {
+
+        const includeHandle = (index > 0);
+
         if (panel.type === "row") {
             containers.push(
                 <RowContainer key={panel.id} height={panel.height + "%"}>
