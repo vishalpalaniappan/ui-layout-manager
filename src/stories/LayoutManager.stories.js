@@ -6,6 +6,7 @@ import Layout2 from "./data/Layout2.json"
 import Layout3 from "./data/Layout3.json"
 import Layout4 from "./data/Layout4.json"
 import Layout5 from "./data/Layout5.json"
+import vsCodeLayoutJSON from "./data/vsCodeLayout.json"
 
 export default {
     title: 'LayoutManager', 
@@ -50,4 +51,10 @@ export const denseLayout = Template.bind({})
 
 denseLayout.args = {
     layout: Layout5
+}
+
+export const vsCodeLayout = Template.bind({})
+
+vsCodeLayout.args = {
+    layout: vsCodeLayoutJSON
 }
