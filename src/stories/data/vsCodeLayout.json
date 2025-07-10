@@ -15,16 +15,12 @@
                         {
                             "id": 5,
                             "type": "row",
-                            "height": 50,
-                            "childType":"none",
-                            "children": []
+                            "height": 50
                         },
                         {
                             "id": 6,
                             "type": "row",
-                            "height": 50,
-                            "childType":"none",
-                            "children": []
+                            "height": 50
                         }
                     ]
                 },
