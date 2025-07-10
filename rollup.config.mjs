@@ -21,7 +21,7 @@ export default {
         },
     ],
     plugins: [
-        external(),
+        external(['react', 'react-dom']),
         resolve({
             extensions: ['.js', '.jsx'],
         }),
