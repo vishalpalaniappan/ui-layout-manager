@@ -24,5 +24,5 @@ export const ColumnContainer = ({children, width}) => {
 
 ColumnContainer.propTypes = {
     width: PropTypes.string,
-    children: PropTypes.array
+    children: PropTypes.oneOfType([PropTypes.object,PropTypes.array])
 }
