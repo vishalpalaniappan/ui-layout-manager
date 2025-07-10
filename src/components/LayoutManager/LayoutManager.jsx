@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import "./LayoutManager.scss";
 import PropTypes from 'prop-types';
+import {generateContainers} from "./utils/generateContainersFromJSON";
 
 
 /**
@@ -9,11 +11,17 @@ import PropTypes from 'prop-types';
  * @return {JSX}
  */
 export const LayoutManager = ({layout}) => {
-    const text = "Placeholder Textasdf"
+    const [containers, setContainers] = useState(<></>);  
+
+    useEffect(() => {
+        if (layout) {
+            setContainers(generateContainers(layout));
+        }
+    }, [layout]);
+
     return (
-        // TEMPORARY
-        <div className="sample">
-            {text}
+        <div className="background">
+            {containers}
         </div>
     );
 }

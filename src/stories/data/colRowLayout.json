@@ -1,0 +1,33 @@
+{
+    "title": "Column Row Layout",
+    "layout": [
+        {
+            "id": 1,
+            "type": "column",
+            "width": 75,
+            "childType":"row",
+            "children": [
+                {
+                    "id": 2,
+                    "type": "row",
+                    "height": 25
+                },
+                {
+                    "id": 3,
+                    "type": "row",
+                    "height": 50
+                },
+                {
+                    "id": 4,
+                    "type": "row",
+                    "height": 25
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "type": "column",
+            "width": 25
+        }
+    ]
+}
