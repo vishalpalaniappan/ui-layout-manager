@@ -3,14 +3,14 @@
         {
             "id": 0,
             "type": "column",
-            "width": "3",
+            "width": "8",
             "childType":"row",
             "children": []
         },
         {
             "id": 1,
             "type": "column",
-            "width": "72",
+            "width": "67",
             "childType":"row",
             "children": [
                 {

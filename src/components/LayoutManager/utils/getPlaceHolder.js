@@ -1,7 +1,7 @@
 import { useRef } from "react";
+import "./styles.scss";
 
 export function getPlaceHolder(node) {
-
     // TODO: Move to stylesheet
     const outerDiv =  {
         "width": "100%",
@@ -23,13 +23,9 @@ export function getPlaceHolder(node) {
         "alignItems": "center",
         "color":"#BBB"
     }
-
-    const handleMouseOver = (e) => {
-        console.log('Mouse is over the component!',e);
-    };
    
-    return  <div onMouseOver={handleMouseOver} style={outerDiv}>
-        <div style={innerDiv}>
+    return  <div style={outerDiv}>
+        <div  className="hoverDiv" style={innerDiv}>
             {node.id}
         </div>
     </div>

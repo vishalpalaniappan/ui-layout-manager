@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useArgs } from "@storybook/preview-api";
 import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
-import Layout2 from "./data/Layout2.json"
+import rowCollLayoutJSON from "./data/row-coll-Layout.json"
 import Layout3 from "./data/Layout3.json"
-import Layout4 from "./data/Layout4.json"
-import Layout5 from "./data/Layout5.json"
+import mixedLayoutJSON from "./data/mixedLayout.json"
+import denseLayoutJSON from "./data/denseLayout.json"
 import vsCodeLayoutJSON from "./data/vsCodeLayout.json"
 
 export default {
@@ -31,8 +31,7 @@ const Template = (args) => {
 export const rowcollayout = Template.bind({})
 
 rowcollayout.args = {
-    title:"asdf",
-    layout: Layout2
+    layout: rowCollLayoutJSON
 }
 
 export const colrowlayout = Template.bind({})
@@ -44,17 +43,17 @@ colrowlayout.args = {
 export const mixedlayout = Template.bind({})
 
 mixedlayout.args = {
-    layout: Layout4
+    layout: mixedLayoutJSON
 }
 
 export const denseLayout = Template.bind({})
 
 denseLayout.args = {
-    layout: Layout5
+    layout: denseLayoutJSON
 }
 
-export const vsCodeLayout = Template.bind({})
+export const VSCodeLayout = Template.bind({})
 
-vsCodeLayout.args = {
+VSCodeLayout.args = {
     layout: vsCodeLayoutJSON
 }
