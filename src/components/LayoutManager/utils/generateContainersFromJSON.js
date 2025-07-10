@@ -2,12 +2,24 @@ import { RowContainer } from "./RowContainer";
 import { ColumnContainer } from "./ColumnContainer";
 import { getPlaceHolder } from "./getPlaceHolder";
 
+/**
+ * Generates the containers given a JSON
+ * layout definition.
+ * @param {Object} jsonLayout 
+ * @returns 
+ */
 export function generateContainers(jsonLayout) {
     return <div style={{width:"100%",height:"100%"}}>
         {processContainer(jsonLayout.layout)}
     </div>
 }
 
+/**
+ * Recursively processes the JSON layout document and 
+ * generates the containers. 
+ * @param {Object} container 
+ * @returns {Array} 
+ */
 const processContainer = (container) => {
 
     const containers = [];
