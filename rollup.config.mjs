@@ -22,10 +22,15 @@ export default {
     ],
     plugins: [
         external(),
-        resolve(),
+        resolve({
+            extensions: ['.js', '.jsx'],
+        }),
         postcss(),
         terser(),
+        babel({
+            babelHelpers: 'bundled',
+            exclude: 'node_modules/**',
+        }),
         commonjs(),
-        babel({ babelHelpers: 'bundled',sourceMaps: true, })
     ]
 }
