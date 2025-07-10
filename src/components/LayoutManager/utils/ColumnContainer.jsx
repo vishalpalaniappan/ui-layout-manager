@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 
 /**
- * Renders the layout.
+ * Renders the ColumnContainer.
  * 
- * @param {Object} layout 
+ * @param {Object|Array} children 
+ * @param {String} width eg. 50%, in the future, I might set the width
+ * in pixels, so I kept the logic in the component above this and accept
+ * a formatted string.
  * @return {JSX}
  */
-export const ColumnContainer = ({children, id, width, height, childType}) => {
+export const ColumnContainer = ({children, width}) => {
     return (
         <div
             style={{
@@ -21,10 +23,6 @@ export const ColumnContainer = ({children, id, width, height, childType}) => {
 }
 
 ColumnContainer.propTypes = {
-    id: PropTypes.number,
-    top: PropTypes.number,
-    left: PropTypes.number,
     width: PropTypes.string,
-    height: PropTypes.string,
-    childType: PropTypes.string
+    children: PropTypes.array
 }
