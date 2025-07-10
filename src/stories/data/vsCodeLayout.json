@@ -31,25 +31,19 @@
                 {
                     "id": 3,
                     "type": "column",
-                    "width": 40,
-                    "childType":"none",
-                    "children": []
+                    "width": 40
                 },
                 {
                     "id": 4,
                     "type": "column",
-                    "width": 40,
-                    "childType":"none",
-                    "children": []
+                    "width": 40
                 }
             ]
         },
         {
             "id": 5,
             "type": "row",
-            "height": "25",
-            "childType":"none",
-            "children": []
+            "height": "25"
         }
     ]
 }

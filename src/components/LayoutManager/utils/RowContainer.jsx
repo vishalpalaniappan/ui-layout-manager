@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
  * 
  * @param {Array} children 
  * @param {String} height eg. 50%, in the future, I might set the height
- * in pixels, so I kept the logic in the component above this and accept
- * a formatted string.
+ * in pixels for some panels, so I kept the logic which generates the size
+ * in the component above this and accept a formatted string.
  * @return {JSX}
  */
 export const RowContainer = ({children, height}) => {

@@ -3,9 +3,7 @@
         {
             "id": 0,
             "type": "column",
-            "width": "8",
-            "childType":"none",
-            "children": []
+            "width": "8"
         },
         {
             "id": 1,
@@ -16,23 +14,17 @@
                 {
                     "id": 2,
                     "type": "row",
-                    "height": 25,
-                    "childType":"none",
-                    "children": []
+                    "height": 25
                     },
                 {
                     "id": 3,
                     "type": "row",
-                    "height": 50,
-                    "childType":"none",
-                    "children": []
+                    "height": 50
                 },
                 {
                     "id": 4,
                     "type": "row",
-                    "height": 25,
-                    "childType":"none",
-                    "children": []
+                    "height": 25
                 }
             ]
         },
@@ -45,37 +37,27 @@
                 {
                     "id": 7,
                     "type": "row",
-                    "height": 20,
-                    "childType":"none",
-                    "children": []
+                    "height": 20
                 },
                 {
                     "id": 8,
                     "type": "row",
-                    "height": 20,
-                    "childType":"none",
-                    "children": []
+                    "height": 20
                 },
                 {
                     "id": 9,
                     "type": "row",
-                    "height": 20,
-                    "childType":"none",
-                    "children": []
+                    "height": 20
                 },
                 {
                     "id": 10,
                     "type": "row",
-                    "height": 20,
-                    "childType":"none",
-                    "children": []
+                    "height": 20
                 },
                 {
                     "id": 11,
                     "type": "row",
-                    "height": 20,
-                    "childType":"none",
-                    "children": []
+                    "height": 20
                 }
             ]
         }

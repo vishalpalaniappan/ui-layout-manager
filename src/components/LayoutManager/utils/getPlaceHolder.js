@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import "./styles.scss";
 
-export function getPlaceHolder(node) {
+export function getPlaceHolder(panel, panelCount) {
     // TODO: Move to stylesheet
     const outerDiv =  {
         "width": "100%",
@@ -26,7 +26,7 @@ export function getPlaceHolder(node) {
    
     return  <div style={outerDiv}>
         <div  className="hoverDiv" style={innerDiv}>
-            {node.id}
+            {panelCount}
         </div>
     </div>
 }
