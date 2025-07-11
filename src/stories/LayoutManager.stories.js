@@ -7,6 +7,8 @@ import rowColLayoutJSON from "./data/rowColLayout.json"
 import mixedLayoutJSON from "./data/mixedLayout.json"
 import denseLayoutJSON from "./data/denseLayout.json"
 import vsCodeLayoutJSON from "./data/vsCodeLayout.json"
+import simpleLayoutJSON from "./data/simpleLayout.json"
+import simpleLayout2JSON from "./data/simpleLayout2.json"
 
 export default {
     title: 'LayoutManager', 
@@ -28,28 +30,42 @@ const Template = (args) => {
 }
 
 
+export const simpleLayout = Template.bind({})
+
+simpleLayout.args = {
+    ldf: simpleLayoutJSON
+}
+
+
+export const simpleLayout2 = Template.bind({})
+
+simpleLayout2.args = {
+    ldf: simpleLayout2JSON
+}
+
+
 export const rowColLayout = Template.bind({})
 
 rowColLayout.args = {
-    layout: rowColLayoutJSON
+    ldf: rowColLayoutJSON
 }
 
 export const colRowLayout = Template.bind({})
 
 colRowLayout.args = {
-    layout: colRowLayoutJSON
+    ldf: colRowLayoutJSON
 }
 
 export const mixedLayout = Template.bind({})
 
 mixedLayout.args = {
-    layout: mixedLayoutJSON
+    ldf: mixedLayoutJSON
 }
 
 export const denseLayout = Template.bind({})
 
 denseLayout.args = {
-    layout: denseLayoutJSON
+    ldf: denseLayoutJSON
 }
 
 export const VSCodeLayout = Template.bind({})
