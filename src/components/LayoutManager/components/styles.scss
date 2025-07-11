@@ -1,0 +1,19 @@
+.hoverDiv:hover {
+    // border: solid 1px red;
+    opacity:50%;
+}
+
+.handleBar {
+  height: 3px;
+  width: 100%;
+}
+
+.handleBar:hover {
+    background-color: blue;
+    cursor: ns-resize;
+}
+
+.content {
+  flex: 1;           /* Fills remaining space */
+  width: 100%;
+}
