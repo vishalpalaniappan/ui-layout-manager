@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { getPlaceHolder } from "./getPlaceHolder";
+import { RowContainer } from "./RowContainer";
+
 /**
  * Renders the ColumnContainer.
  * 
@@ -8,9 +10,23 @@ import { getPlaceHolder } from "./getPlaceHolder";
  * @return {JSX}
  */
 export const ColumnContainer = ({childContainers}) => {
-    console.log("COLS");
+    console.log("COL");
     
     const [childDivs, setchildDivs] = useState();
+
+
+    const renderChild = (child) => {
+
+        if ("children" in child) {
+            if (child.childType === "column") {
+                return <ColumnContainer childContainers={child.children}/>;
+            } else if (child.childType === "row") {
+                return <RowContainer childContainers={child.children}/>;
+            }
+        } else {
+            return getPlaceHolder();
+        }
+    }
 
     const processContainers = (children) => {
 
@@ -18,8 +34,8 @@ export const ColumnContainer = ({childContainers}) => {
 
         children.forEach((child,index) => {
             _childDivs.push(
-                <div info={child} style={{"height": "100%", "width": child.width + "%","float":"left"}}>
-                    {getPlaceHolder(child, index)}
+                <div key={index} info={child} style={{"height": "100%", "width": child.width + "%","float":"left"}}>
+                    {renderChild(child)}
                 </div>
             );
         });

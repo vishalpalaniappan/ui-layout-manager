@@ -8,7 +8,46 @@
             {
                 "id": 1,
                 "type": "column",
-                "width": 75
+                "width": 75,
+                "childType":"row",
+                "children": [
+                    {
+                        "id": 1,
+                        "type": "row",
+                        "height": 75,
+                        "childType":"row",
+                        "children": [
+                            {
+                                "id": 1,
+                                "type": "row",
+                                "height": 50
+                            },
+                            {
+                                "id": 5,
+                                "type": "row",
+                                "height": 50
+                            }
+                        ]
+                    },
+                    {
+                        "id": 5,
+                        "type": "row",
+                        "height": 25,
+                        "childType":"column",
+                        "children": [
+                            {
+                                "id": 1,
+                                "type": "column",
+                                "width": 50
+                            },
+                            {
+                                "id": 5,
+                                "type": "column",
+                                "width": 50
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "id": 5,

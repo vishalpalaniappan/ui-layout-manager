@@ -15,32 +15,47 @@ export const RowContainer = ({childContainers}) => {
 
     console.log("ROW");
 
-    const [columns, setColumns] = useState();
+    const [childDivs, setchildDivs] = useState();
 
-    const processContainers = (children) => {
-        console.log(children);
-        const cols = [];
-        children.forEach(child => {
-            const rootEl = <div style={{"width": "100%", "height": child.height + "%"}}>
-                {getPlaceHolder(child, 0)}
-            </div>
-            cols.push(rootEl);
-        });
 
-        setColumns(cols);
-        
+    const renderChild = (child) => {
+
+        if ("children" in child) {
+            if (child.childType === "column") {
+                return <ColumnContainer childContainers={child.children}/>;
+            } else if (child.childType === "row") {
+                return <RowContainer childContainers={child.children}/>;
+            }
+        } else {
+            return getPlaceHolder();
+        }
     }
 
-    useEffect(() => {
-        if (childContainers) {
-            processContainers(childContainers);
-        }
-    }, [childContainers]);
+    const processContainers = (children) => {
+
+        const _childDivs = [];
+
+        children.forEach((child,index) => {
+            _childDivs.push(
+                <div key={index} info={child} style={{"width": "100%", "height": child.height + "%"}}>
+                    {renderChild(child)}
+                </div>
+            );
+        });
+
+        setchildDivs(_childDivs);
+    }
+
+        useEffect(() => {
+            if (childContainers) {
+                processContainers(childContainers);
+            }
+        }, [childContainers]);
 
 
     return (
         <>
-            {columns}
+            {childDivs}
         </>
         // <div style={{"width": "100%", "height": height,"display":"flex","flexDirection":"column"}}> 
         //     <div className="content">
