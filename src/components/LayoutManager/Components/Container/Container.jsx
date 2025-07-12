@@ -17,8 +17,7 @@ export const Container = ({layout}) => {
 
     /**
      * Given an layout, this function processes each child at this level
-     * and renders it. If any of the children have a child, then a new
-     * container is created and it is nested into the parent container.
+     * and renders it.
      * @param {Array} layout 
      */
     const processLayout = (layout) => {
