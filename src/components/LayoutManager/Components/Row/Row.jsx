@@ -61,7 +61,6 @@ export const Row = ({container, renderHandle}) => {
 }
 
 Row.propTypes = {
-    children: PropTypes.object,
     container: PropTypes.object,
     renderHandle: PropTypes.bool
 }
