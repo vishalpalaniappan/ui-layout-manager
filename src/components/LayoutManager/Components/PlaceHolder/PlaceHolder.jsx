@@ -5,6 +5,9 @@ import "./PlaceHolder.scss"
 /**
  * Renders the Placeholder.
  * 
+ * This is a temporary component and it will replaced
+ * with the component specified in the LDF file.
+ * 
  * @param {Object} panel
  * @param {Number} panelCount
  * @return {JSX}

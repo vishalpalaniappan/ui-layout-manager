@@ -6,7 +6,9 @@ import { PlaceHolder } from "../PlaceHolder/PlaceHolder";
 import "./Row.scss";
 
 /**
- * Renders a row.
+ * Renders a row and creates a container to render its children if they exist. If no children
+ * exist, then it renders a placeholder. Soon, this will be replaced with the component
+ * specified in the LDF file.
  * 
  * @param {Object} container JSON object containing information about the container and its children.
  * @param {Boolean} renderHandle Flag to indicate if a handle should be rendered.

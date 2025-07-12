@@ -17,7 +17,8 @@ export const Container = ({layout}) => {
 
     /**
      * Given an layout, this function processes each child at this level
-     * and renders it to the screen.
+     * and renders it to the screen. Each child will process its own children
+     * and this process repeats until the layout is fully rendered.
      * @param {Array} layout 
      */
     const processLayout = (layout) => {
@@ -25,6 +26,8 @@ export const Container = ({layout}) => {
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
+            // If index > 0, then we include the handle bar to allow
+            // the siblings to be resized.
             const showHandle = index > 0;
 
             if (layout.childType === "row") {

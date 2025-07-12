@@ -5,7 +5,7 @@ import { Container } from "./Components/Container/Container";
 import "./LayoutManager.scss";
 
 /**
- * Renders the layout.
+ * Renders the layout specified in the LDF file.
  * 
  * @param {Object} ldf JSON object containing the Layout Definition File (LDF)
  * @return {JSX}
