@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
+import { Container } from "../Container/Container";
+import { PlaceHolder } from "../PlaceHolder/PlaceHolder";
 
 import "./Column.scss";
 
@@ -13,6 +15,21 @@ import "./Column.scss";
 export const Column = ({children, container, renderHandle}) => {
 
     const [columnStyle, setColumnStyle] = useState({});
+    const [childDivs, setChildDivs] = useState(<></>)
+    
+    /**
+     * This function loads the children into a container if they
+     * exist and if there are no children, it renders a placeholder.
+     * @param {Object} child 
+     * @returns 
+     */
+    const renderChildren = (child) => {
+        if ("children" in child) {
+            return <Container layout={child} type={child.childType}/>;
+        } else {
+            return <PlaceHolder panelCount={1} panel={{}} />
+        }
+    }
 
     useEffect(() => {
         if (container) {
@@ -23,14 +40,15 @@ export const Column = ({children, container, renderHandle}) => {
                 "display":"flex",
                 "flexDirection":"row"
             })
+            setChildDivs(renderChildren(container));
         }
-    }, [container])
+    }, [container]);
 
     return (
         <div style={columnStyle}> 
             {renderHandle && <div className="handleBarHorizontal"></div>}
             <div className="contentHorizontal">
-                {children}
+                {childDivs}
             </div>
         </div>
     );

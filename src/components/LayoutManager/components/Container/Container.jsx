@@ -19,47 +19,6 @@ export const Container = ({layout, type}) => {
     const [childDivs, setchildDivs] = useState();
 
     /**
-     * This function renders children of each container
-     * if they exist. If there are no children, this function
-     * returns a placeholder. In the future, the provided
-     * component will be loaded instead.
-     * @param {Object} child 
-     * @returns 
-     */
-    const renderChild = (child) => {
-        if ("children" in child) {
-            return <Container layout={child} type={child.childType}/>;
-        } else {
-            return <PlaceHolder panelCount={++panelCount} panel={{}} />
-        }
-    }
-
-    /**
-     * 
-     * @param {Object} child A JSON object which contains layout information about the child.
-     * @param {Number} index 
-     * @returns 
-     */
-    const getRowDiv = (child, index) => {
-        return <Row container={child} renderHandle={index >0}>
-            {renderChild(child)}
-        </Row>
-    }
-
-
-    /**
-     * 
-     * @param {Object} child A JSON object which contains layout information about the child.
-     * @param {Number} index
-     * @returns 
-     */
-    const getColDiv = (child, index) => {
-        return <Column container={child} renderHandle={index >0}>
-            {renderChild(child)}
-        </Column>
-    }
-
-    /**
      * Given an array of children, this function processes 
      * each child and renders it. If any of the children
      * have a child, then a new container is created
@@ -72,9 +31,19 @@ export const Container = ({layout, type}) => {
 
         children.forEach((child,index) => {
             if (type === "row") {
-                _childDivs.push(getRowDiv(child, index));
-            } else if (type === "column") {
-                _childDivs.push(getColDiv(child, index));
+                _childDivs.push(
+                    <Row container={child} renderHandle={index > 0}>
+                        {renderChild(child)}
+                    </Row>
+                )
+            } 
+            
+            if (type === "column") {
+                _childDivs.push(
+                    <Column container={child} renderHandle={index > 0}>
+                        {renderChild(child)}
+                    </Column>
+                );
             }
         });
 
