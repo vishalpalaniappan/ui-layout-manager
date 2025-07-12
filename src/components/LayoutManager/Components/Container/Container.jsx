@@ -28,11 +28,11 @@ export const Container = ({layout}) => {
             const showHandle = index > 0;
 
             if (layout.childType === "row") {
-                _childDivs.push(<Row container={child} renderHandle={showHandle}/>)
+                _childDivs.push(<Row key={index} container={child} renderHandle={showHandle}/>)
             } 
             
             if (layout.childType === "column") {
-                _childDivs.push(<Column container={child} renderHandle={showHandle}/>);
+                _childDivs.push(<Column key={index} container={child} renderHandle={showHandle}/>);
             }
         });
 
