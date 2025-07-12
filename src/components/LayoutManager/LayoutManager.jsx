@@ -3,6 +3,7 @@ import "./LayoutManager.scss";
 import PropTypes from 'prop-types';
 import { RowContainer } from "./components/RowContainer";
 import { ColumnContainer } from "./components/ColumnContainer";
+import { Container } from "./components/Container";
 
 
 /**
@@ -15,11 +16,7 @@ export const LayoutManager = ({ldf}) => {
     const [rootContainer, setRootContainer] = useState(<></>);  
     
     const processLayout = (layout) => {
-        if (layout.childType === "column") {
-            setRootContainer(<ColumnContainer childContainers={layout.children}/>);
-        } else if (layout.childType === "row") {
-            setRootContainer(<RowContainer childContainers={layout.children}/>);
-        }
+        setRootContainer(<Container type={layout.childType} childContainers={layout.children}/>);
     }
 
     useEffect(() => {

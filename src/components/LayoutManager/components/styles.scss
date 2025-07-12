@@ -1,19 +1,33 @@
 .hoverDiv:hover {
-    // border: solid 1px red;
     opacity:50%;
 }
 
-.handleBar {
-  height: 3px;
-  width: 100%;
+.handleBarHorizontal {
+  height:100%;
+  width: 3px;
 }
 
-.handleBar:hover {
+.handleBarHorizontal:hover {
+    background-color: blue;
+    cursor: ew-resize;
+}
+
+.handleBarVertical {
+  width:100%;
+  height: 3px;
+}
+
+.handleBarVertical:hover {
     background-color: blue;
     cursor: ns-resize;
 }
 
-.content {
-  flex: 1;           /* Fills remaining space */
+.contentHorizontal {
+  flex: 1;
+  width: 100%;
+}
+
+.contentVertical {
+  flex: 1;
   width: 100%;
 }

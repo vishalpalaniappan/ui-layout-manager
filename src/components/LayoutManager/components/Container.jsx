@@ -6,6 +6,7 @@ import { RowContainer } from "./RowContainer";
 
 import "./styles.scss"
 
+let panelCount = 0;
 /**
  * Renders the Container.
  * 
@@ -30,21 +31,27 @@ export const Container = ({childContainers, type}) => {
         if ("children" in child) {
             return <Container type={child.childType} childContainers={child.children}/>;
         } else {
-            return getPlaceHolder();
+            return getPlaceHolder({},++panelCount);
         }
     }
 
 
     const getRowDiv = (child, index) => {
-        return <div key={index} info={child} style={{"width": "100%", "height": child.height + "%"}}>
-            {renderChild(child)}
+        return <div style={{"width": "100%", "height": child.height + "%",position:"relative","display":"flex","flexDirection":"column"}}> 
+            {index > 0 && <div className="handleBarVertical"></div>}
+            <div className="contentVertical">
+                {renderChild(child)}
+            </div>
         </div>
     }
 
 
     const getColDiv = (child, index) => {
-        return <div key={index} info={child} style={{"height": "100%", "width": child.width + "%","float":"left"}}>
-            {renderChild(child)}
+        return <div style={{"height": "100%", "width": child.width + "%","float":"left","display":"flex","flexDirection":"row"}}> 
+            {index > 0 && <div className="handleBarHorizontal"></div>}
+            <div className="contentHorizontal">
+                {renderChild(child)}
+            </div>
         </div>
     }
 
