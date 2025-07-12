@@ -10,7 +10,7 @@ import "./PlaceHolder.scss"
  * @param {Number} panelCount
  * @return {JSX}
  */
-export const PlaceHolder = ({panel, panelCount}) => {
+export const PlaceHolder = ({panel}) => {
 
     const outerDiv =  {
         "width": "100%",
@@ -34,8 +34,8 @@ export const PlaceHolder = ({panel, panelCount}) => {
     }
     return (
         <div style={outerDiv}>
-            <div  className="hoverDiv" style={innerDiv}>
-                {panelCount}
+            <div className="hoverDiv" style={innerDiv}>
+                {panel.id}
             </div>
         </div>
     );
@@ -43,5 +43,4 @@ export const PlaceHolder = ({panel, panelCount}) => {
 
 PlaceHolder.propTypes = {
     panel: PropTypes.object,
-    panelCount: PropTypes.number,
 }

@@ -27,7 +27,7 @@ export const Row = ({children, container, renderHandle}) => {
         if ("children" in child) {
             return <Container layout={child}/>;
         } else {
-            return <PlaceHolder panelCount={1} panel={{}} />
+            return <PlaceHolder panel={child} />
         }
     }
 
