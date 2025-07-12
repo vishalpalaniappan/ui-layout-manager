@@ -17,7 +17,7 @@ import "./Row.scss";
 export const Row = ({container, renderHandle}) => {
 
     const [rowStyle, setRowStyle] = useState({});
-    const [childDivs, setChildDivs] = useState(<></>)
+    const [childDivs, setChildDivs] = useState(null)
     
     /**
      * This function loads the children into a container if they

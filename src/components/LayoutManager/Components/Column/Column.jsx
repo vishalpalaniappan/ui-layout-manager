@@ -17,7 +17,7 @@ import "./Column.scss";
 export const Column = ({container, renderHandle}) => {
 
     const [columnStyle, setColumnStyle] = useState({});
-    const [childDivs, setChildDivs] = useState(<></>)
+    const [childDivs, setChildDivs] = useState(null)
     
     /**
      * This function loads the children into a container if they

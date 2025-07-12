@@ -11,7 +11,7 @@ import "./LayoutManager.scss";
  * @return {JSX}
  */
 export const LayoutManager = ({ldf}) => {
-    const [rootContainer, setRootContainer] = useState(<></>);  
+    const [rootContainer, setRootContainer] = useState(null);  
 
     useEffect(() => {
         if (ldf) {
