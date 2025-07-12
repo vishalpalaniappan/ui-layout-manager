@@ -24,10 +24,10 @@ export const PlaceHolder = ({panel}) => {
 
     const innerDiv = {
         "position": "absolute",
-        "top": "0px",
-        "left": "0px",
-        "right": "0px",
-        "bottom": "0px",
+        "top": "2px",
+        "left": "2px",
+        "right": "2px",
+        "bottom": "2px",
         "display": "flex",
         "justifyContent": "center",
         "alignItems": "center",

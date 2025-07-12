@@ -11,10 +11,9 @@ import "./Column.scss";
  * in the LDF file.
  * 
  * @param {Object} container JSON object containing information about the container and its children.
- * @param {Boolean} renderHandle Flag to indicate if a handle should be rendered.
  * @returns 
  */
-export const Column = ({container, renderHandle}) => {
+export const Column = ({container}) => {
 
     const [columnStyle, setColumnStyle] = useState({});
     const [childDivs, setChildDivs] = useState(null)
@@ -50,7 +49,6 @@ export const Column = ({container, renderHandle}) => {
 
     return (
         <div style={columnStyle}> 
-            {renderHandle && <div className="handleBarHorizontal"></div>}
             <div className="contentHorizontal">
                 {childDivs}
             </div>
