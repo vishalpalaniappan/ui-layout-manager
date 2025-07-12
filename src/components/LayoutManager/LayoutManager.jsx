@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
-import { Container } from "./components/Container/Container";
+import { Container } from "./Components/Container/Container";
 
 import "./LayoutManager.scss";
 
@@ -14,7 +14,7 @@ export const LayoutManager = ({ldf}) => {
     const [rootContainer, setRootContainer] = useState(<></>);  
     
     const processLayout = (layout) => {
-        setRootContainer(<Container layout={layout} type={layout.childType}/>);
+        setRootContainer(<Container layout={layout}/>);
     }
 
     useEffect(() => {

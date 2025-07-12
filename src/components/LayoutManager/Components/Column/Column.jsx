@@ -25,7 +25,7 @@ export const Column = ({children, container, renderHandle}) => {
      */
     const renderChildren = (child) => {
         if ("children" in child) {
-            return <Container layout={child} type={child.childType}/>;
+            return <Container layout={child}/>;
         } else {
             return <PlaceHolder panelCount={1} panel={{}} />
         }

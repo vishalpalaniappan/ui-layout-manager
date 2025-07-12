@@ -1,42 +1,38 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
-import { PlaceHolder } from "../PlaceHolder/PlaceHolder";
 import { Column } from "../Column/Column";
 import { Row } from "../Row/Row";
 
 import "./Container.scss"
 
-let panelCount = 0;
 /**
- * Renders the Container.
+ * Renders each of the children for the current container.
  * 
  * @param {Object} layout The layout of this container including its children
- * @param {String} type The type of children this container holds (row or column)
  * @return {JSX}
  */
-export const Container = ({layout, type}) => {
+export const Container = ({layout}) => {
 
     const [childDivs, setchildDivs] = useState();
 
     /**
-     * Given an array of children, this function processes 
-     * each child and renders it. If any of the children
-     * have a child, then a new container is created
-     * and it is nested into the parent container.
-     * @param {Array} children 
+     * Given an layout, this function processes each child at this level
+     * and renders it. If any of the children have a child, then a new
+     * container is created and it is nested into the parent container.
+     * @param {Array} layout 
      */
-    const processChildren = (children) => {
+    const processLayout = (layout) => {
 
         const _childDivs = [];
 
-        children.forEach((child,index) => {
+        layout.children.forEach((child,index) => {
             const showHandle = index > 0;
 
-            if (type === "row") {
+            if (layout.childType === "row") {
                 _childDivs.push(<Row container={child} renderHandle={showHandle}/>)
             } 
             
-            if (type === "column") {
+            if (layout.childType === "column") {
                 _childDivs.push(<Column container={child} renderHandle={showHandle}/>);
             }
         });
@@ -46,11 +42,7 @@ export const Container = ({layout, type}) => {
 
     useEffect(() => {
         if (layout) {
-            // Reset panel count for the placeholder.
-            if (layout.type === "root") {
-                panelCount = 0;
-            }
-            processChildren(layout.children);
+            processLayout(layout);
         }
     }, [layout]);
 
@@ -64,5 +56,4 @@ export const Container = ({layout, type}) => {
 
 Container.propTypes = {
     layout: PropTypes.object,
-    type: PropTypes.string,
 }
