@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
-import { ColumnContainer } from "./ColumnContainer";
 import { getPlaceHolder } from "./getPlaceHolder";
-import { RowContainer } from "./RowContainer";
 
 import "./styles.scss"
 
@@ -90,6 +88,7 @@ export const Container = ({childContainers, type}) => {
     );
 }
 
-RowContainer.propTypes = {
+Container.propTypes = {
     childContainers: PropTypes.array,
+    type: PropTypes.string,
 }
