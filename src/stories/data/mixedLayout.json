@@ -1,84 +1,89 @@
 {
     "title": "Mixed Layout",
-    "layout": [
-        {
-            "id": 0,
-            "type": "column",
-            "width": 8
-        },
-        {
-            "id": 1,
-            "type": "column",
-            "width": 67,
-            "childType":"row",
-            "children": [
-                {
-                    "id": 2,
-                    "type": "row",
-                    "height": 25
+    "layout": {
+        "id": 0,
+        "type": "root",
+        "childType": "column",
+        "children": [
+            {
+                "id": 0,
+                "type": "column",
+                "width": 8
+            },
+            {
+                "id": 1,
+                "type": "column",
+                "width": 67,
+                "childType": "row",
+                "children": [
+                    {
+                        "id": 2,
+                        "type": "row",
+                        "height": 25
                     },
-                {
-                    "id": 3,
-                    "type": "row",
-                    "height": 50,
-                    "childType":"column",
-                    "children": [
-                        {
-                            "id": 12,
-                            "type": "column",
-                            "width": 33
-                        },
-                        {
-                            "id": 13,
-                            "type": "column",
-                            "width": 33
-                        },
-                        {
-                            "id": 14,
-                            "type": "column",
-                            "width": 34
-                        }
-                    ]
-                },
-                {
-                    "id": 4,
-                    "type": "row",
-                    "height": 25
-                }
-            ]
-        },
-        {
-            "id": 5,
-            "type": "column",
-            "width": 25,
-            "childType":"none",
-            "children": [
-                {
-                    "id": 7,
-                    "type": "row",
-                    "height": 20
-                },
-                {
-                    "id": 8,
-                    "type": "row",
-                    "height": 20
-                },
-                {
-                    "id": 9,
-                    "type": "row",
-                    "height": 20
-                },
-                {
-                    "id": 10,
-                    "type": "row",
-                    "height": 20
-                },
-                {
-                    "id": 11,
-                    "type": "row",
-                    "height": 20
-                }
-            ]
-        }
-    ]
+                    {
+                        "id": 3,
+                        "type": "row",
+                        "height": 50,
+                        "childType": "column",
+                        "children": [
+                            {
+                                "id": 12,
+                                "type": "column",
+                                "width": 33
+                            },
+                            {
+                                "id": 13,
+                                "type": "column",
+                                "width": 33
+                            },
+                            {
+                                "id": 14,
+                                "type": "column",
+                                "width": 34
+                            }
+                        ]
+                    },
+                    {
+                        "id": 4,
+                        "type": "row",
+                        "height": 25
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "type": "column",
+                "width": 25,
+                "childType": "row",
+                "children": [
+                    {
+                        "id": 7,
+                        "type": "row",
+                        "height": 20
+                    },
+                    {
+                        "id": 8,
+                        "type": "row",
+                        "height": 20
+                    },
+                    {
+                        "id": 9,
+                        "type": "row",
+                        "height": 20
+                    },
+                    {
+                        "id": 10,
+                        "type": "row",
+                        "height": 20
+                    },
+                    {
+                        "id": 11,
+                        "type": "row",
+                        "height": 20
+                    }
+                ]
+            }
+        ]
+    }
 }

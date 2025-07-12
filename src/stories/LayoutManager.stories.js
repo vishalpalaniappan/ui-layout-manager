@@ -7,14 +7,12 @@ import rowColLayoutJSON from "./data/rowColLayout.json"
 import mixedLayoutJSON from "./data/mixedLayout.json"
 import denseLayoutJSON from "./data/denseLayout.json"
 import vsCodeLayoutJSON from "./data/vsCodeLayout.json"
-import simpleLayoutJSON from "./data/simpleLayout.json"
-import simpleLayout2JSON from "./data/simpleLayout2.json"
 
 export default {
     title: 'LayoutManager', 
     component: LayoutManager,
     argTypes: {
-        layout: {
+        ldf: {
             type: 'object'
         }
     }
@@ -27,20 +25,6 @@ const Template = (args) => {
             <LayoutManager  {...args}/> 
         </div>
     )
-}
-
-
-export const simpleLayout = Template.bind({})
-
-simpleLayout.args = {
-    ldf: simpleLayoutJSON
-}
-
-
-export const simpleLayout2 = Template.bind({})
-
-simpleLayout2.args = {
-    ldf: simpleLayout2JSON
 }
 
 
@@ -71,5 +55,5 @@ denseLayout.args = {
 export const VSCodeLayout = Template.bind({})
 
 VSCodeLayout.args = {
-    layout: vsCodeLayoutJSON
+    ldf: vsCodeLayoutJSON
 }
