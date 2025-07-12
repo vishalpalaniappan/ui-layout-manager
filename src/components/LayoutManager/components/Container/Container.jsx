@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { PlaceHolder } from "../PlaceHolder/PlaceHolder";
+import { Column } from "../Column/Column";
+import { Row } from "../Row/Row";
 
 import "./Container.scss"
 
@@ -39,12 +41,9 @@ export const Container = ({layout, type}) => {
      * @returns 
      */
     const getRowDiv = (child, index) => {
-        return <div style={{"width": "100%", "height": child.height + "%",position:"relative","display":"flex","flexDirection":"column"}}> 
-            {index > 0 && <div className="handleBarVertical"></div>}
-            <div className="contentVertical">
-                {renderChild(child)}
-            </div>
-        </div>
+        return <Row container={child} renderHandle={index >0}>
+            {renderChild(child)}
+        </Row>
     }
 
 
@@ -55,12 +54,9 @@ export const Container = ({layout, type}) => {
      * @returns 
      */
     const getColDiv = (child, index) => {
-        return <div style={{"height": "100%", "width": child.width + "%","float":"left","display":"flex","flexDirection":"row"}}> 
-            {index > 0 && <div className="handleBarHorizontal"></div>}
-            <div className="contentHorizontal">
-                {renderChild(child)}
-            </div>
-        </div>
+        return <Column container={child} renderHandle={index >0}>
+            {renderChild(child)}
+        </Column>
     }
 
     /**
