@@ -28,7 +28,6 @@ export const PlaceHolder = ({panel}) => {
         "left": "0px",
         "right": "0px",
         "bottom": "0px",
-        "backgroundColor": "#1e1e1e",
         "display": "flex",
         "justifyContent": "center",
         "alignItems": "center",
