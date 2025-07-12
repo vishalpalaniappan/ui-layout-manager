@@ -1,0 +1,88 @@
+import React, { useEffect, useState, useRef } from "react";
+import PropTypes from 'prop-types';
+import { ColumnContainer } from "./ColumnContainer";
+import { getPlaceHolder } from "./getPlaceHolder";
+import { RowContainer } from "./RowContainer";
+
+import "./styles.scss"
+
+/**
+ * Renders the Container.
+ * 
+ * @param {Array} childContainers
+ * @param {String} type
+ * @return {JSX}
+ */
+export const Container = ({childContainers, type}) => {
+
+    const [childDivs, setchildDivs] = useState();
+
+    /**
+     * This function renders children of each container
+     * if they exist. If there are no children, this function
+     * returns a placeholder. In the future, the provided
+     * component will be loaded instead.
+     * @param {Object} child 
+     * @returns 
+     */
+    const renderChild = (child) => {
+        console.log(child);
+        if ("children" in child) {
+            return <Container type={child.childType} childContainers={child.children}/>;
+        } else {
+            return getPlaceHolder();
+        }
+    }
+
+
+    const getRowDiv = (child, index) => {
+        return <div key={index} info={child} style={{"width": "100%", "height": child.height + "%"}}>
+            {renderChild(child)}
+        </div>
+    }
+
+
+    const getColDiv = (child, index) => {
+        return <div key={index} info={child} style={{"height": "100%", "width": child.width + "%","float":"left"}}>
+            {renderChild(child)}
+        </div>
+    }
+
+    /**
+     * Given an array of children, this function renders
+     * the divs and loads the children to be rendered.
+     * @param {Array} children 
+     */
+    const processChildren = (children) => {
+
+        const _childDivs = [];
+
+        children.forEach((child,index) => {
+            if (type === "row") {
+                _childDivs.push(getRowDiv(child, index));
+            } else if (type === "column") {
+                _childDivs.push(getColDiv(child, index));
+            }
+        });
+
+        setchildDivs(_childDivs);
+    }
+
+    useEffect(() => {
+        if (childContainers) {
+            console.log(childContainers, type);
+            processChildren(childContainers);
+        }
+    }, [childContainers]);
+
+
+    return (
+        <>
+            {childDivs}
+        </>
+    );
+}
+
+RowContainer.propTypes = {
+    childContainers: PropTypes.array,
+}
