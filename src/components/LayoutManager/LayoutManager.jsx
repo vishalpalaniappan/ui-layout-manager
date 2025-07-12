@@ -14,7 +14,7 @@ export const LayoutManager = ({ldf}) => {
     const [rootContainer, setRootContainer] = useState(<></>);  
     
     const processLayout = (layout) => {
-        setRootContainer(<Container type={layout.childType} childContainers={layout.children}/>);
+        setRootContainer(<Container layout={layout} type={layout.childType}/>);
     }
 
     useEffect(() => {

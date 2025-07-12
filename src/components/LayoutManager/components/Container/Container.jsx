@@ -8,11 +8,11 @@ let panelCount = 0;
 /**
  * Renders the Container.
  * 
- * @param {Array} childContainers
- * @param {String} type
+ * @param {Object} layout The layout of this container including its children
+ * @param {String} type The type of children this container holds (row or column)
  * @return {JSX}
  */
-export const Container = ({childContainers, type}) => {
+export const Container = ({layout, type}) => {
 
     const [childDivs, setchildDivs] = useState();
 
@@ -26,12 +26,18 @@ export const Container = ({childContainers, type}) => {
      */
     const renderChild = (child) => {
         if ("children" in child) {
-            return <Container type={child.childType} childContainers={child.children}/>;
+            return <Container layout={child} type={child.childType}/>;
         } else {
             return <PlaceHolder panelCount={++panelCount} panel={{}} />
         }
     }
 
+    /**
+     * 
+     * @param {Object} child A JSON object which contains layout information about the child.
+     * @param {Number} index 
+     * @returns 
+     */
     const getRowDiv = (child, index) => {
         return <div style={{"width": "100%", "height": child.height + "%",position:"relative","display":"flex","flexDirection":"column"}}> 
             {index > 0 && <div className="handleBarVertical"></div>}
@@ -42,6 +48,12 @@ export const Container = ({childContainers, type}) => {
     }
 
 
+    /**
+     * 
+     * @param {Object} child A JSON object which contains layout information about the child.
+     * @param {Number} index
+     * @returns 
+     */
     const getColDiv = (child, index) => {
         return <div style={{"height": "100%", "width": child.width + "%","float":"left","display":"flex","flexDirection":"row"}}> 
             {index > 0 && <div className="handleBarHorizontal"></div>}
@@ -52,8 +64,10 @@ export const Container = ({childContainers, type}) => {
     }
 
     /**
-     * Given an array of children, this function renders
-     * the divs and loads the children to be rendered.
+     * Given an array of children, this function processes 
+     * each child and renders it. If any of the children
+     * have a child, then a new container is created
+     * and it is nested into the parent container.
      * @param {Array} children 
      */
     const processChildren = (children) => {
@@ -72,10 +86,14 @@ export const Container = ({childContainers, type}) => {
     }
 
     useEffect(() => {
-        if (childContainers) {
-            processChildren(childContainers);
+        if (layout) {
+            // Reset panel count for the placeholder.
+            if (layout.type === "root") {
+                panelCount = 0;
+            }
+            processChildren(layout.children);
         }
-    }, [childContainers]);
+    }, [layout]);
 
 
     return (
@@ -86,6 +104,6 @@ export const Container = ({childContainers, type}) => {
 }
 
 Container.propTypes = {
-    childContainers: PropTypes.array,
+    layout: PropTypes.object,
     type: PropTypes.string,
 }
