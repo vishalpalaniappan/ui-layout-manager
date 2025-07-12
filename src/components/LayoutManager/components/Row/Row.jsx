@@ -11,9 +11,26 @@ import "./Row.scss";
  * @returns 
  */
 export const Row = ({children, container, renderHandle}) => {
+
+    const [rowStyle, setRowStyle] = useState({});
+
+    useEffect(() => {
+        if (container) {
+            setRowStyle({
+                "width": "100%",
+                "height": container.height + "%",
+                "position":"relative",
+                "display":"flex",
+                "flexDirection":"column"
+            })
+        }
+    }, [container])
+
     return (
-        <div style={{"width": "100%", "height": container.height + "%",position:"relative","display":"flex","flexDirection":"column"}}> 
-            {renderHandle && <div className="handleBarVertical"></div>}
+        <div style={rowStyle}> 
+            {renderHandle && 
+                <div className="handleBarVertical"></div>
+            }
             <div className="contentVertical">
                 {children}
             </div>

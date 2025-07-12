@@ -11,8 +11,23 @@ import "./Column.scss";
  * @returns 
  */
 export const Column = ({children, container, renderHandle}) => {
+
+    const [columnStyle, setColumnStyle] = useState({});
+
+    useEffect(() => {
+        if (container) {
+            setColumnStyle({
+                "height": "100%",
+                "width": container.width + "%",
+                "float":"left",
+                "display":"flex",
+                "flexDirection":"row"
+            })
+        }
+    }, [container])
+
     return (
-        <div style={{"height": "100%", "width": container.width + "%","float":"left","display":"flex","flexDirection":"row"}}> 
+        <div style={columnStyle}> 
             {renderHandle && <div className="handleBarHorizontal"></div>}
             <div className="contentHorizontal">
                 {children}
