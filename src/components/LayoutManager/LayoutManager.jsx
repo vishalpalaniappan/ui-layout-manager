@@ -7,19 +7,15 @@ import "./LayoutManager.scss";
 /**
  * Renders the layout.
  * 
- * @param {Object} ldf 
+ * @param {Object} ldf JSON object containing the Layout Definition File (LDF)
  * @return {JSX}
  */
 export const LayoutManager = ({ldf}) => {
     const [rootContainer, setRootContainer] = useState(<></>);  
-    
-    const processLayout = (layout) => {
-        setRootContainer(<Container layout={layout}/>);
-    }
 
     useEffect(() => {
         if (ldf) {
-            processLayout(ldf.layout);
+            setRootContainer(<Container layout={screenLeft.layout}/>);
         }
     }, [ldf]);
 

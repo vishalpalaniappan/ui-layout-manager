@@ -7,12 +7,12 @@ import "./Column.scss";
 
 /**
  * Renders a column.
- * @param {Object} children
- * @param {Object} container 
- * @param {Boolean} renderHandle 
+ * 
+ * @param {Object} container JSON object containing information about the container and its children.
+ * @param {Boolean} renderHandle Flag to indicate if a handle should be rendered.
  * @returns 
  */
-export const Column = ({children, container, renderHandle}) => {
+export const Column = ({container, renderHandle}) => {
 
     const [columnStyle, setColumnStyle] = useState({});
     const [childDivs, setChildDivs] = useState(<></>)
@@ -33,6 +33,8 @@ export const Column = ({children, container, renderHandle}) => {
 
     useEffect(() => {
         if (container) {
+            // Once a container is loaded, set the style of the 
+            // column and load the child divs.
             setColumnStyle({
                 "height": "100%",
                 "width": container.width + "%",
@@ -55,7 +57,6 @@ export const Column = ({children, container, renderHandle}) => {
 }
 
 Column.propTypes = {
-    children: PropTypes.object,
     container: PropTypes.object,
     renderHandle: PropTypes.bool
 }

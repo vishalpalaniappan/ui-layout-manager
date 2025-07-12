@@ -8,7 +8,7 @@ import "./Container.scss"
 /**
  * Renders each of the children for the current container.
  * 
- * @param {Object} layout The layout of this container including its children
+ * @param {Object} layout The layout of this container including its children.
  * @return {JSX}
  */
 export const Container = ({layout}) => {
@@ -17,7 +17,7 @@ export const Container = ({layout}) => {
 
     /**
      * Given an layout, this function processes each child at this level
-     * and renders it.
+     * and renders it to the screen.
      * @param {Array} layout 
      */
     const processLayout = (layout) => {

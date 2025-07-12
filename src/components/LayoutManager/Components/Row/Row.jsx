@@ -7,12 +7,12 @@ import "./Row.scss";
 
 /**
  * Renders a row.
- * @param {Object} children
- * @param {Object} container 
- * @param {Boolean} renderHandle 
+ * 
+ * @param {Object} container JSON object containing information about the container and its children.
+ * @param {Boolean} renderHandle Flag to indicate if a handle should be rendered.
  * @returns 
  */
-export const Row = ({children, container, renderHandle}) => {
+export const Row = ({container, renderHandle}) => {
 
     const [rowStyle, setRowStyle] = useState({});
     const [childDivs, setChildDivs] = useState(<></>)
@@ -33,6 +33,8 @@ export const Row = ({children, container, renderHandle}) => {
 
     useEffect(() => {
         if (container) {
+            // Once a container is loaded, set the style of the 
+            // row and load the child divs.
             setRowStyle({
                 "width": "100%",
                 "height": container.height + "%",
