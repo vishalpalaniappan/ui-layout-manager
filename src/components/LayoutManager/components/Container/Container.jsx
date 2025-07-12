@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
-import { getPlaceHolder } from "./getPlaceHolder";
+import { PlaceHolder } from "../PlaceHolder/PlaceHolder";
 
-import "./styles.scss"
+import "./Container.scss"
 
 let panelCount = 0;
 /**
@@ -25,14 +25,12 @@ export const Container = ({childContainers, type}) => {
      * @returns 
      */
     const renderChild = (child) => {
-        console.log(child);
         if ("children" in child) {
             return <Container type={child.childType} childContainers={child.children}/>;
         } else {
-            return getPlaceHolder({},++panelCount);
+            return <PlaceHolder panelCount={++panelCount} panel={{}} />
         }
     }
-
 
     const getRowDiv = (child, index) => {
         return <div style={{"width": "100%", "height": child.height + "%",position:"relative","display":"flex","flexDirection":"column"}}> 
@@ -75,7 +73,6 @@ export const Container = ({childContainers, type}) => {
 
     useEffect(() => {
         if (childContainers) {
-            console.log(childContainers, type);
             processChildren(childContainers);
         }
     }, [childContainers]);

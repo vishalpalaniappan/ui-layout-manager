@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import "./LayoutManager.scss";
 import PropTypes from 'prop-types';
-import { RowContainer } from "./components/RowContainer";
-import { ColumnContainer } from "./components/ColumnContainer";
-import { Container } from "./components/Container";
+import { Container } from "./components/Container/Container";
 
+import "./LayoutManager.scss";
 
 /**
  * Renders the layout.
