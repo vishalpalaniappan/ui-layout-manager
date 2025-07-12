@@ -30,20 +30,14 @@ export const Container = ({layout, type}) => {
         const _childDivs = [];
 
         children.forEach((child,index) => {
+            const showHandle = index > 0;
+
             if (type === "row") {
-                _childDivs.push(
-                    <Row container={child} renderHandle={index > 0}>
-                        {renderChild(child)}
-                    </Row>
-                )
+                _childDivs.push(<Row container={child} renderHandle={showHandle}/>)
             } 
             
             if (type === "column") {
-                _childDivs.push(
-                    <Column container={child} renderHandle={index > 0}>
-                        {renderChild(child)}
-                    </Column>
-                );
+                _childDivs.push(<Column container={child} renderHandle={showHandle}/>);
             }
         });
 
