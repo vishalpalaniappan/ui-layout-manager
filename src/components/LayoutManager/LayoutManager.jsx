@@ -15,7 +15,7 @@ export const LayoutManager = ({ldf}) => {
 
     useEffect(() => {
         if (ldf) {
-            setRootContainer(<Container layout={screenLeft.layout}/>);
+            setRootContainer(<Container layout={ldf.layout}/>);
         }
     }, [ldf]);
 
