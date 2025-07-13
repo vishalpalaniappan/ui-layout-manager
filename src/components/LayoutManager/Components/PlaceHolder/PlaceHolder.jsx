@@ -9,7 +9,6 @@ import "./PlaceHolder.scss"
  * with the component specified in the LDF file.
  * 
  * @param {Object} panel
- * @param {Number} panelCount
  * @return {JSX}
  */
 export const PlaceHolder = ({panel}) => {
