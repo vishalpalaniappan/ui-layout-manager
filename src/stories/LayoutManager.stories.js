@@ -12,7 +12,7 @@ export default {
     title: 'LayoutManager', 
     component: LayoutManager,
     argTypes: {
-        layout: {
+        ldf: {
             type: 'object'
         }
     }
@@ -31,29 +31,29 @@ const Template = (args) => {
 export const rowColLayout = Template.bind({})
 
 rowColLayout.args = {
-    layout: rowColLayoutJSON
+    ldf: rowColLayoutJSON
 }
 
 export const colRowLayout = Template.bind({})
 
 colRowLayout.args = {
-    layout: colRowLayoutJSON
+    ldf: colRowLayoutJSON
 }
 
 export const mixedLayout = Template.bind({})
 
 mixedLayout.args = {
-    layout: mixedLayoutJSON
+    ldf: mixedLayoutJSON
 }
 
 export const denseLayout = Template.bind({})
 
 denseLayout.args = {
-    layout: denseLayoutJSON
+    ldf: denseLayoutJSON
 }
 
 export const VSCodeLayout = Template.bind({})
 
 VSCodeLayout.args = {
-    layout: vsCodeLayoutJSON
+    ldf: vsCodeLayoutJSON
 }

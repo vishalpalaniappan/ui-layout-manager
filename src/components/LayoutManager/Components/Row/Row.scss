@@ -1,0 +1,17 @@
+
+.handleBarHorizontal {
+  height:100%;
+  width: 3px;
+    background-color: #414141;
+}
+
+.handleBarHorizontal:hover {
+    background-color: #007acc;
+    cursor: ew-resize;
+}
+
+
+.contentHorizontal {
+  flex: 1;
+  width: 100%;
+}

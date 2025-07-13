@@ -1,31 +1,31 @@
 import { useEffect, useState } from "react";
-import "./LayoutManager.scss";
 import PropTypes from 'prop-types';
-import {generateContainers} from "./utils/generateContainersFromJSON";
+import { Container } from "./Components/Container/Container";
 
+import "./LayoutManager.scss";
 
 /**
- * Renders the layout.
+ * Renders the layout specified in the LDF file.
  * 
- * @param {Object} layout 
+ * @param {Object} ldf JSON object containing the Layout Definition File (LDF)
  * @return {JSX}
  */
-export const LayoutManager = ({layout}) => {
-    const [containers, setContainers] = useState(<></>);  
+export const LayoutManager = ({ldf}) => {
+    const [rootContainer, setRootContainer] = useState(null);  
 
     useEffect(() => {
-        if (layout) {
-            setContainers(generateContainers(layout));
+        if (ldf) {
+            setRootContainer(<Container layout={ldf.layout}/>);
         }
-    }, [layout]);
+    }, [ldf]);
 
     return (
         <div className="background">
-            {containers}
+            {rootContainer}
         </div>
     );
 }
 
 LayoutManager.propTypes = {
-    layout: PropTypes.object,
+    ldf: PropTypes.object,
 }
