@@ -11,9 +11,10 @@ import "./Row.scss";
  * specified in the LDF file.
  * 
  * @param {Object} container JSON object containing information about the container and its children.
+ * @param {Boolean} renderHandle Flag to indicate if a handle should be rendered.
  * @returns 
  */
-export const Row = ({container}) => {
+export const Row = ({container, renderHandle}) => {
 
     const [rowStyle, setRowStyle] = useState({});
     const [childDivs, setChildDivs] = useState(null)
@@ -49,6 +50,9 @@ export const Row = ({container}) => {
 
     return (
         <div style={rowStyle}> 
+            {renderHandle && 
+                <div className="handleBarVertical"></div>
+            }
             <div className="contentVertical">
                 {childDivs}
             </div>
@@ -57,5 +61,6 @@ export const Row = ({container}) => {
 }
 
 Row.propTypes = {
-    container: PropTypes.object
+    container: PropTypes.object,
+    renderHandle: PropTypes.bool
 }
