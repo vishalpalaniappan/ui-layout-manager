@@ -78,6 +78,17 @@ export const Row = ({container, renderHandle}) => {
      * is where it is rendered. So to get to Cont2, you would get the parent
      * of the handle and the parents previous sibling would be Cont1. To get the 
      * full container width, you would get the parent elements parent element.
+     * 
+     * In the coming updates, a callback function will be used to ask the parent
+     * to approve the new values. For example, it can decide to collapse one of the
+     * containers into a side menu. It can set the min and max values. With this
+     * structure, we are able to centralize the logic for how each container
+     * manages its children.
+     * 
+     * When a parent container is resized, all the children will get resized at
+     * the same time. So all the child elements in the DOM tree should execute their
+     * logic to react to the new values.
+     * 
      * @param {Event} e 
      */
     const handleMouseDown = (e) => {
