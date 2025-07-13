@@ -35,10 +35,7 @@ To test the library locally by importing it into another react application, use 
 - run `npm link ui-layout-manager` in the local application which will import the library 
 - You should now be able to import the component into the local application
 - run `npm run build` in the component library to push the changes to the local application
-
-Note:
-- I've run into some cases where I need to run `npm link` again to push the changes but this shouldn't be necessary. I will resolve this issue soon.
-
+  
 ## Background
 
 As I began scoping out the observability platform from the ground up, it quickly became clear that the UI tools would become increasingly complex. The current approach of hardcoding UI layouts is not practical for managing more complex applications. This realization underscored the need for a layout manager, which motivated the development of this React component.
