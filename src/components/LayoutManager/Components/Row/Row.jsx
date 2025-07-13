@@ -59,8 +59,8 @@ export const Row = ({container, renderHandle}) => {
      * during the drag event to calculate and assign the new values. 
      * 
      * 
-     * I'm using a vertical handle bar example because its easier to draw but 
-     * it works the same way for horizontal handle bars.
+     * I'm using a horizontal handle bar example because its easier to draw but 
+     * it works the same way for vertical handle bars.
      * 
      * [              container               ]
      * [ Cont 1 ][<handle>Cont2][<handle>Cont3]
