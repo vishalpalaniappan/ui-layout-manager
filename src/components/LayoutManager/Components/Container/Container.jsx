@@ -23,6 +23,8 @@ export const Container = ({layout}) => {
      */
     const processLayout = (layout) => {
 
+        // TODO: Add logic to render fixed size containers (width or height)
+
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
