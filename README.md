@@ -1,7 +1,7 @@
 # ui-layout-manager
 A react component to manage layouts and themes in single page applications.
 
-Link to [storybook](https://vishalpalaniappan.github.io/ui-layout-manager/?path=/story/layoutmanager--row-col-layout).
+Link to [storybook](https://vishalpalaniappan.github.io/ui-layout-manager/).
 
 ## Developing
 Install Libraries:
