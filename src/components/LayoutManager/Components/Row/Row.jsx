@@ -53,6 +53,10 @@ export const Row = ({container, renderHandle}) => {
     }, [container])
 
 
+    /* TODO: The row and column containers have a lot of shared logic, 
+    I should probably optimize that.*/
+
+
     /**
      * This function is called on a mouse down event. It saves relevant
      * information to the dragStartInfo ref so that it can be accsessed
@@ -72,8 +76,8 @@ export const Row = ({container, renderHandle}) => {
      * 
      * In the image, I drew the handle inside Cont2 and Cont3 because that
      * is where it is rendered. So to get to Cont2, you would get the parent
-     * of the handle and the parents previous sibling. To get the full container
-     * width, you would get the parent elements parent element.
+     * of the handle and the parents previous sibling would be Cont1. To get the 
+     * full container width, you would get the parent elements parent element.
      * @param {Event} e 
      */
     const handleMouseDown = (e) => {

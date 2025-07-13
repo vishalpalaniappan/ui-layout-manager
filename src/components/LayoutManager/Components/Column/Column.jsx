@@ -39,8 +39,8 @@ export const Column = ({container, renderHandle}) => {
 
     useEffect(() => {
         if (container) {
-            // Once a container is loaded, set the style of the 
-            // column and load the child divs.
+            // Once column is loaded, set the style and
+            // load the child divs.
             setColumnStyle({
                 "height": "100%",
                 "width": container.width + "%",
@@ -85,8 +85,8 @@ export const Column = ({container, renderHandle}) => {
     /**
      * This function is called when the mouse is being dragged and 
      * it uses the delta from the starting down point to calculate
-     * the new heights. If it is within the bounds, it sets the new
-     * height. It sets the height as a percentage so the relative 
+     * the new widths. If it is within the bounds, it sets the new
+     * widths. It sets the width as a percentage so the relative 
      * sizes are respected if a parent up the hierarchy is moved.
      * @param {Event} e 
      * @returns 
@@ -103,7 +103,7 @@ export const Column = ({container, renderHandle}) => {
         const newPreWidth = startInfo.cont1Width - delta;
         const newPostWidth = startInfo.cont2Width + delta;
 
-        // If within bounds, assign new height as a percentage of the container's full height
+        // If within bounds, assign new width as a percentage of the container's full width
         if (newPreWidth > MIN_CONTAINER_WIDTH && newPostWidth > MIN_CONTAINER_WIDTH) {
             startInfo.cont1.style.width = (newPreWidth/startInfo.contWidth)*100 + "%";
             startInfo.cont2.style.width = (newPostWidth/startInfo.contWidth)*100 + "%";
