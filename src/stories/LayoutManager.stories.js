@@ -9,7 +9,7 @@ import denseLayoutJSON from "./data/denseLayout.json"
 import vsCodeLayoutJSON from "./data/vsCodeLayout.json"
 
 export default {
-    title: 'LayoutManager', 
+    title: 'Layout With Resizing', 
     component: LayoutManager,
     argTypes: {
         ldf: {

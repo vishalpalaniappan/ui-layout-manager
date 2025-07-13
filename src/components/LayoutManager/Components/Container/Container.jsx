@@ -26,13 +26,16 @@ export const Container = ({layout}) => {
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
+            // If index > 0, then we include the handle bar to allow
+            // the siblings to be resized.
+            const showHandle = index > 0;
 
             if (layout.childType === "row") {
-                _childDivs.push(<Row key={index} container={child}/>)
+                _childDivs.push(<Row key={index} container={child} renderHandle={showHandle}/>)
             } 
             
             if (layout.childType === "column") {
-                _childDivs.push(<Column key={index} container={child}/>);
+                _childDivs.push(<Column key={index} container={child} renderHandle={showHandle}/>);
             }
         });
 
