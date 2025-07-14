@@ -76,11 +76,11 @@ export const Column = ({container, renderHandle}) => {
 
         dragStartInfo.current = {
             "downValueX": e.clientX,
-            "child1": parent.parentElement,
-            "child2": parent.parentElement.previousElementSibling,
-            "contWidth": parent.parentElement.parentElement.getBoundingClientRect().width,
-            "child1Width": parent.parentElement.getBoundingClientRect().width,
-            "child2Width": parent.parentElement.previousElementSibling.getBoundingClientRect().width
+            "sibling1": parent.parentElement,
+            "sibling2": parent.parentElement.previousElementSibling,
+            "parentWidth": parent.parentElement.parentElement.getBoundingClientRect().width,
+            "sibling1Width": parent.parentElement.getBoundingClientRect().width,
+            "sibling2Width": parent.parentElement.previousElementSibling.getBoundingClientRect().width
         }
     }
 
@@ -102,13 +102,13 @@ export const Column = ({container, renderHandle}) => {
 
         // Use delta from starting down point to calculate new widths
         const delta = e.clientX - startInfo.downValueX;
-        const newPreWidth = startInfo.child1Width - delta;
-        const newPostWidth = startInfo.child2Width + delta;
+        const newPreWidth = startInfo.sibling1Width - delta;
+        const newPostWidth = startInfo.sibling2Width + delta;
 
         // If within bounds, assign new width as a percentage of the container's full width
         if (newPreWidth > MIN_CONTAINER_WIDTH && newPostWidth > MIN_CONTAINER_WIDTH) {
-            startInfo.child1.style.width = (newPreWidth/startInfo.contWidth)*100 + "%";
-            startInfo.child2.style.width = (newPostWidth/startInfo.contWidth)*100 + "%";
+            startInfo.sibling1.style.width = (newPreWidth/startInfo.parentWidth)*100 + "%";
+            startInfo.sibling2.style.width = (newPostWidth/startInfo.parentWidth)*100 + "%";
         }
     }
 

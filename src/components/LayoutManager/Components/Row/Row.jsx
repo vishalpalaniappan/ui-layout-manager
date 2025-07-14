@@ -66,17 +66,17 @@ export const Row = ({container, renderHandle}) => {
      * I'm using a horizontal handle bar example because its easier to draw but 
      * it works the same way for vertical handle bars.
      * 
-     * [              container               ]
-     * [ Cont 1 ][<handle>Cont2][<handle>Cont3]
+     * [              parentContainer                 ]
+     * [ Sibling1 ][<handle>Sibling2][<handle>Sibling3]
      * 
      * In the image above, the container row is the full width and when
-     * a handle is selected for Cont1 and Cont2 for example, the handle 
+     * a handle is selected for Sibling1 and Sibling2 for example, the handle 
      * (which is the target div of the event that fired) is used to find
-     * Cont1 and Cont2 using the DOM tree. 
+     * Sibling1 and Sibling2 using the DOM tree. 
      * 
-     * In the image, I drew the handle inside Cont2 and Cont3 because that
-     * is where it is rendered. So to get to Cont2, you would get the parent
-     * of the handle and the parents previous sibling would be Cont1. To get the 
+     * In the image, I drew the handle inside Sibling2 and Sibling3 because that
+     * is where it is rendered. So to get to Sibling2, you would get the parent
+     * of the handle and the parents previous sibling would be Sibling1. To get the 
      * full container width, you would get the parent elements parent element.
      * 
      * In the coming updates, a callback function will be used to ask the parent
@@ -101,11 +101,11 @@ export const Row = ({container, renderHandle}) => {
 
         dragStartInfo.current = {
             "downValueY": e.clientY,
-            "cont1": parent.parentElement,
-            "cont2": parent.parentElement.previousElementSibling,
-            "contHeight": parent.parentElement.parentElement.getBoundingClientRect().height,
-            "cont1Height": parent.parentElement.getBoundingClientRect().height,
-            "cont2Height": parent.parentElement.previousElementSibling.getBoundingClientRect().height
+            "sibling1": parent.parentElement,
+            "sibling2": parent.parentElement.previousElementSibling,
+            "parentHeight": parent.parentElement.parentElement.getBoundingClientRect().height,
+            "sibling1Height": parent.parentElement.getBoundingClientRect().height,
+            "sibling2Height": parent.parentElement.previousElementSibling.getBoundingClientRect().height
         }
     }
 
@@ -127,13 +127,13 @@ export const Row = ({container, renderHandle}) => {
 
         // Use delta from starting down point to calculate new heights
         const delta = e.clientY - startInfo.downValueY;
-        const newPreHeight = startInfo.cont1Height - delta;
-        const newPostHeight = startInfo.cont2Height + delta;
+        const newPreHeight = startInfo.sibling1Height - delta;
+        const newPostHeight = startInfo.sibling2Height + delta;
 
         // If within bounds, assign new height as a percentage of the container's full height
         if (newPreHeight > MIN_CONTAINER_HEIGHT && newPostHeight > MIN_CONTAINER_HEIGHT) {
-            startInfo.cont1.style.height = (newPreHeight/startInfo.contHeight)*100 + "%";
-            startInfo.cont2.style.height = (newPostHeight/startInfo.contHeight)*100 + "%";
+            startInfo.sibling1.style.height = (newPreHeight/startInfo.parentHeight)*100 + "%";
+            startInfo.sibling2.style.height = (newPostHeight/startInfo.parentHeight)*100 + "%";
         }
     }
 
