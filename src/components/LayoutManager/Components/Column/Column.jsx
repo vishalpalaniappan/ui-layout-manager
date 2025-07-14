@@ -42,9 +42,9 @@ export const Column = ({container, renderHandle}) => {
             // Once column is loaded, set the style and
             // load the child divs.
             setColumnStyle({
+                "position": "relative",
                 "height": "100%",
-                "width": container.width + "%",
-                "float":"left",
+                "width": "100%",
                 "display":"flex",
                 "flexDirection":"row"
             })
@@ -72,13 +72,15 @@ export const Column = ({container, renderHandle}) => {
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
 
+        const parent = e.target.parentElement;
+
         dragStartInfo.current = {
             "downValueX": e.clientX,
-            "cont1": e.target.parentElement,
-            "cont2": e.target.parentElement.previousElementSibling,
-            "contWidth": e.target.parentElement.parentElement.getBoundingClientRect().width,
-            "cont1Width": e.target.parentElement.getBoundingClientRect().width,
-            "cont2Width": e.target.parentElement.previousElementSibling.getBoundingClientRect().width
+            "child1": parent.parentElement,
+            "child2": parent.parentElement.previousElementSibling,
+            "contWidth": parent.parentElement.parentElement.getBoundingClientRect().width,
+            "child1Width": parent.parentElement.getBoundingClientRect().width,
+            "child2Width": parent.parentElement.previousElementSibling.getBoundingClientRect().width
         }
     }
 
@@ -100,13 +102,13 @@ export const Column = ({container, renderHandle}) => {
 
         // Use delta from starting down point to calculate new widths
         const delta = e.clientX - startInfo.downValueX;
-        const newPreWidth = startInfo.cont1Width - delta;
-        const newPostWidth = startInfo.cont2Width + delta;
+        const newPreWidth = startInfo.child1Width - delta;
+        const newPostWidth = startInfo.child2Width + delta;
 
         // If within bounds, assign new width as a percentage of the container's full width
         if (newPreWidth > MIN_CONTAINER_WIDTH && newPostWidth > MIN_CONTAINER_WIDTH) {
-            startInfo.cont1.style.width = (newPreWidth/startInfo.contWidth)*100 + "%";
-            startInfo.cont2.style.width = (newPostWidth/startInfo.contWidth)*100 + "%";
+            startInfo.child1.style.width = (newPreWidth/startInfo.contWidth)*100 + "%";
+            startInfo.child2.style.width = (newPostWidth/startInfo.contWidth)*100 + "%";
         }
     }
 

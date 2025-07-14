@@ -15,38 +15,73 @@ export const Container = ({layout}) => {
 
     const [childDivs, setchildDivs] = useState();
 
-    /**
-     * Given an layout, this function processes each child at this level
-     * and renders it to the screen. Each child will process its own children
-     * and this process repeats until the layout is fully rendered.
-     * @param {Array} layout 
-     */
-    const processLayout = (layout) => {
-
-        // TODO: Add logic to render fixed size containers (width or height)
-
+   
+    const processColumn = (layout) => {
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
-            // If index > 0, then we include the handle bar to allow
-            // the siblings to be resized.
-            const showHandle = index > 0;
 
-            if (layout.childType === "row") {
-                _childDivs.push(<Row key={index} container={child} renderHandle={showHandle}/>)
-            } 
-            
-            if (layout.childType === "column") {
-                _childDivs.push(<Column key={index} container={child} renderHandle={showHandle}/>);
+            let childDiv;
+            if (child.type === "column") {
+                childDiv = <div style={{"height": "100%","width": child.width + "%"}}>
+                    <Column key={index} container={child} renderHandle={index > 0}/>
+                </div>
+            } else if (child.type === "fixed") {
+                childDiv = <div style={{"height": "100%","width": child.width,"float":"left"}}>
+                    <Column key={index} container={child} renderHandle={false}/>
+                </div>
+            } else if (child.type === "fill") {
+                childDiv = <div style={{"height": "100%","flexGrow":1}}>
+                    <Column key={index} container={child} renderHandle={false}/>
+                </div>
             }
+
+            _childDivs.push(childDiv);
         });
 
-        setchildDivs(_childDivs);
+        setchildDivs(
+            <div className="relative-container-column">
+                {_childDivs}
+            </div>
+        );
+    }
+
+
+    const processRow = (layout) => {
+        const _childDivs = [];
+
+        layout.children.forEach((child,index) => {
+            let childDiv;
+            if (child.type === "row") {
+                childDiv = <div style={{"width": "100%","height": child.height + "%"}}>
+                    <Row key={index} container={child} renderHandle={index > 0}/>
+                </div>
+            } else if (child.type === "fixed") {
+                childDiv = <div style={{"width": "100%","height": child.width,"float":"left"}}>
+                    <Row key={index} container={child} renderHandle={false}/>
+                </div>
+            } else if (child.type === "fill") {
+                childDiv = <div style={{"width": "100%","flexGrow":1}}>
+                    <Row key={index} container={child} renderHandle={false}/>
+                </div>
+            }
+            _childDivs.push(childDiv);
+        });
+
+        setchildDivs(
+            <div className="relative-container-row">
+                {_childDivs}
+            </div>
+        );
     }
 
     useEffect(() => {
         if (layout) {
-            processLayout(layout);
+            if (layout.childType === "row") {
+                processRow(layout);
+            } else if (layout.childType === "column") {
+                processColumn(layout);
+            }
         }
     }, [layout]);
 

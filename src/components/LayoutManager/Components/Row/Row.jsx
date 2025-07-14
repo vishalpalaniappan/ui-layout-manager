@@ -43,7 +43,7 @@ export const Row = ({container, renderHandle}) => {
             // load the child divs.
             setRowStyle({
                 "width": "100%",
-                "height": container.height + "%",
+                "height": "100%",
                 "position":"relative",
                 "display":"flex",
                 "flexDirection":"column"
@@ -97,13 +97,15 @@ export const Row = ({container, renderHandle}) => {
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
 
+        const parent = e.target.parentElement;
+
         dragStartInfo.current = {
             "downValueY": e.clientY,
-            "cont1": e.target.parentElement,
-            "cont2": e.target.parentElement.previousElementSibling,
-            "contHeight": e.target.parentElement.parentElement.getBoundingClientRect().height,
-            "cont1Height": e.target.parentElement.getBoundingClientRect().height,
-            "cont2Height": e.target.parentElement.previousElementSibling.getBoundingClientRect().height
+            "cont1": parent.parentElement,
+            "cont2": parent.parentElement.previousElementSibling,
+            "contHeight": parent.parentElement.parentElement.getBoundingClientRect().height,
+            "cont1Height": parent.parentElement.getBoundingClientRect().height,
+            "cont2Height": parent.parentElement.previousElementSibling.getBoundingClientRect().height
         }
     }
 
