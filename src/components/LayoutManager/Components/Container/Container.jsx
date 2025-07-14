@@ -23,15 +23,15 @@ export const Container = ({layout}) => {
 
             let childDiv;
             if (child.type === "column") {
-                childDiv = <div style={{"height": "100%","width": child.width + "%"}}>
-                    <Column key={index} container={child} renderHandle={index > 0}/>
+                childDiv = <div key={index} style={{"height": "100%","width": child.width + "%"}}>
+                    <Column container={child} renderHandle={index > 0}/>
                 </div>
             } else if (child.type === "fixed") {
-                childDiv = <div style={{"height": "100%","width": child.width,"float":"left"}}>
+                childDiv = <div key={index} style={{"height": "100%","width": child.width,"float":"left"}}>
                     <Column key={index} container={child} renderHandle={false}/>
                 </div>
             } else if (child.type === "fill") {
-                childDiv = <div style={{"height": "100%","flexGrow":1}}>
+                childDiv = <div key={index} style={{"height": "100%","flexGrow":1}}>
                     <Column key={index} container={child} renderHandle={false}/>
                 </div>
             }

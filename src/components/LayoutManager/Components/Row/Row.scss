@@ -1,17 +1,23 @@
+.rowContainer {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
 .handleBarHorizontal {
-  height:100%;
-  width: 3px;
+    width:100%;
+    height: 3px;
     background-color: #414141;
 }
 
 .handleBarHorizontal:hover {
     background-color: #007acc;
-    cursor: ew-resize;
+    cursor: ns-resize;
 }
 
-
 .contentHorizontal {
-  flex: 1;
-  width: 100%;
+    flex: 1;
+    height: 100%;
 }

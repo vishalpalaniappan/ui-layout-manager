@@ -3,20 +3,21 @@
     "layout": {
         "id": 0,
         "type": "root",
-        "childType": "row",
+        "childType": "column",
         "children": [
             {
                 "id": 1,
-                "type": "fixed",
+                "type": "column",
                 "width": 30
             },
             {
                 "id": 5,
-                "type": "fill"
+                "type": "column",
+                "width": 40
             },
             {
                 "id": 1,
-                "type": "fixed",
+                "type": "column",
                 "width": 30
             }
         ]

@@ -18,37 +18,19 @@ export const Column = ({container, renderHandle}) => {
 
     const MIN_CONTAINER_WIDTH = 50;
 
-    const [columnStyle, setColumnStyle] = useState({});
     const [childDivs, setChildDivs] = useState(null);
     
     const dragStartInfo = useRef();
-    
-    /**
-     * This function loads the children into a container if they
-     * exist and if there are no children, it renders a placeholder.
-     * @param {Object} child 
-     * @returns 
-     */
-    const renderChildren = (child) => {
-        if ("children" in child) {
-            return <Container layout={child}/>;
-        } else {
-            return <PlaceHolder panel={child} />
-        }
-    }
 
     useEffect(() => {
-        if (container) {
-            // Once column is loaded, set the style and
-            // load the child divs.
-            setColumnStyle({
-                "position": "relative",
-                "height": "100%",
-                "width": "100%",
-                "display":"flex",
-                "flexDirection":"row"
-            })
-            setChildDivs(renderChildren(container));
+        if (container) {      
+            if ("children" in container) {
+                console.log("SETTING CONTAINER");
+                setChildDivs(<Container layout={container}/>);
+            } else {
+                console.log("SETTING PLACEHOLDER");
+                setChildDivs(<PlaceHolder panel={container} />);
+            }
         }
     }, [container]);
 
@@ -124,9 +106,9 @@ export const Column = ({container, renderHandle}) => {
     }
 
     return (
-        <div style={columnStyle}> 
-            {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarHorizontal"></div>}
-            <div className="contentHorizontal">
+        <div className="columnContainer"> 
+            {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarVertical"></div>}
+            <div className="contentVertical">
                 {childDivs}
             </div>
         </div>

@@ -18,39 +18,19 @@ export const Row = ({container, renderHandle}) => {
 
     const MIN_CONTAINER_HEIGHT = 50;
 
-    const [rowStyle, setRowStyle] = useState({});
     const [childDivs, setChildDivs] = useState(null)
 
     const dragStartInfo = useRef()
     
-    /**
-     * This function loads the children into a container if they
-     * exist and if there are no children, it renders a placeholder.
-     * @param {Object} child 
-     * @returns 
-     */
-    const renderChildren = (child) => {
-        if ("children" in child) {
-            return <Container layout={child}/>;
-        } else {
-            return <PlaceHolder panel={child} />
-        }
-    }
-
     useEffect(() => {
-        if (container) {
-            // Once row is loaded, set the style and
-            // load the child divs.
-            setRowStyle({
-                "width": "100%",
-                "height": "100%",
-                "position":"relative",
-                "display":"flex",
-                "flexDirection":"column"
-            })
-            setChildDivs(renderChildren(container));
+        if (container) {    
+            if ("children" in container) {
+                setChildDivs(<Container layout={container}/>);
+            } else {
+                setChildDivs(<PlaceHolder panel={container}/>);
+            }
         }
-    }, [container])
+    }, [container]);
 
 
     /* TODO: The row and column containers have a lot of shared logic, 
@@ -149,9 +129,9 @@ export const Row = ({container, renderHandle}) => {
     }
 
     return (
-        <div style={rowStyle}> 
-            {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarVertical"></div>}
-            <div className="contentVertical">
+        <div className="rowContainer"> 
+            {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarHorizontal"></div>}
+            <div className="contentHorizontal">
                 {childDivs}
             </div>
         </div>
