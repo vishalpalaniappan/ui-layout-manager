@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { useArgs } from "@storybook/preview-api";
 import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
-import mixedLayoutJSON from "./data/mixedLayout.json"
-import denseLayoutJSON from "./data/denseLayout.json"
 import vsCodeLayoutJSON from "./data/vsCodeLayout.json"
 
 export default {
@@ -29,16 +27,4 @@ export const VSCodeLayout = Template.bind({})
 
 VSCodeLayout.args = {
     ldf: vsCodeLayoutJSON
-}
-
-export const mixedLayout = Template.bind({})
-
-mixedLayout.args = {
-    ldf: mixedLayoutJSON
-}
-
-export const denseLayout = Template.bind({})
-
-denseLayout.args = {
-    ldf: denseLayoutJSON
 }
