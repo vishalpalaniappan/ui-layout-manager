@@ -1,39 +1,68 @@
 {
-    "title": "VSCode Layout",
+    "title": "Row Column Layout",
     "layout": {
         "id": 0,
         "type": "root",
-        "childType":"row",
+        "childType": "row",
         "children": [
             {
                 "id": 1,
-                "type": "row",
-                "height": 75,
-                "childType":"column",
+                "type": "fixed",
+                "background": "#3c3c3c",
+                "height": "40px"
+            },
+            {
+                "id": 2,
+                "type": "fill",
+                "childType": "column",
                 "children": [
                     {
+                        "id": 4,
+                        "type": "fixed",
+                        "background": "#333333",
+                        "width": "65px"
+                    },
+                    {
                         "id": 5,
-                        "type": "column",
-                        "width": 20
-                    },
-                    {
-                        "id": 6,
-                        "type": "column",
-                        "width": 40
-                    },
-                    {
-                        "id": 7,
-                        "type": "column",
-                        "width": 40
+                        "type": "fill",
+                        "childType": "row",
+                        "children": [
+                            {
+                                "id": 6,
+                                "type": "row",
+                                "height": 75,
+                                "childType": "column",
+                                "children": [
+                                    {
+                                        "id": 6,
+                                        "background": "#252526",
+                                        "type": "column",
+                                        "width": 20
+                                    },
+                                    {
+                                        "id": 7,
+                                        "background": "#1e1e1e",
+                                        "type": "column",
+                                        "width": 80
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 8,
+                                "background":"#1e1e1e",
+                                "type": "row",
+                                "height": 25
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "id": 2,
-                "type": "row",
-                "height": 25
+                "id": 3,
+                "type": "fixed",
+                "background": "#007acc",
+                "height": "25px"
             }
         ]
-       
     }
 }

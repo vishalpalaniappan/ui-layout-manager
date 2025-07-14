@@ -16,7 +16,7 @@ export const PlaceHolder = ({panel}) => {
     const outerDiv =  {
         "width": "100%",
         "height": "100%",
-        "backgroundColor": "#1e1e1e",
+        // "backgroundColor": "#1e1e1e",
         "position": "relative",
         "fontFamily":"Roboto"
     }
@@ -30,7 +30,8 @@ export const PlaceHolder = ({panel}) => {
         "display": "flex",
         "justifyContent": "center",
         "alignItems": "center",
-        "color":"#BBB"
+        "color":"white",
+        "fontSize": "12px",
     }
     return (
         <div style={outerDiv}>

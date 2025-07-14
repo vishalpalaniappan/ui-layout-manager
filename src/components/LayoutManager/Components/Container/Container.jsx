@@ -14,29 +14,35 @@ import "./Container.scss"
 export const Container = ({layout}) => {
 
     const [childDivs, setchildDivs] = useState();
-
    
     const processColumn = (layout) => {
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
 
-            let childDiv;
+            let style, renderHandle;
             if (child.type === "column") {
-                childDiv = <div key={index} style={{"height": "100%","width": child.width + "%"}}>
-                    <Column container={child} renderHandle={index > 0}/>
-                </div>
+                style = {"height": "100%","width": child.width + "%"};
+                renderHandle = index > 0;
             } else if (child.type === "fixed") {
-                childDiv = <div key={index} style={{"height": "100%","width": child.width,"float":"left"}}>
-                    <Column key={index} container={child} renderHandle={false}/>
-                </div>
+                style = {"height": "100%","width": child.width};
+                renderHandle = false;
             } else if (child.type === "fill") {
-                childDiv = <div key={index} style={{"height": "100%","flexGrow":1}}>
-                    <Column key={index} container={child} renderHandle={false}/>
-                </div>
+                style = {"height": "100%","flexGrow":1};
+                renderHandle = false;
             }
 
-            _childDivs.push(childDiv);
+            if ("background" in child) {
+                style["background"] = child.background;
+            }
+
+            console.log(style);
+
+            _childDivs.push(
+                <div key={index} style={style}>
+                    <Column key={index} container={child} renderHandle={renderHandle}/>
+                </div>
+            );
         });
 
         setchildDivs(
@@ -51,21 +57,27 @@ export const Container = ({layout}) => {
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
-            let childDiv;
+            let style, renderHandle;
             if (child.type === "row") {
-                childDiv = <div style={{"width": "100%","height": child.height + "%"}}>
-                    <Row key={index} container={child} renderHandle={index > 0}/>
-                </div>
+                style = {"width": "100%","height": child.height + "%"};
+                renderHandle = index > 0;
             } else if (child.type === "fixed") {
-                childDiv = <div style={{"width": "100%","height": child.width,"float":"left"}}>
-                    <Row key={index} container={child} renderHandle={false}/>
-                </div>
+                style = {"width": "100%","height": child.height};
+                renderHandle = false;
             } else if (child.type === "fill") {
-                childDiv = <div style={{"width": "100%","flexGrow":1}}>
-                    <Row key={index} container={child} renderHandle={false}/>
-                </div>
+                style = {"width": "100%","flexGrow":1};
+                renderHandle = false;
             }
-            _childDivs.push(childDiv);
+
+            if ("background" in child) {
+                style["background"] = child.background;
+            }
+
+            _childDivs.push(
+                <div key={index} style={style}>
+                    <Row key={index} container={child} renderHandle={renderHandle}/>
+                </div>
+            );
         });
 
         setchildDivs(
