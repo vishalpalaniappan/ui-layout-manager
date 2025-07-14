@@ -9,7 +9,7 @@
                 "id": 1,
                 "type": "fixed",
                 "background": "#3c3c3c",
-                "height": "40px"
+                "height": "30px"
             },
             {
                 "id": 2,
@@ -29,28 +29,48 @@
                         "children": [
                             {
                                 "id": 6,
-                                "type": "row",
+                                "type": "percent",
+                                "description": "Variables",
                                 "height": 75,
                                 "childType": "column",
                                 "children": [
                                     {
                                         "id": 6,
                                         "background": "#252526",
-                                        "type": "column",
-                                        "width": 20
-                                    },
+                                        "type": "percent",
+                                        "width": 20,
+                                            "childType": "row",
+                                            "children": [
+                                                {
+                                                    "id": 6,
+                                                    "description": "Settings",
+                                                    "background": "#252526",
+                                                    "type": "percent",
+                                                    "height": 70
+                                                },
+                                                {
+                                                    "id": 7,
+                                                    "description": "Settings2",
+                                                    "background": "#252526",
+                                                    "type": "percent",
+                                                    "height": 30
+                                                }
+                                            ]
+                                        },
                                     {
                                         "id": 7,
+                                        "description": "Editor",
                                         "background": "#1e1e1e",
-                                        "type": "column",
+                                        "type": "percent",
                                         "width": 80
                                     }
                                 ]
                             },
                             {
                                 "id": 8,
+                                "description": "Terminal",
                                 "background":"#1e1e1e",
-                                "type": "row",
+                                "type": "percent",
                                 "height": 25
                             }
                         ]

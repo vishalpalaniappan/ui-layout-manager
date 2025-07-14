@@ -15,13 +15,37 @@ export const Container = ({layout}) => {
 
     const [childDivs, setchildDivs] = useState();
    
+    /**
+     * This function loops through the children, sets the style and 
+     * adds the child component to the list to be rendered. 
+     * 
+     * It sets the style based on the child type:
+     * - "percent": apply relative layout
+     * - "fixed": set fixed width of child
+     * - "fill": fills the rest of the container
+     * 
+     * Fixed can only be used with fill. You can have one
+     * fixed column before and one after the fill. 
+     * 
+     * Ex:
+     * [percent][percent][percent]
+     * [fixed][fill][fixed]
+     * [fixed][fill]
+     * [fill][fixed]
+     * 
+     * There will be support for initial width for column
+     * coming soon. In a relative column structure, I will 
+     * 
+     * 
+     * @param {Object} layout 
+     */
     const processColumn = (layout) => {
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
 
             let style, renderHandle;
-            if (child.type === "column") {
+            if (child.type === "percent") {
                 style = {"height": "100%","width": child.width + "%"};
                 renderHandle = index > 0;
             } else if (child.type === "fixed") {
@@ -35,8 +59,6 @@ export const Container = ({layout}) => {
             if ("background" in child) {
                 style["background"] = child.background;
             }
-
-            console.log(style);
 
             _childDivs.push(
                 <div key={index} style={style}>
@@ -52,13 +74,17 @@ export const Container = ({layout}) => {
         );
     }
 
-
+    /**
+     * Please see processColumn for information on this function. I will merge
+     * the two soon because they share a lot of common logic.
+     * @param {*} layout 
+     */
     const processRow = (layout) => {
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
             let style, renderHandle;
-            if (child.type === "row") {
+            if (child.type === "percent") {
                 style = {"width": "100%","height": child.height + "%"};
                 renderHandle = index > 0;
             } else if (child.type === "fixed") {
