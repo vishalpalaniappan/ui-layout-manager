@@ -40,21 +40,21 @@
                                                     "description": "Settings",
                                                     "background": "#252526",
                                                     "type": "percent",
-                                                    "height": 30
+                                                    "height": 20
                                                 },
                                                 {
                                                     "id": 6,
                                                     "description": "Filter",
                                                     "background": "#252526",
                                                     "type": "percent",
-                                                    "height": 30
+                                                    "height": 20
                                                 },
                                                 {
                                                     "id": 7,
                                                     "description": "Traces",
                                                     "background": "#252526",
                                                     "type": "percent",
-                                                    "height": 70
+                                                    "height": 60
                                                 }
                                             ]
                                     },
@@ -77,7 +77,7 @@
                                                 "description": "Variable1",
                                                 "background": "#252526",
                                                 "type": "percent",
-                                                "height": 70
+                                                "height": 30
                                             },
                                             {
                                                 "id": 11,
@@ -90,14 +90,14 @@
                                                 "description": "Variable3",
                                                 "background": "#252526",
                                                 "type": "percent",
-                                                "height": 70
+                                                "height": 20
                                             },
                                             {
                                                 "id": 11,
                                                 "description": "Variable4",
                                                 "background": "#252526",
                                                 "type": "percent",
-                                                "height": 30
+                                                "height": 20
                                             }
                                         ]
                                     }
