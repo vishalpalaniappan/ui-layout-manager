@@ -20,8 +20,8 @@ export const Container = ({layout}) => {
      * adds the child component to the list to be rendered. 
      * 
      * It sets the style based on the child type:
-     * - "percent": apply relative layout
-     * - "fixed": set fixed width of child
+     * - "percent": apply relative layout in percentage
+     * - "fixed": set fixed width of child in pixels
      * - "fill": fills the rest of the container
      * 
      * Fixed can only be used with fill. You can have one
