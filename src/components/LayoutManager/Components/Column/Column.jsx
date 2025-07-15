@@ -58,11 +58,11 @@ export const Column = ({container, renderHandle}) => {
 
         dragStartInfo.current = {
             "downValueX": e.clientX,
-            "sibling1": parent.parentElement,
-            "sibling2": parent.parentElement.previousElementSibling,
+            "sibling1": parent.parentElement.previousElementSibling,
+            "sibling2": parent.parentElement,
             "parentWidth": parent.parentElement.parentElement.getBoundingClientRect().width,
-            "sibling1Width": parent.parentElement.getBoundingClientRect().width,
-            "sibling2Width": parent.parentElement.previousElementSibling.getBoundingClientRect().width
+            "sibling1Width": parent.parentElement.previousElementSibling.getBoundingClientRect().width,
+            "sibling2Width": parent.parentElement.getBoundingClientRect().width
         }
     }
 
@@ -84,8 +84,8 @@ export const Column = ({container, renderHandle}) => {
 
         // Use delta from starting down point to calculate new widths
         const delta = e.clientX - startInfo.downValueX;
-        const newPreWidth = startInfo.sibling1Width - delta;
-        const newPostWidth = startInfo.sibling2Width + delta;
+        const newPreWidth = startInfo.sibling1Width + delta;
+        const newPostWidth = startInfo.sibling2Width - delta;
 
         // If within bounds, assign new width as a percentage of the container's full width
         if (newPreWidth > MIN_CONTAINER_WIDTH && newPostWidth > MIN_CONTAINER_WIDTH) {

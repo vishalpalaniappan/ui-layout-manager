@@ -81,11 +81,11 @@ export const Row = ({container, renderHandle}) => {
 
         dragStartInfo.current = {
             "downValueY": e.clientY,
-            "sibling1": parent.parentElement,
-            "sibling2": parent.parentElement.previousElementSibling,
+            "sibling1": parent.parentElement.previousElementSibling,
+            "sibling2": parent.parentElement,
             "parentHeight": parent.parentElement.parentElement.getBoundingClientRect().height,
-            "sibling1Height": parent.parentElement.getBoundingClientRect().height,
-            "sibling2Height": parent.parentElement.previousElementSibling.getBoundingClientRect().height
+            "sibling1Height": parent.parentElement.previousElementSibling.getBoundingClientRect().height,
+            "sibling2Height": parent.parentElement.getBoundingClientRect().height
         }
     }
 
@@ -107,13 +107,13 @@ export const Row = ({container, renderHandle}) => {
 
         // Use delta from starting down point to calculate new heights
         const delta = e.clientY - startInfo.downValueY;
-        const newPreHeight = startInfo.sibling1Height - delta;
-        const newPostHeight = startInfo.sibling2Height + delta;
+        const newSibling1Height = startInfo.sibling1Height + delta;
+        const newSibling2Height = startInfo.sibling2Height - delta;
 
         // If within bounds, assign new height as a percentage of the container's full height
-        if (newPreHeight > MIN_CONTAINER_HEIGHT && newPostHeight > MIN_CONTAINER_HEIGHT) {
-            startInfo.sibling1.style.height = (newPreHeight/startInfo.parentHeight)*100 + "%";
-            startInfo.sibling2.style.height = (newPostHeight/startInfo.parentHeight)*100 + "%";
+        if (newSibling1Height > MIN_CONTAINER_HEIGHT && newSibling2Height > MIN_CONTAINER_HEIGHT) {
+            startInfo.sibling1.style.height = (newSibling1Height/startInfo.parentHeight)*100 + "%";
+            startInfo.sibling2.style.height = (newSibling2Height/startInfo.parentHeight)*100 + "%";
         }
     }
 
