@@ -17,18 +17,18 @@
                 "childType": "column",
                 "children": [
                     {
-                        "id": 4,
+                        "id": 3,
                         "type": "fixed",
                         "background": "#333333",
                         "width": "65px"
                     },
                     {
-                        "id": 5,
+                        "id": 4,
                         "type": "fill",
                         "childType": "row",
                         "children": [
                             {
-                                "id": 6,
+                                "id": 5,
                                 "type": "percent",
                                 "description": "Variables",
                                 "height": 75,
@@ -42,14 +42,14 @@
                                             "childType": "row",
                                             "children": [
                                                 {
-                                                    "id": 6,
+                                                    "id": 7,
                                                     "description": "Variables",
                                                     "background": "#252526",
                                                     "type": "percent",
                                                     "height": 70
                                                 },
                                                 {
-                                                    "id": 7,
+                                                    "id": 8,
                                                     "description": "Stack",
                                                     "background": "#252526",
                                                     "type": "percent",
@@ -72,13 +72,13 @@
                                                 "childType": "column",
                                                 "children": [
                                                     {
-                                                        "id":12,
+                                                        "id":11,
                                                         "description":"Editor 1",
                                                         "type":"percent",
                                                         "width":50
                                                     },
                                                     {
-                                                        "id":13,
+                                                        "id":12,
                                                         "description":"Editor 2",
                                                         "type":"percent",
                                                         "width":50
@@ -86,7 +86,7 @@
                                                 ]
                                             },
                                             {
-                                                "id": 11,
+                                                "id": 13,
                                                 "description": "Editor2",
                                                 "type":"percent",
                                                 "height": 50,
@@ -111,7 +111,7 @@
                                 ]
                             },
                             {
-                                "id": 8,
+                                "id": 16,
                                 "description": "Variable Tree",
                                 "background":"#1e1e1e",
                                 "type": "percent",
@@ -122,7 +122,7 @@
                 ]
             },
             {
-                "id": 3,
+                "id": 17,
                 "type": "fixed",
                 "background": "#007acc",
                 "height": "25px"
