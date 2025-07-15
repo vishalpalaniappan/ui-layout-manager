@@ -39,24 +39,24 @@
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
-                                            "childType": "row",
-                                            "children": [
-                                                {
-                                                    "id": 6,
-                                                    "description": "Variables",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 70
-                                                },
-                                                {
-                                                    "id": 7,
-                                                    "description": "Stack",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 30
-                                                }
-                                            ]
-                                        },
+                                        "childType": "row",
+                                        "children": [
+                                            {
+                                                "id": 6,
+                                                "description": "Variables",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 70
+                                            },
+                                            {
+                                                "id": 7,
+                                                "description": "Stack",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 30
+                                            }
+                                        ]
+                                    },
                                     {
                                         "id": 9,
                                         "background": "#1e1e1e",
@@ -67,13 +67,13 @@
                                             {
                                                 "id": 10,
                                                 "description": "Editor1",
-                                                "type":"percent",
+                                                "type": "percent",
                                                 "width": 50
                                             },
                                             {
                                                 "id": 11,
                                                 "description": "Editor2",
-                                                "type":"percent",
+                                                "type": "percent",
                                                 "width": 50
                                             }
                                         ]
@@ -83,7 +83,7 @@
                             {
                                 "id": 8,
                                 "description": "Variable Tree",
-                                "background":"#1e1e1e",
+                                "background": "#1e1e1e",
                                 "type": "percent",
                                 "height": 25
                             }
