@@ -25,10 +25,9 @@ export const Column = ({container, renderHandle}) => {
     useEffect(() => {
         if (container) {      
             if ("children" in container) {
-                console.log("SETTING CONTAINER");
                 setChildDivs(<Container layout={container}/>);
             } else {
-                console.log("SETTING PLACEHOLDER");
+                //TODO: Add feature to lazy load component
                 setChildDivs(<PlaceHolder panel={container} />);
             }
         }

@@ -27,6 +27,7 @@ export const Row = ({container, renderHandle}) => {
             if ("children" in container) {
                 setChildDivs(<Container layout={container}/>);
             } else {
+                //TODO: Add feature to lazy load component
                 setChildDivs(<PlaceHolder panel={container}/>);
             }
         }
