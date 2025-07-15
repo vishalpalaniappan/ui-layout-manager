@@ -14,37 +14,112 @@ import "./Container.scss"
 export const Container = ({layout}) => {
 
     const [childDivs, setchildDivs] = useState();
-
+   
     /**
-     * Given an layout, this function processes each child at this level
-     * and renders it to the screen. Each child will process its own children
-     * and this process repeats until the layout is fully rendered.
-     * @param {Array} layout 
+     * This function loops through the children, sets the style and 
+     * adds the child component to the list to be rendered. 
+     * 
+     * It sets the style based on the child type:
+     * - "percent": apply relative layout in percentage
+     * - "fixed": set fixed width of child in pixels
+     * - "fill": fills the rest of the container
+     * 
+     * Fixed can only be used with fill. You can have one
+     * fixed column before and one after the fill. 
+     * 
+     * Ex:
+     * [percent][percent][percent]
+     * [fixed][fill][fixed]
+     * [fixed][fill]
+     * [fill][fixed]
+     * 
+     * There will be support for initial width for column
+     * coming soon. In a relative column structure, I will 
+     * 
+     * 
+     * @param {Object} layout 
      */
-    const processLayout = (layout) => {
-
+    const processColumn = (layout) => {
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
-            // If index > 0, then we include the handle bar to allow
-            // the siblings to be resized.
-            const showHandle = index > 0;
 
-            if (layout.childType === "row") {
-                _childDivs.push(<Row key={index} container={child} renderHandle={showHandle}/>)
-            } 
-            
-            if (layout.childType === "column") {
-                _childDivs.push(<Column key={index} container={child} renderHandle={showHandle}/>);
+            let style, renderHandle;
+            if (child.type === "percent") {
+                style = {"height": "100%","width": child.width + "%"};
+                renderHandle = index > 0;
+            } else if (child.type === "fixed") {
+                style = {"height": "100%","width": child.width};
+                renderHandle = false;
+            } else if (child.type === "fill") {
+                style = {"height": "100%","flexGrow":1};
+                renderHandle = false;
             }
+
+            if ("background" in child) {
+                style["background"] = child.background;
+            }
+
+            _childDivs.push(
+                <div key={index} style={style}>
+                    <Column key={index} container={child} renderHandle={renderHandle}/>
+                </div>
+            );
         });
 
-        setchildDivs(_childDivs);
+        setchildDivs(
+            <div className="relative-container-column">
+                {_childDivs}
+            </div>
+        );
+    }
+
+    /**
+     * Please see processColumn for information on this function. I will merge
+     * the two soon because they share a lot of common logic.
+     * @param {*} layout 
+     */
+    const processRow = (layout) => {
+        const _childDivs = [];
+
+        layout.children.forEach((child,index) => {
+            let style, renderHandle;
+            if (child.type === "percent") {
+                style = {"width": "100%","height": child.height + "%"};
+                renderHandle = index > 0;
+            } else if (child.type === "fixed") {
+                style = {"width": "100%","height": child.height};
+                renderHandle = false;
+            } else if (child.type === "fill") {
+                style = {"width": "100%","flexGrow":1};
+                renderHandle = false;
+            }
+
+            if ("background" in child) {
+                style["background"] = child.background;
+            }
+
+            _childDivs.push(
+                <div key={index} style={style}>
+                    <Row key={index} container={child} renderHandle={renderHandle}/>
+                </div>
+            );
+        });
+
+        setchildDivs(
+            <div className="relative-container-row">
+                {_childDivs}
+            </div>
+        );
     }
 
     useEffect(() => {
         if (layout) {
-            processLayout(layout);
+            if (layout.childType === "row") {
+                processRow(layout);
+            } else if (layout.childType === "column") {
+                processColumn(layout);
+            }
         }
     }, [layout]);
 

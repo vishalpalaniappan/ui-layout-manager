@@ -18,37 +18,19 @@ export const Column = ({container, renderHandle}) => {
 
     const MIN_CONTAINER_WIDTH = 50;
 
-    const [columnStyle, setColumnStyle] = useState({});
     const [childDivs, setChildDivs] = useState(null);
     
     const dragStartInfo = useRef();
-    
-    /**
-     * This function loads the children into a container if they
-     * exist and if there are no children, it renders a placeholder.
-     * @param {Object} child 
-     * @returns 
-     */
-    const renderChildren = (child) => {
-        if ("children" in child) {
-            return <Container layout={child}/>;
-        } else {
-            return <PlaceHolder panel={child} />
-        }
-    }
 
     useEffect(() => {
-        if (container) {
-            // Once column is loaded, set the style and
-            // load the child divs.
-            setColumnStyle({
-                "height": "100%",
-                "width": container.width + "%",
-                "float":"left",
-                "display":"flex",
-                "flexDirection":"row"
-            })
-            setChildDivs(renderChildren(container));
+        if (container) {      
+            if ("children" in container) {
+                console.log("SETTING CONTAINER");
+                setChildDivs(<Container layout={container}/>);
+            } else {
+                console.log("SETTING PLACEHOLDER");
+                setChildDivs(<PlaceHolder panel={container} />);
+            }
         }
     }, [container]);
 
@@ -72,13 +54,15 @@ export const Column = ({container, renderHandle}) => {
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
 
+        const parent = e.target.parentElement;
+
         dragStartInfo.current = {
             "downValueX": e.clientX,
-            "cont1": e.target.parentElement,
-            "cont2": e.target.parentElement.previousElementSibling,
-            "contWidth": e.target.parentElement.parentElement.getBoundingClientRect().width,
-            "cont1Width": e.target.parentElement.getBoundingClientRect().width,
-            "cont2Width": e.target.parentElement.previousElementSibling.getBoundingClientRect().width
+            "sibling1": parent.parentElement.previousElementSibling,
+            "sibling2": parent.parentElement,
+            "parentWidth": parent.parentElement.parentElement.getBoundingClientRect().width,
+            "sibling1Width": parent.parentElement.previousElementSibling.getBoundingClientRect().width,
+            "sibling2Width": parent.parentElement.getBoundingClientRect().width
         }
     }
 
@@ -100,13 +84,13 @@ export const Column = ({container, renderHandle}) => {
 
         // Use delta from starting down point to calculate new widths
         const delta = e.clientX - startInfo.downValueX;
-        const newPreWidth = startInfo.cont1Width - delta;
-        const newPostWidth = startInfo.cont2Width + delta;
+        const newPreWidth = startInfo.sibling1Width + delta;
+        const newPostWidth = startInfo.sibling2Width - delta;
 
         // If within bounds, assign new width as a percentage of the container's full width
         if (newPreWidth > MIN_CONTAINER_WIDTH && newPostWidth > MIN_CONTAINER_WIDTH) {
-            startInfo.cont1.style.width = (newPreWidth/startInfo.contWidth)*100 + "%";
-            startInfo.cont2.style.width = (newPostWidth/startInfo.contWidth)*100 + "%";
+            startInfo.sibling1.style.width = (newPreWidth/startInfo.parentWidth)*100 + "%";
+            startInfo.sibling2.style.width = (newPostWidth/startInfo.parentWidth)*100 + "%";
         }
     }
 
@@ -122,9 +106,9 @@ export const Column = ({container, renderHandle}) => {
     }
 
     return (
-        <div style={columnStyle}> 
-            {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarHorizontal"></div>}
-            <div className="contentHorizontal">
+        <div className="columnContainer"> 
+            {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarVertical"></div>}
+            <div className="contentVertical">
                 {childDivs}
             </div>
         </div>

@@ -16,7 +16,6 @@ export const PlaceHolder = ({panel}) => {
     const outerDiv =  {
         "width": "100%",
         "height": "100%",
-        "backgroundColor": "#1e1e1e",
         "position": "relative",
         "fontFamily":"Roboto"
     }
@@ -30,12 +29,14 @@ export const PlaceHolder = ({panel}) => {
         "display": "flex",
         "justifyContent": "center",
         "alignItems": "center",
-        "color":"#BBB"
+        "color":"grey",
+        "fontSize": "12px",
+        "fontFamily":"Arial, Helvetica, sans-serif"
     }
     return (
         <div style={outerDiv}>
             <div className="hoverDiv" style={innerDiv}>
-                {panel.id}
+                {panel.description}
             </div>
         </div>
     );

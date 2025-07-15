@@ -1,0 +1,102 @@
+{
+    "title": "Two Editors",
+    "layout": {
+        "id": 0,
+        "type": "root",
+        "childType": "row",
+        "children": [
+            {
+                "id": 1,
+                "type": "fixed",
+                "background": "#3c3c3c",
+                "height": "30px"
+            },
+            {
+                "id": 2,
+                "type": "fill",
+                "childType": "column",
+                "children": [
+                    {
+                        "id": 3,
+                        "type": "fixed",
+                        "background": "#333333",
+                        "width": "65px"
+                    },
+                    {
+                        "id": 4,
+                        "type": "fill",
+                        "childType": "row",
+                        "children": [
+                            {
+                                "id": 5,
+                                "type": "percent",
+                                "description": "Variables",
+                                "height": 75,
+                                "childType": "column",
+                                "children": [
+                                    {
+                                        "id": 6,
+                                        "background": "#252526",
+                                        "type": "percent",
+                                        "width": 20,
+                                        "childType": "row",
+                                        "children": [
+                                            {
+                                                "id": 7,
+                                                "description": "Variables",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 70
+                                            },
+                                            {
+                                                "id": 8,
+                                                "description": "Stack",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 30
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "id": 9,
+                                        "background": "#1e1e1e",
+                                        "type": "percent",
+                                        "width": 80,
+                                        "childType": "column",
+                                        "children": [
+                                            {
+                                                "id": 10,
+                                                "description": "Editor1",
+                                                "type": "percent",
+                                                "width": 50
+                                            },
+                                            {
+                                                "id": 11,
+                                                "description": "Editor2",
+                                                "type": "percent",
+                                                "width": 50
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 12,
+                                "description": "Variable Tree",
+                                "background": "#1e1e1e",
+                                "type": "percent",
+                                "height": 25
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 13,
+                "type": "fixed",
+                "background": "#007acc",
+                "height": "25px"
+            }
+        ]
+    }
+}

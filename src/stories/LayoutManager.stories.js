@@ -2,14 +2,15 @@ import { useEffect } from "react";
 import { useArgs } from "@storybook/preview-api";
 import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
-import colRowLayoutJSON from "./data/colRowLayout.json"
-import rowColLayoutJSON from "./data/rowColLayout.json"
-import mixedLayoutJSON from "./data/mixedLayout.json"
-import denseLayoutJSON from "./data/denseLayout.json"
-import vsCodeLayoutJSON from "./data/vsCodeLayout.json"
+import defaultLayoutJSON from "./data/vsCode/default.json"
+import twoEditorsJSON from "./data/vsCode/twoEditors.json"
+import fourEditorsJSON from "./data/vsCode/fourEditors.json"
+import variableTreeJSON from "./data/vsCode/VariableTree.json"
+import variableTree2JSON from "./data/vsCode/VariableTreev2.json"
+import aspJSON from "./data/vsCode/asp.json"
 
 export default {
-    title: 'Layout With Resizing', 
+    title: 'Editors', 
     component: LayoutManager,
     argTypes: {
         ldf: {
@@ -27,33 +28,43 @@ const Template = (args) => {
     )
 }
 
+export const defaultLayout = Template.bind({})
 
-export const rowColLayout = Template.bind({})
-
-rowColLayout.args = {
-    ldf: rowColLayoutJSON
+defaultLayout.args = {
+    ldf: defaultLayoutJSON
 }
 
-export const colRowLayout = Template.bind({})
 
-colRowLayout.args = {
-    ldf: colRowLayoutJSON
+export const twoEditors = Template.bind({})
+
+twoEditors.args = {
+    ldf: twoEditorsJSON
 }
 
-export const mixedLayout = Template.bind({})
 
-mixedLayout.args = {
-    ldf: mixedLayoutJSON
+export const fourEditors = Template.bind({})
+
+fourEditors.args = {
+    ldf: fourEditorsJSON
 }
 
-export const denseLayout = Template.bind({})
+export const variableTree = Template.bind({})
 
-denseLayout.args = {
-    ldf: denseLayoutJSON
+variableTree.args = {
+    ldf: variableTreeJSON
 }
 
-export const VSCodeLayout = Template.bind({})
 
-VSCodeLayout.args = {
-    ldf: vsCodeLayoutJSON
+export const variableTree2 = Template.bind({})
+
+variableTree2.args = {
+    ldf: variableTree2JSON
 }
+
+export const asp = Template.bind({})
+
+asp.args = {
+    ldf: aspJSON
+}
+
+
