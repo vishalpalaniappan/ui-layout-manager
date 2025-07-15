@@ -2,10 +2,15 @@ import { useEffect } from "react";
 import { useArgs } from "@storybook/preview-api";
 import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
-import vsCodeLayoutJSON from "./data/vsCodeLayout.json"
+import defaultLayoutJSON from "./data/vsCode/default.json"
+import twoEditorsJSON from "./data/vsCode/twoEditors.json"
+import fourEditorsJSON from "./data/vsCode/fourEditors.json"
+import variableTreeJSON from "./data/vsCode/VariableTree.json"
+import variableTree2JSON from "./data/vsCode/VariableTreev2.json"
+import aspJSON from "./data/vsCode/asp.json"
 
 export default {
-    title: 'Layout With Resizing', 
+    title: 'Editors', 
     component: LayoutManager,
     argTypes: {
         ldf: {
@@ -23,8 +28,43 @@ const Template = (args) => {
     )
 }
 
-export const VSCodeLayout = Template.bind({})
+export const defaultLayout = Template.bind({})
 
-VSCodeLayout.args = {
-    ldf: vsCodeLayoutJSON
+defaultLayout.args = {
+    ldf: defaultLayoutJSON
 }
+
+
+export const twoEditors = Template.bind({})
+
+twoEditors.args = {
+    ldf: twoEditorsJSON
+}
+
+
+export const fourEditors = Template.bind({})
+
+fourEditors.args = {
+    ldf: fourEditorsJSON
+}
+
+export const variableTree = Template.bind({})
+
+variableTree.args = {
+    ldf: variableTreeJSON
+}
+
+
+export const variableTree2 = Template.bind({})
+
+variableTree2.args = {
+    ldf: variableTree2JSON
+}
+
+export const asp = Template.bind({})
+
+asp.args = {
+    ldf: aspJSON
+}
+
+

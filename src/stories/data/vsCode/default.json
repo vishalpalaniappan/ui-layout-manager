@@ -31,7 +31,7 @@
                                 "id": 6,
                                 "type": "percent",
                                 "description": "Variables",
-                                "height": 75,
+                                "height": 100,
                                 "childType": "column",
                                 "children": [
                                     {
@@ -43,14 +43,14 @@
                                             "children": [
                                                 {
                                                     "id": 6,
-                                                    "description": "Settings",
+                                                    "description": "Variables",
                                                     "background": "#252526",
                                                     "type": "percent",
                                                     "height": 70
                                                 },
                                                 {
                                                     "id": 7,
-                                                    "description": "Settings2",
+                                                    "description": "Stack",
                                                     "background": "#252526",
                                                     "type": "percent",
                                                     "height": 30
@@ -65,13 +65,6 @@
                                         "width": 80
                                     }
                                 ]
-                            },
-                            {
-                                "id": 8,
-                                "description": "Terminal",
-                                "background":"#1e1e1e",
-                                "type": "percent",
-                                "height": 25
                             }
                         ]
                     }
