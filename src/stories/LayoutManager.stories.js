@@ -21,11 +21,14 @@ export default {
 
 const Template = (args) => {
     const [, updateArgs] = useArgs();
-
     
     const registry = {
         EditorVSCode: () =>
             import('./sample_components/editor/EditorVSCode').then((m) => ({
+            default: m.default || m.EditorVSCode,
+        })),
+        Stack: () =>
+            import('./sample_components/stack/Stack').then((m) => ({
             default: m.default || m.EditorVSCode,
         })),
     };
@@ -33,7 +36,6 @@ const Template = (args) => {
     useEffect(() => {
         updateArgs({registry : registry});
     }, []);
-
 
     return (
         <div style={{"position":"absolute", "top": 0, left:0, right:0, bottom:0}}>
@@ -48,13 +50,11 @@ defaultLayout.args = {
     ldf: defaultLayoutJSON
 }
 
-
 export const twoEditors = Template.bind({})
 
 twoEditors.args = {
     ldf: twoEditorsJSON
 }
-
 
 export const fourEditors = Template.bind({})
 

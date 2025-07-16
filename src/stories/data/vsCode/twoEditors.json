@@ -52,6 +52,7 @@
                                                 "id": 8,
                                                 "description": "Stack",
                                                 "background": "#252526",
+                                                "component": "Stack",
                                                 "type": "percent",
                                                 "height": 30
                                             }
