@@ -1,4 +1,6 @@
+import { lazy, useEffect, useState,useMemo, useRef, Suspense, useContext } from "react";
 import PropTypes from 'prop-types';
+import RegistryContext from "../../Providers/ComponentRegistryContext";
 
 import "./PlaceHolder.scss"
 
@@ -12,6 +14,13 @@ import "./PlaceHolder.scss"
  * @return {JSX}
  */
 export const PlaceHolder = ({panel}) => {
+    const {registry} = useContext(RegistryContext);
+
+    const LazyComponent = useMemo(() => {
+        if (registry && "component" in panel) {
+            return lazy(registry[panel["component"]]);
+        }
+    }, [registry]);
 
     const outerDiv =  {
         "width": "100%",
@@ -26,18 +35,13 @@ export const PlaceHolder = ({panel}) => {
         "left": "2px",
         "right": "2px",
         "bottom": "2px",
-        "display": "flex",
-        "justifyContent": "center",
-        "alignItems": "center",
-        "color":"grey",
-        "fontSize": "12px",
-        "fontFamily":"Arial, Helvetica, sans-serif"
+        "overflow": "auto"
     }
     return (
-        <div style={outerDiv}>
-            <div className="hoverDiv" style={innerDiv}>
-                {panel.description}
-            </div>
+        <div style={innerDiv}>
+            <Suspense fallback={<div>Loading...</div>}>
+                {LazyComponent && <LazyComponent />}
+            </Suspense>
         </div>
     );
 }
