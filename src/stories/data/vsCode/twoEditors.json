@@ -67,12 +67,14 @@
                                             {
                                                 "id": 10,
                                                 "description": "Editor1",
+                                                "component": "EditorVSCode",
                                                 "type": "percent",
                                                 "width": 50
                                             },
                                             {
                                                 "id": 11,
                                                 "description": "Editor2",
+                                                "component": "EditorVSCode",
                                                 "type": "percent",
                                                 "width": 50
                                             }
