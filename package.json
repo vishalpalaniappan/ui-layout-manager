@@ -59,5 +59,8 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "sample-ui-component-library": "^0.0.0-beta"
   }
 }
