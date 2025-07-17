@@ -28,7 +28,7 @@ export const Column = ({container, renderHandle}) => {
                 setChildDivs(<Container layout={container}/>);
             } else {
                 //TODO: Add feature to lazy load component
-                setChildDivs(<LazyLoader panel={container} />);
+                setChildDivs(<LazyLoader content={container} />);
             }
         }
     }, [container]);
