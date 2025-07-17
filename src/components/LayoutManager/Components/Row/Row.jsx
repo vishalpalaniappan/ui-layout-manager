@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { Container } from "../Container/Container";
-import { PlaceHolder } from "../PlaceHolder/PlaceHolder";
+import { LazyLoader } from "../LazyLoader/LazyLoader";
 
 import "./Row.scss";
 
@@ -28,7 +28,7 @@ export const Row = ({container, renderHandle}) => {
                 setChildDivs(<Container layout={container}/>);
             } else {
                 //TODO: Add feature to lazy load component
-                setChildDivs(<PlaceHolder panel={container}/>);
+                setChildDivs(<LazyLoader panel={container}/>);
             }
         }
     }, [container]);
