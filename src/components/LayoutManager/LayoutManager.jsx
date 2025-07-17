@@ -33,4 +33,5 @@ export const LayoutManager = ({ldf, registry}) => {
 
 LayoutManager.propTypes = {
     ldf: PropTypes.object,
+    registry: PropTypes.object,
 }
