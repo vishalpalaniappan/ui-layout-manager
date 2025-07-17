@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { useArgs } from "@storybook/preview-api";
 import { LayoutManager } from "../components/LayoutManager";
 import defaultLayoutJSON from "./layouts/vsCode/default.json"
@@ -23,7 +23,7 @@ export default {
 const Template = (args) => {
     const [, updateArgs] = useArgs();
     
-    const registry = {
+    const registry = useMemo(() => ({
         EditorVSCode: () =>
             import('./sample_components/editor/EditorVSCode').then((m) => ({
             default: m.default || m.EditorVSCode,
@@ -36,11 +36,11 @@ const Template = (args) => {
             import('./sample_components/flow/Flow').then((m) => ({
             default: m.default || m.Flow,
         })),
-    };
+    }), []);
 
     useEffect(() => {
         updateArgs({registry : registry});
-    }, []);
+    }, [updateArgs, registry]);
 
     return (
         <div className="rootContainer">
