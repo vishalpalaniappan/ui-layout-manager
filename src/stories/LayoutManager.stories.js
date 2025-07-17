@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useArgs } from "@storybook/preview-api";
-import { action } from "@storybook/addon-actions";
 import { LayoutManager } from "../components/LayoutManager";
-import defaultLayoutJSON from "./data/vsCode/default.json"
-import twoEditorsJSON from "./data/vsCode/twoEditors.json"
-import fourEditorsJSON from "./data/vsCode/fourEditors.json"
-import variableTreeJSON from "./data/vsCode/VariableTree.json"
-import variableTree2JSON from "./data/vsCode/VariableTreev2.json"
-import aspJSON from "./data/vsCode/asp.json"
+import defaultLayoutJSON from "./layouts/vsCode/default.json"
+import twoEditorsJSON from "./layouts/vsCode/twoEditors.json"
+import fourEditorsJSON from "./layouts/vsCode/fourEditors.json"
+import variableTreeJSON from "./layouts/vsCode/VariableTree.json"
+import variableTree2JSON from "./layouts/vsCode/VariableTreev2.json"
+import aspJSON from "./layouts/vsCode/asp.json"
 
 import "./LayoutManager.stories.scss";
 
