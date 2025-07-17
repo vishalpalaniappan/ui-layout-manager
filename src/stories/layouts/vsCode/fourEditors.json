@@ -30,8 +30,8 @@
                             {
                                 "id": 5,
                                 "type": "percent",
-                                "description": "Variables",
-                                "height": 75,
+                                "description": "Editors",
+                                "height": 100,
                                 "childType": "column",
                                 "children": [
                                     {
@@ -114,14 +114,6 @@
                                         ]
                                     }
                                 ]
-                            },
-                            {
-                                "id": 16,
-                                "description": "Variable Tree",
-                                "component": "Flow",
-                                "background":"#1e1e1e",
-                                "type": "percent",
-                                "height": 25
                             }
                         ]
                     }
