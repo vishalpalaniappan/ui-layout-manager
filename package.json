@@ -59,8 +59,5 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  },
-  "dependencies": {
-    "asp-react-component-library": "^0.0.9"
   }
 }
