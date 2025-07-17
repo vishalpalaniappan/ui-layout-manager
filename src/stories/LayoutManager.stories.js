@@ -9,6 +9,8 @@ import variableTreeJSON from "./data/vsCode/VariableTree.json"
 import variableTree2JSON from "./data/vsCode/VariableTreev2.json"
 import aspJSON from "./data/vsCode/asp.json"
 
+import "./LayoutManager.stories.scss";
+
 export default {
     title: 'Editors', 
     component: LayoutManager,
@@ -29,7 +31,11 @@ const Template = (args) => {
         })),
         Stack: () =>
             import('./sample_components/stack/Stack').then((m) => ({
-            default: m.default || m.EditorVSCode,
+            default: m.default || m.Stack,
+        })),
+        Flow: () =>
+            import('./sample_components/flow/Flow').then((m) => ({
+            default: m.default || m.Flow,
         })),
     };
 
@@ -38,7 +44,7 @@ const Template = (args) => {
     }, []);
 
     return (
-        <div style={{"position":"absolute", "top": 0, left:0, right:0, bottom:0}}>
+        <div className="rootContainer">
             <LayoutManager  {...args}/> 
         </div>
     )
