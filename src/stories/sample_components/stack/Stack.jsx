@@ -1,6 +1,4 @@
-// EditorVSCode.js
-import fileTree from "./filetree.json"
-import { StackList } from 'asp-react-component-library';
+import { StackList } from 'sample-ui-component-library';
 
 const Stack = () => {
 
