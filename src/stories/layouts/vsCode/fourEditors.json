@@ -118,6 +118,7 @@
                             {
                                 "id": 16,
                                 "description": "Variable Tree",
+                                "component": "Flow",
                                 "background":"#1e1e1e",
                                 "type": "percent",
                                 "height": 25
