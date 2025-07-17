@@ -50,6 +50,7 @@
                                                 {
                                                     "id": 8,
                                                     "description": "Stack",
+                                                    "component": "Stack",
                                                     "background": "#252526",
                                                     "type": "percent",
                                                     "height": 30
@@ -59,6 +60,7 @@
                                     {
                                         "id": 9,
                                         "description": "Editor",
+                                        "component": "EditorVSCode",
                                         "background": "#1e1e1e",
                                         "type": "percent",
                                         "width": 80
@@ -75,12 +77,14 @@
                                     {
                                         "id": 11,
                                         "description": "Variable Tree 1",
+                                        "component": "Flow",
                                         "width":50,
                                         "type":"percent"
                                     },
                                     {
                                         "id": 12,
                                         "description": "Variable Tree 2",
+                                        "component": "Flow",
                                         "width":50,
                                         "type":"percent"
                                     }
