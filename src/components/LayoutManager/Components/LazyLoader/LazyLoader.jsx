@@ -15,10 +15,10 @@ export const LazyLoader = ({content}) => {
     const {registry} = useContext(RegistryContext);
 
     const LazyComponent = useMemo(() => {
-        if (registry && "component" in content && content["component"] in registry) {
+        if (registry && content && "component" in content && content["component"] in registry) {
             return lazy(registry[content["component"]]);
         }
-    }, [registry]);
+    }, [registry, content]);
 
     return (
         <div className="lazyContainer">
