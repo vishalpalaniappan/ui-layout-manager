@@ -17,7 +17,7 @@ export const PlaceHolder = ({panel}) => {
     const {registry} = useContext(RegistryContext);
 
     const LazyComponent = useMemo(() => {
-        if (registry && "component" in panel) {
+        if (registry && "component" in panel && panel["component"] in registry) {
             return lazy(registry[panel["component"]]);
         }
     }, [registry]);
