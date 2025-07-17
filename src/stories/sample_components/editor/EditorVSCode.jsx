@@ -1,5 +1,5 @@
 // EditorVSCode.js
-import { Viewer } from 'asp-react-component-library';
+import { Viewer } from 'sample-ui-component-library';
 import fileTree from "./filetree.json"
 
 const EditorVSCode = () => {
