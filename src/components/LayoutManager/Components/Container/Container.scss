@@ -4,6 +4,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow:hidden;
 }
 
 .relative-container-column {
@@ -12,4 +13,5 @@
     width: 100%;
     display: flex;
     flex-direction: row;
+    overflow:hidden;
 }
