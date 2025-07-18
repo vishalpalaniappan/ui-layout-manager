@@ -1,0 +1,8 @@
+{
+    "orientation":"TB",
+    "data":{
+        "branch1" : ["a","b","c","p"],
+        "branch2" : ["a","b","d","x"],
+        "branch3" : ["a","f","g","x"]
+    }
+}

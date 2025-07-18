@@ -30,8 +30,8 @@
                             {
                                 "id": 5,
                                 "type": "percent",
-                                "description": "Variables",
-                                "height": 75,
+                                "description": "Editors",
+                                "height": 100,
                                 "childType": "column",
                                 "children": [
                                     {
@@ -52,6 +52,7 @@
                                                 "id": 8,
                                                 "description": "Stack",
                                                 "background": "#252526",
+                                                "component": "Stack",
                                                 "type": "percent",
                                                 "height": 30
                                             }
@@ -67,25 +68,20 @@
                                             {
                                                 "id": 10,
                                                 "description": "Editor1",
+                                                "component": "EditorVSCode",
                                                 "type": "percent",
                                                 "width": 50
                                             },
                                             {
                                                 "id": 11,
                                                 "description": "Editor2",
+                                                "component": "EditorVSCode",
                                                 "type": "percent",
                                                 "width": 50
                                             }
                                         ]
                                     }
                                 ]
-                            },
-                            {
-                                "id": 12,
-                                "description": "Variable Tree",
-                                "background": "#1e1e1e",
-                                "type": "percent",
-                                "height": 25
                             }
                         ]
                     }

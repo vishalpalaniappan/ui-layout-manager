@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { Container } from "../Container/Container";
-import { PlaceHolder } from "../PlaceHolder/PlaceHolder";
+import { LazyLoader } from "../LazyLoader/LazyLoader";
 
 import "./Row.scss";
 
@@ -27,7 +27,7 @@ export const Row = ({container, renderHandle}) => {
             if ("children" in container) {
                 setChildDivs(<Container layout={container}/>);
             } else {
-                setChildDivs(<PlaceHolder panel={container}/>);
+                setChildDivs(<LazyLoader content={container}/>);
             }
         }
     }, [container]);
