@@ -14,6 +14,9 @@ import "./Container.scss"
 export const Container = ({layout}) => {
 
     const [childDivs, setchildDivs] = useState();
+
+    //TODO: Consolidate row and column containers into single component.
+    //TODO: Calculate initial size of containers and layout components.
    
     /**
      * This function loops through the children, sets the style and 
