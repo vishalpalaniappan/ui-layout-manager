@@ -2,7 +2,7 @@ const INITIAL_SIZE_MARGIN = 100;
 
 /** 
  *  Given the size of the parent container, for each of the children, convert the initial
- *  size to a percentage and assign it to the container. Save the delta from the percentage
+ *  size to a percentage and assign it to the child. Save the delta from the percentage
  *  specified in the LDF file and save it in a running sum. Then distribute the percentage 
  *  in the running sum to the rest of the children which had no initial size specified.
  *
@@ -17,7 +17,7 @@ const INITIAL_SIZE_MARGIN = 100;
  *  child2: {percentage: 50}
  *  child3: {initialSize:200, percentage: 25}
  *
- *  This will result in child1 and child2 having a width of 25% and child2 having a percentage of 50%.
+ *  This will result in child1 and child2 having a width of 25% and child3 having a percentage of 50%.
  * 
  *  If none of the children have an initial size specified or if the sum of the initial sizes of the 
  *  children is greater than the container size, return the layout without modifying it.
