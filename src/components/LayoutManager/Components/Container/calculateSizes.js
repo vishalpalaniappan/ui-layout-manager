@@ -40,6 +40,13 @@ export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
         return layout;
     }
 
+    // Validate that there are also containers without initialSize to fill remaining space
+    const relativeContainers = layout.children.filter(child => !('initialSize' in child)).length;
+    if (relativeContainers === 0) {
+        console.info("All containers have initialSize specified, but at least one container must not have initialSize to fill remaining space.");
+        return layout;
+    }
+
     // Sum the initial specified sizes to verify that it is within the container size with a margin of INITIAL_SIZE_MARGIN pixels.
     let initialSizeSum = layout.children.reduce((sum, child) => sum + (child?.initialSize ?? 0), 0);
     if (initialSizeSum > containerSize - INITIAL_SIZE_MARGIN) {
@@ -60,7 +67,6 @@ export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
     });
 
     // Distribute the remaining percntage 
-    const relativeContainers = layout.children.filter(child => !('initialSize' in child)).length;
     const percentageToAdd = percentageLeft / relativeContainers;    
     layout.children.forEach((child, index) => {
         if (child.type === "percent" && !("initialSize" in child)) {
