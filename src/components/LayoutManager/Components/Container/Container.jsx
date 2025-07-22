@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Column } from "../Column/Column";
 import { Row } from "../Row/Row";
 
+import { calculateSizesWidth, calculateSizesHeight } from "./calculateSizes";
+
 import "./Container.scss"
 
 /**
@@ -15,7 +17,8 @@ export const Container = ({layout}) => {
 
     const [childDivs, setchildDivs] = useState();
 
-    const [containerClass, setContainerClass] = useState(null);
+    const [containerClass, setContainerClass] = useState("relative-container");
+
     const containerRef = useRef();
 
     //TODO: Consolidate row and column containers into single component.
@@ -25,40 +28,48 @@ export const Container = ({layout}) => {
      * This function loops through the children, sets the style and 
      * adds the child component to the list to be rendered. 
      * 
+     * The function accepts two arguments, fixedProp and dynamicProp.
+     * This indicates which style property should be set to 100%
+     * and which style prop should be loaded from the LDF file.
+     * For example, if the child is a column, then the width should
+     * be dynamic and the height should be fixed (100%);
+     * 
      * It sets the style based on the child type:
      * - "percent": apply relative layout in percentage
-     * - "fixed": set fixed width of child in pixels
+     * - "fixed": set fixed size of child in pixels
      * - "fill": fills the rest of the container
      * 
      * Fixed can only be used with fill. You can have one
      * fixed column before and one after the fill. 
      * 
-     * Ex:
+     * Valid Combinations:
      * [percent][percent][percent]
      * [fixed][fill][fixed]
      * [fixed][fill]
      * [fill][fixed]
      * 
-     * There will be support for initial width for column
-     * coming soon. In a relative column structure, I will 
-     * 
      * 
      * @param {Object} layout 
+     * @param {String} fixedProp Style prop that is fixed to 100% based on child type.
+     * @param {String} dynamicProp Style prop to set dynamically from ldf file.
      */
-    const processColumn = (layout) => {
+    const processLayout = (layout, fixedProp, dynamicProp) => {
         const _childDivs = [];
 
         layout.children.forEach((child,index) => {
-
-            let style, renderHandle;
+            let style = {};
+            let renderHandle;
             if (child.type === "percent") {
-                style = {"height": "100%","width": child.width + "%"};
+                style[fixedProp] = "100%";
+                style[dynamicProp] = child[dynamicProp] + "%";
                 renderHandle = index > 0;
             } else if (child.type === "fixed") {
-                style = {"height": "100%","width": child.width};
+                style[fixedProp] = "100%";
+                style[dynamicProp] = child[dynamicProp];
                 renderHandle = false;
             } else if (child.type === "fill") {
-                style = {"height": "100%","flexGrow":1};
+                style[fixedProp] = "100%";
+                style.flexGrow = 1;
                 renderHandle = false;
             }
 
@@ -68,42 +79,13 @@ export const Container = ({layout}) => {
 
             _childDivs.push(
                 <div key={index} style={style}>
-                    <Column key={index} container={child} renderHandle={renderHandle}/>
-                </div>
-            );
-        });
-
-        setchildDivs(<>{_childDivs}</>);
-    }
-
-    /**
-     * Please see processColumn for information on this function. I will merge
-     * the two soon because they share a lot of common logic.
-     * @param {*} layout 
-     */
-    const processRow = (layout) => {
-        const _childDivs = [];
-
-        layout.children.forEach((child,index) => {
-            let style, renderHandle;
-            if (child.type === "percent") {
-                style = {"width": "100%","height": child.height + "%"};
-                renderHandle = index > 0;
-            } else if (child.type === "fixed") {
-                style = {"width": "100%","height": child.height};
-                renderHandle = false;
-            } else if (child.type === "fill") {
-                style = {"width": "100%","flexGrow":1};
-                renderHandle = false;
-            }
-
-            if ("background" in child) {
-                style["background"] = child.background;
-            }
-
-            _childDivs.push(
-                <div key={index} style={style}>
-                    <Row key={index} container={child} renderHandle={renderHandle}/>
+                    {
+                        layout.childType == "row" ? 
+                        <Row key={index} container={child} renderHandle={renderHandle}/>:
+                        layout.childType == "column" ?
+                        <Column key={index} container={child} renderHandle={renderHandle}/>:
+                        null
+                    }
                 </div>
             );
         });
@@ -114,11 +96,11 @@ export const Container = ({layout}) => {
     useEffect(() => {
         if (layout) {
             if (layout.childType === "row") {
-                processRow(layout);
                 setContainerClass("relative-container-row");
+                processLayout(layout,"width","height");
             } else if (layout.childType === "column") {
-                processColumn(layout);
                 setContainerClass("relative-container-column");
+                processLayout(layout,"height","width");
             }
         }
     }, [layout]);
