@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Column } from "../Column/Column";
 import { Row } from "../Row/Row";
 
-import { calculateSizesWidth, calculateSizesHeight } from "./calculateSizes";
+import { calculateInitialSizes } from "./calculateSizes";
 
 import "./Container.scss"
 
@@ -41,10 +41,10 @@ export const Container = ({layout}) => {
      * 
      * Valid Combinations:
      * [percent][percent][percent]
+     * [percent (with initial size)][percent][percent (with initial size)]
      * [fixed][fill][fixed]
      * [fixed][fill]
      * [fill][fixed]
-     * 
      * 
      * @param {Object} layout 
      * @param {String} fixedProp Style prop that is fixed to 100% based on child type.
@@ -52,6 +52,8 @@ export const Container = ({layout}) => {
      */
     const processLayout = (layout, fixedProp, dynamicProp) => {
         const _childDivs = [];
+
+        layout = calculateInitialSizes(containerRef, layout, dynamicProp);
 
         layout.children.forEach((child,index) => {
             let style = {};
