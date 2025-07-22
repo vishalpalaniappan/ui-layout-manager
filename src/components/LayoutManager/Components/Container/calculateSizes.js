@@ -30,6 +30,10 @@ const INITIAL_SIZE_MARGIN = 100;
 export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
     const containerSize = containerRef.current.getBoundingClientRect()[dynamicProp];
 
+    // TODO: This can be optimized a lot more and I think this will have to change 
+    // once I start adding functionality to re-render containers progrmatically after
+    // the initial render is complete. Leaving this todo to remind me.
+
     // Check if atleast one entry has an initial size
     const hasInitialSize = layout.children.some(child => 'initialSize' in child);
     if (!hasInitialSize) {
@@ -56,6 +60,7 @@ export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
     });
 
     // Distribute the remaining percntage 
+    const relativeContainers = layout.children.filter(child => !('initialSize' in child)).length;
     const percentageToAdd = percentageLeft / relativeContainers;    
     layout.children.forEach((child, index) => {
         if (child.type === "percent" && !("initialSize" in child)) {
