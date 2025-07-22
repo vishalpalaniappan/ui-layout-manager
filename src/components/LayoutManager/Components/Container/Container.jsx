@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { Column } from "../Column/Column";
 import { Row } from "../Row/Row";
@@ -14,6 +14,9 @@ import "./Container.scss"
 export const Container = ({layout}) => {
 
     const [childDivs, setchildDivs] = useState();
+
+    const [containerClass, setContainerClass] = useState(null);
+    const containerRef = useRef();
 
     //TODO: Consolidate row and column containers into single component.
     //TODO: Calculate initial size of containers and layout components.
@@ -70,11 +73,7 @@ export const Container = ({layout}) => {
             );
         });
 
-        setchildDivs(
-            <div className="relative-container-column">
-                {_childDivs}
-            </div>
-        );
+        setchildDivs(<>{_childDivs}</>);
     }
 
     /**
@@ -109,28 +108,26 @@ export const Container = ({layout}) => {
             );
         });
 
-        setchildDivs(
-            <div className="relative-container-row">
-                {_childDivs}
-            </div>
-        );
+        setchildDivs(<>{_childDivs}</>);
     }
 
     useEffect(() => {
         if (layout) {
             if (layout.childType === "row") {
                 processRow(layout);
+                setContainerClass("relative-container-row");
             } else if (layout.childType === "column") {
                 processColumn(layout);
+                setContainerClass("relative-container-column");
             }
         }
     }, [layout]);
 
 
     return (
-        <>
+        <div ref={containerRef} className={containerClass}>
             {childDivs}
-        </>
+        </div>
     );
 }
 
