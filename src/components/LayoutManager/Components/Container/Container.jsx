@@ -20,9 +20,6 @@ export const Container = ({layout}) => {
     const [containerClass, setContainerClass] = useState("relative-container");
 
     const containerRef = useRef();
-
-    //TODO: Consolidate row and column containers into single component.
-    //TODO: Calculate initial size of containers and layout components.
    
     /**
      * This function loops through the children, sets the style and 
@@ -59,18 +56,26 @@ export const Container = ({layout}) => {
         layout.children.forEach((child,index) => {
             let style = {};
             let renderHandle;
-            if (child.type === "percent") {
-                style[fixedProp] = "100%";
-                style[dynamicProp] = child[dynamicProp] + "%";
-                renderHandle = index > 0;
-            } else if (child.type === "fixed") {
-                style[fixedProp] = "100%";
-                style[dynamicProp] = child[dynamicProp];
-                renderHandle = false;
-            } else if (child.type === "fill") {
-                style[fixedProp] = "100%";
-                style.flexGrow = 1;
-                renderHandle = false;
+
+            switch(child.type) {
+                case "percent":
+                    style[fixedProp] = "100%";
+                    style[dynamicProp] = child[dynamicProp] + "%";
+                    renderHandle = index > 0;
+                    break;
+                case "fixed":
+                    style[fixedProp] = "100%";
+                    style[dynamicProp] = child[dynamicProp];
+                    renderHandle = false;
+                    break;
+                case "fill":
+                    style[fixedProp] = "100%";
+                    style.flexGrow = 1;
+                    renderHandle = false;
+                    break;
+                default:
+                    console.error("Child layout type is invalid!")
+                    break;
             }
 
             if ("background" in child) {
