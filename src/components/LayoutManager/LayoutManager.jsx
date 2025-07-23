@@ -17,6 +17,7 @@ export const LayoutManager = ({ldf, registry}) => {
     const [rootContainer, setRootContainer] = useState(null);  
 
     useEffect(() => {
+        console.log("Changed");
         if (ldf) {
             setRootContainer(<Container layout={ldf.layout}/>);
         }
