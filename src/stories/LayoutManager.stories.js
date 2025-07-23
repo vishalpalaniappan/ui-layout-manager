@@ -6,6 +6,7 @@ import twoEditorsJSON from "./layouts/vsCode/twoEditors.json"
 import fourEditorsJSON from "./layouts/vsCode/fourEditors.json"
 import variableTreeJSON from "./layouts/vsCode/VariableTree.json"
 import variableTree2JSON from "./layouts/vsCode/VariableTreev2.json"
+import initialSizeDemoJSON from "./layouts/vsCode/InitialSizeDemo.json"
 import aspJSON from "./layouts/vsCode/asp.json"
 
 import "./LayoutManager.stories.scss";
@@ -53,6 +54,12 @@ export const defaultLayout = Template.bind({})
 
 defaultLayout.args = {
     ldf: defaultLayoutJSON
+}
+
+export const initialSizeDemo = Template.bind({})
+
+initialSizeDemo.args = {
+    ldf: initialSizeDemoJSON
 }
 
 export const twoEditors = Template.bind({})

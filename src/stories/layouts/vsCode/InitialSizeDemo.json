@@ -1,0 +1,27 @@
+{
+    "title": "Initial Size Demo",
+    "layout": {
+        "id": 0,
+        "type": "root",
+        "childType": "row",
+        "children": [
+            {
+                    "id": 1,
+                    "description": "Editor",
+                    "background":"#1e1e1e",
+                    "component": "EditorVSCode",
+                    "type": "percent",
+                    "height": 50
+            },
+            {
+                    "id": 2,
+                    "description": "Variable Tree",
+                    "background":"#1e1e1e",
+                    "component": "Flow",
+                    "type": "percent",
+                    "initialSizePx": 300,
+                    "height": 50
+            }
+        ]
+    }
+}

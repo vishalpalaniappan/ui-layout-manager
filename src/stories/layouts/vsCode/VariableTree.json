@@ -39,25 +39,25 @@
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
-                                            "childType": "row",
-                                            "children": [
-                                                {
-                                                    "id": 8,
-                                                    "description": "Variables",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 70
-                                                },
-                                                {
-                                                    "id": 9,
-                                                    "description": "Stack",
-                                                    "component": "Stack",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 30
-                                                }
-                                            ]
-                                        },
+                                        "childType": "row",
+                                        "children": [
+                                            {
+                                                "id": 8,
+                                                "description": "Variables",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 70
+                                            },
+                                            {
+                                                "id": 9,
+                                                "description": "Stack",
+                                                "component": "Stack",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 30
+                                            }
+                                        ]
+                                    },
                                     {
                                         "id": 10,
                                         "description": "Editor",
@@ -74,6 +74,7 @@
                                 "background":"#1e1e1e",
                                 "component": "Flow",
                                 "type": "percent",
+                                "initialSizePx": 400,
                                 "height": 50
                             }
                         ]

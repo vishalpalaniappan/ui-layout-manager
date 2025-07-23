@@ -17,83 +17,85 @@
                 "childType": "column",
                 "children": [
                     {
-                        "id": 5,
+                        "id": 3,
                         "type": "fill",
                         "childType": "row",
                         "children": [
                             {
-                                "id": 6,
+                                "id": 4,
                                 "type": "percent",
                                 "description": "Variables",
                                 "height": 100,
                                 "childType": "column",
                                 "children": [
                                     {
-                                        "id": 6,
+                                        "id": 5,
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
-                                            "childType": "row",
-                                            "children": [
-                                                {
-                                                    "id": 12,
-                                                    "description": "Settings",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 20
-                                                },
-                                                {
-                                                    "id": 6,
-                                                    "description": "Filter",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 20
-                                                },
-                                                {
-                                                    "id": 7,
-                                                    "description": "Traces",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 60
-                                                }
-                                            ]
+                                        "initialSizePx": 300,
+                                        "childType": "row",
+                                        "children": [
+                                            {
+                                                "id": 6,
+                                                "description": "Settings",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 20
+                                            },
+                                            {
+                                                "id": 7,
+                                                "description": "Filter",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 20
+                                            },
+                                            {
+                                                "id": 8,
+                                                "description": "Traces",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 60
+                                            }
+                                        ]
                                     },
                                     {
-                                        "id": 8,
+                                        "id": 9,
                                         "description": "Editor / React Flow",
                                         "background": "#1e1e1e",
                                         "type": "percent",
                                         "width": 60
                                     },
                                     {
-                                        "id": 9,
+                                        "id": 10,
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
+                                        "initialSizePx": 300,
                                         "childType": "row",
                                         "children": [
                                             {
-                                                "id": 10,
+                                                "id": 11,
                                                 "description": "Variable1",
                                                 "background": "#252526",
                                                 "type": "percent",
                                                 "height": 30
                                             },
                                             {
-                                                "id": 11,
+                                                "id": 12,
                                                 "description": "Variable2",
                                                 "background": "#252526",
                                                 "type": "percent",
                                                 "height": 30
                                             },{
-                                                "id": 10,
+                                                "id": 13,
                                                 "description": "Variable3",
                                                 "background": "#252526",
                                                 "type": "percent",
                                                 "height": 20
                                             },
                                             {
-                                                "id": 11,
+                                                "id": 14,
                                                 "description": "Variable4",
                                                 "background": "#252526",
                                                 "type": "percent",
@@ -108,7 +110,7 @@
                 ]
             },
             {
-                "id": 3,
+                "id": 15,
                 "type": "fixed",
                 "background": "#007acc",
                 "height": "25px"
