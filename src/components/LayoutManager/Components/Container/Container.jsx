@@ -53,7 +53,7 @@ export const Container = ({layout}) => {
     const processLayout = (layout, fixedProp, dynamicProp) => {
         const _childDivs = [];
 
-        const layout = calculateInitialSizes(containerRef, layout, dynamicProp);
+        layout = calculateInitialSizes(containerRef, layout, dynamicProp);
 
         layout.children.forEach((child,index) => {
             let style = {};
