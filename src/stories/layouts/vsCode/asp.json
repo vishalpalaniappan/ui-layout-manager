@@ -33,30 +33,31 @@
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
-                                            "childType": "row",
-                                            "children": [
-                                                {
-                                                    "id": 12,
-                                                    "description": "Settings",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 20
-                                                },
-                                                {
-                                                    "id": 6,
-                                                    "description": "Filter",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 20
-                                                },
-                                                {
-                                                    "id": 7,
-                                                    "description": "Traces",
-                                                    "background": "#252526",
-                                                    "type": "percent",
-                                                    "height": 60
-                                                }
-                                            ]
+                                        "initialWidth": 200,
+                                        "childType": "row",
+                                        "children": [
+                                            {
+                                                "id": 12,
+                                                "description": "Settings",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 20
+                                            },
+                                            {
+                                                "id": 6,
+                                                "description": "Filter",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 20
+                                            },
+                                            {
+                                                "id": 7,
+                                                "description": "Traces",
+                                                "background": "#252526",
+                                                "type": "percent",
+                                                "height": 60
+                                            }
+                                        ]
                                     },
                                     {
                                         "id": 8,
@@ -70,6 +71,7 @@
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
+                                        "initialWidth": 200,
                                         "childType": "row",
                                         "children": [
                                             {
