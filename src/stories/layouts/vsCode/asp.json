@@ -33,7 +33,7 @@
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
-                                        "initialSizePx": 200,
+                                        "initialSizePx": 300,
                                         "childType": "row",
                                         "children": [
                                             {
@@ -71,7 +71,7 @@
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
-                                        "initialSizePx": 200,
+                                        "initialSizePx": 300,
                                         "childType": "row",
                                         "children": [
                                             {
