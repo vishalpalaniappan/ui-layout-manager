@@ -35,20 +35,20 @@ export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
     // the initial render is complete. Leaving this todo to remind me.
 
     // Check if atleast one entry has an initial size
-    const hasInitialSize = layout.children.some(child => 'initialSize' in child);
+    const hasInitialSize = layout.children.some(child => 'initialSizePx' in child);
     if (!hasInitialSize) {
         return layout;
     }
 
     // Validate that there are also containers without initialSize to fill remaining space
-    const relativeContainers = layout.children.filter(child => !('initialSize' in child)).length;
+    const relativeContainers = layout.children.filter(child => !('initialSizePx' in child)).length;
     if (relativeContainers === 0) {
         console.info("All containers have initialSize specified, but at least one container must not have initialSize to fill remaining space.");
         return layout;
     }
 
     // Sum the initial specified sizes to verify that it is within the container size with a margin of INITIAL_SIZE_MARGIN pixels.
-    let initialSizeSum = layout.children.reduce((sum, child) => sum + (child?.initialSize ?? 0), 0);
+    let initialSizeSum = layout.children.reduce((sum, child) => sum + (child?.initialSizePx ?? 0), 0);
     if (initialSizeSum > containerSize - INITIAL_SIZE_MARGIN) {
         console.info("Initial size of containers is too large, using percentage sizes instead.");
         return layout;
@@ -59,8 +59,8 @@ export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
     // initial size specified.
     let percentageLeft = 0;
     layout.children.forEach((child, index) => {
-        if (child.type === "percent" && "initialSize" in child) {
-            const initialPercentage = (child["initialSize"]/containerSize) * 100;
+        if (child.type === "percent" && "initialSizePx" in child) {
+            const initialPercentage = (child["initialSizePx"]/containerSize) * 100;
             percentageLeft += child[dynamicProp] - initialPercentage;
             child[dynamicProp] = initialPercentage;
         }
@@ -69,7 +69,7 @@ export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
     // Distribute the remaining percntage 
     const percentageToAdd = percentageLeft / relativeContainers;    
     layout.children.forEach((child, index) => {
-        if (child.type === "percent" && !("initialSize" in child)) {
+        if (child.type === "percent" && !("initialSizePx" in child)) {
             child[dynamicProp] = child[dynamicProp] + percentageToAdd;
         }
     });

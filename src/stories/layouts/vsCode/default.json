@@ -39,7 +39,7 @@
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
-                                        "initialSize": 500,
+                                        "initialSizePx": 500,
                                         "childType": "row",
                                         "children": [
                                             {

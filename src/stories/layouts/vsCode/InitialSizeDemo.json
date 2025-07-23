@@ -19,7 +19,7 @@
                     "background":"#1e1e1e",
                     "component": "Flow",
                     "type": "percent",
-                    "initialSize": 300,
+                    "initialSizePx": 300,
                     "height": 50
             }
         ]
