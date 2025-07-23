@@ -112,6 +112,8 @@ export const Container = ({layout}) => {
         }
     }, [layout]);
 
+    //TODO: Extend resize behavior.
+
 
     return (
         <div ref={containerRef} className={containerClass}>
