@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { Column } from "../Column/Column";
 import { Row } from "../Row/Row";
+import { HandleBar } from "../HandleBar/HandleBar";
 
 import { calculateInitialSizes } from "./calculateSizes";
 
@@ -20,6 +21,7 @@ export const Container = ({layout}) => {
     const [containerClass, setContainerClass] = useState("relative-container");
 
     const containerRef = useRef();
+    const childRefs = useRef([]);
    
     /**
      * This function loops through the children, sets the style and 
@@ -55,6 +57,7 @@ export const Container = ({layout}) => {
 
         layout = calculateInitialSizes(containerRef, layout, dynamicProp);
 
+
         layout.children.forEach((child,index) => {
             let style = {};
             let renderHandle;
@@ -63,7 +66,7 @@ export const Container = ({layout}) => {
                 case "percent":
                     style[fixedProp] = "100%";
                     style[dynamicProp] = child[dynamicProp] + "%";
-                    renderHandle = index > 0;
+                    renderHandle = (index < layout.children.length - 1);
                     break;
                 case "fixed":
                     style[fixedProp] = "100%";
@@ -84,22 +87,50 @@ export const Container = ({layout}) => {
                 style["background"] = child.background;
             }
 
+            const newRef = React.createRef();    
+            childRefs.current.push(newRef);
+            const panelIndex = childRefs.current.length - 1;
+
+            let handleIndex;
+            if (renderHandle) {
+                childRefs.current.push(React.createRef());
+                handleIndex = childRefs.current.length - 1;
+
+                const handleBarPercentage = (2/containerRef.current.getBoundingClientRect()[dynamicProp]) *100;
+                style[dynamicProp] = (child[dynamicProp] - handleBarPercentage)+ "%";
+            }
+
             _childDivs.push(
-                <div key={index} style={style}>
-                    {
-                        layout.childType == "row" ? 
-                        <Row key={index} container={child} renderHandle={renderHandle}/>:
-                        layout.childType == "column" ?
-                        <Column key={index} container={child} renderHandle={renderHandle}/>:
-                        null
+                <React.Fragment key={index}>
+                    <div ref={(el) => (childRefs.current[panelIndex] = el)} style={style}>
+                        {
+                            layout.childType == "row" ? 
+                            <Row container={child} renderHandle={renderHandle}/>:
+                            layout.childType == "column" ?
+                            <Column container={child} renderHandle={renderHandle}/>:
+                            null
+                        }
+                    </div>
+                    {renderHandle &&
+                        <HandleBar key={index + "handle"}
+                            index={handleIndex} 
+                            getSiblings={getSiblings} 
+                            orientation={layout.childType}
+                            ref={(el) => (childRefs.current[handleIndex] = el)}
+                        />
                     }
-                </div>
+                </React.Fragment>
             );
         });
 
         setchildDivs(<>{_childDivs}</>);
     }
 
+    const getSiblings = (index) => {
+        const sibling1 = childRefs.current[index - 1];
+        const sibling2 = childRefs.current[index + 1];
+        return [containerRef.current, sibling1, sibling2];
+    }
     useEffect(() => {
         if (layout) {
             if (layout.childType === "row") {
