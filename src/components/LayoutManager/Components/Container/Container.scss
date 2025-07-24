@@ -5,6 +5,13 @@
     overflow:hidden;
 }
 
+.rowContainer {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
 .relative-container-row {
     position:relative;
@@ -13,6 +20,14 @@
     display: flex;
     flex-direction: column;
     overflow:hidden;
+}
+
+.columnContainer {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
 .relative-container-column {
