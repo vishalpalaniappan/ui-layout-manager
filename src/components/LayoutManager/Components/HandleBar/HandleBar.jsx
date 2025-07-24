@@ -111,4 +111,7 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
 });
 
 HandleBar.propTypes = {
+    orientation: PropTypes.string,
+    getSiblings: PropTypes.func,
+    index: PropTypes.number
 }
