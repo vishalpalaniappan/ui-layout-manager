@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Column } from "../Column/Column";
 import { Row } from "../Row/Row";
 import { HandleBar } from "../HandleBar/HandleBar";
+import { LazyLoader } from "../LazyLoader/LazyLoader";
 
 import { calculateInitialSizes } from "./calculateSizes";
 
@@ -22,6 +23,8 @@ export const Container = ({layout}) => {
 
     const containerRef = useRef();
     const childRefs = useRef([]);
+
+    const HANDLE_SIZE_PX = 2;
    
     /**
      * This function loops through the children, sets the style and 
@@ -87,27 +90,30 @@ export const Container = ({layout}) => {
                 style["background"] = child.background;
             }
 
-            const newRef = React.createRef();    
-            childRefs.current.push(newRef);
-            const panelIndex = childRefs.current.length - 1;
+            // Add new ref for child
+            childRefs.current.push(React.createRef());
+            const childIndex = childRefs.current.length - 1;
 
+            // If render handle, then add new child ref and update size of
+            // container to account for handlebar.
             let handleIndex;
             if (renderHandle) {
                 childRefs.current.push(React.createRef());
                 handleIndex = childRefs.current.length - 1;
 
-                const handleBarPercentage = (2/containerRef.current.getBoundingClientRect()[dynamicProp]) *100;
+                const size = containerRef.current.getBoundingClientRect()[dynamicProp];
+                const handleBarPercentage = (HANDLE_SIZE_PX/size) *100;
                 style[dynamicProp] = (child[dynamicProp] - handleBarPercentage)+ "%";
             }
 
             _childDivs.push(
                 <React.Fragment key={index}>
-                    <div ref={(el) => (childRefs.current[panelIndex] = el)} style={style}>
+                    <div ref={(el) => (childRefs.current[childIndex] = el)} style={style}>
                         {
                             layout.childType == "row" ? 
-                            <Row container={child} renderHandle={renderHandle}/>:
+                            <div className="rowContainer"> {getChildJsx(child)}</div>:
                             layout.childType == "column" ?
-                            <Column container={child} renderHandle={renderHandle}/>:
+                            <div className="columnContainer">{getChildJsx(child)}</div>:
                             null
                         }
                     </div>
@@ -126,11 +132,20 @@ export const Container = ({layout}) => {
         setchildDivs(<>{_childDivs}</>);
     }
 
+    const getChildJsx = (child) => {
+        if ("children" in child) {
+            return <Container layout={child}/>;
+        } else {
+            return <LazyLoader content={child} />;
+        }
+    }
+
     const getSiblings = (index) => {
         const sibling1 = childRefs.current[index - 1];
         const sibling2 = childRefs.current[index + 1];
         return [containerRef.current, sibling1, sibling2];
     }
+    
     useEffect(() => {
         if (layout) {
             if (layout.childType === "row") {
