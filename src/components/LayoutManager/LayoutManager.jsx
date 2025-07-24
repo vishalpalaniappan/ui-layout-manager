@@ -16,6 +16,8 @@ import "./LayoutManager.scss";
 export const LayoutManager = ({ldf, registry}) => {
     const [rootContainer, setRootContainer] = useState(null);  
 
+    //TODO: Add functionality to cache layout to localstorage and restore it.
+    
     useEffect(() => {
         if (ldf) {
             setRootContainer(<Container layout={ldf.layout}/>);
