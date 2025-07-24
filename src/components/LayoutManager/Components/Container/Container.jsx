@@ -91,8 +91,8 @@ export const Container = ({layout}) => {
             }
 
             // Create child div and attach ref
-            const childIndex = createRefAndGetIndex();
-            const childDiv = <div key={childIndex} ref={(el) => (childRefs.current[childIndex] = el)} style={style}>
+            const childRefIndex = createRefAndGetIndex();
+            const childDiv = <div key={childRefIndex} ref={(el) => (childRefs.current[childRefIndex] = el)} style={style}>
                 {
                     layout.childType == "row" ? 
                     <div className="rowContainer"> {getChildJsx(child)}</div>:
@@ -107,12 +107,12 @@ export const Container = ({layout}) => {
             if (renderHandle) {
                 style[dynamicProp] = (child[dynamicProp] - handleBarSizeInPercentage)+ "%";
 
-                const handleIndex = createRefAndGetIndex();
+                const handleRefIndex = createRefAndGetIndex();
                 postHandleDiv = <HandleBar key={index + "handle"}
-                    index={handleIndex} 
+                    index={handleRefIndex} 
                     getSiblings={getSiblings} 
                     orientation={layout.childType}
-                    ref={(el) => (childRefs.current[handleIndex] = el)}
+                    ref={(el) => (childRefs.current[handleRefIndex] = el)}
                 />
             }
 
