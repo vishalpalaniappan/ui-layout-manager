@@ -58,6 +58,8 @@ export const Container = ({layout}) => {
 
         layout = calculateInitialSizes(containerRef, layout, dynamicProp);
 
+        const parentSize = containerRef.current.getBoundingClientRect()[dynamicProp];
+        const handleBarSizeInPercentage = (HANDLE_SIZE_PX/parentSize) *100;
 
         layout.children.forEach((child,index) => {
             let style = {};
@@ -88,41 +90,37 @@ export const Container = ({layout}) => {
                 style["background"] = child.background;
             }
 
-            // Add new ref for child
-            childRefs.current.push(React.createRef());
-            const childIndex = childRefs.current.length - 1;
+            // Create child div and attach ref
+            const childIndex = createRefAndGetIndex();
+            const childDiv = <div ref={(el) => (childRefs.current[childIndex] = el)} style={style}>
+                {
+                    layout.childType == "row" ? 
+                    <div className="rowContainer"> {getChildJsx(child)}</div>:
+                    layout.childType == "column" ?
+                    <div className="columnContainer">{getChildJsx(child)}</div>:
+                    null
+                }
+            </div>
 
-            // If render handle, then add new child ref and update size of
-            // container to account for handlebar.
-            let handleIndex;
+            // Add new ref for handlebar, get index and update size to account for handle bar
+            let postHandleDiv;
             if (renderHandle) {
-                childRefs.current.push(React.createRef());
-                handleIndex = childRefs.current.length - 1;
+                style[dynamicProp] = (child[dynamicProp] - handleBarSizeInPercentage)+ "%";
 
-                const size = containerRef.current.getBoundingClientRect()[dynamicProp];
-                const handleBarPercentage = (HANDLE_SIZE_PX/size) *100;
-                style[dynamicProp] = (child[dynamicProp] - handleBarPercentage)+ "%";
+                const handleIndex = createRefAndGetIndex();
+                postHandleDiv = <HandleBar key={index + "handle"}
+                    index={handleIndex} 
+                    getSiblings={getSiblings} 
+                    orientation={layout.childType}
+                    ref={(el) => (childRefs.current[handleIndex] = el)}
+                />
             }
+
+            const childElements = [childDiv, postHandleDiv]
 
             _childDivs.push(
                 <React.Fragment key={index}>
-                    <div ref={(el) => (childRefs.current[childIndex] = el)} style={style}>
-                        {
-                            layout.childType == "row" ? 
-                            <div className="rowContainer"> {getChildJsx(child)}</div>:
-                            layout.childType == "column" ?
-                            <div className="columnContainer">{getChildJsx(child)}</div>:
-                            null
-                        }
-                    </div>
-                    {renderHandle &&
-                        <HandleBar key={index + "handle"}
-                            index={handleIndex} 
-                            getSiblings={getSiblings} 
-                            orientation={layout.childType}
-                            ref={(el) => (childRefs.current[handleIndex] = el)}
-                        />
-                    }
+                    {childElements}
                 </React.Fragment>
             );
         });
@@ -130,6 +128,21 @@ export const Container = ({layout}) => {
         setchildDivs(<>{_childDivs}</>);
     }
 
+    /**
+     * This function adds a child ref to the ref array and returns the index
+     * @returns {Number} 
+     */
+    const createRefAndGetIndex = () => {
+        childRefs.current.push(React.createRef());
+        return childRefs.current.length - 1;
+    }
+
+    /**
+     * This function returns a container to render the children if they exist 
+     * or lazy loads the component if there are no children.
+     * @param {Object} child 
+     * @returns 
+     */
     const getChildJsx = (child) => {
         if ("children" in child) {
             return <Container layout={child}/>;
@@ -138,6 +151,15 @@ export const Container = ({layout}) => {
         }
     }
 
+    /**
+     * This function is called by the handlebar component to get the references
+     * to the siblings before and after the handle bar in the ref array. 
+     * 
+     * Index refers to the position of the handle bar in the ref array, so the
+     * siblings will be one position before and one position after it.
+     * @param {Number} index 
+     * @returns 
+     */
     const getSiblings = (index) => {
         const sibling1 = childRefs.current[index - 1];
         const sibling2 = childRefs.current[index + 1];
@@ -155,9 +177,6 @@ export const Container = ({layout}) => {
             }
         }
     }, [layout]);
-
-    //TODO: Extend resize behavior.
-
 
     return (
         <div ref={containerRef} className={containerClass}>
