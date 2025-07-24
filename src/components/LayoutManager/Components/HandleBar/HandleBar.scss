@@ -53,10 +53,10 @@ $handle-bar-hover-color: #007acc;
 
 .handleBarVertical{
     position: absolute;
-    left: 0;
+    top: 0;
     width: $handle-bar-size;
     left: 50%;
-    right: 0;
+    bottom: 0;
     transform: translateX(-50%);
     transition: all 0.2s ease;
 }
