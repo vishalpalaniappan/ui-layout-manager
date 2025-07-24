@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
-import { Column } from "../Column/Column";
-import { Row } from "../Row/Row";
 import { HandleBar } from "../HandleBar/HandleBar";
 import { LazyLoader } from "../LazyLoader/LazyLoader";
 
@@ -145,7 +143,7 @@ export const Container = ({layout}) => {
         const sibling2 = childRefs.current[index + 1];
         return [containerRef.current, sibling1, sibling2];
     }
-    
+
     useEffect(() => {
         if (layout) {
             if (layout.childType === "row") {
