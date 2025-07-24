@@ -11,6 +11,7 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
     const MIN_PANEL_SIZE = 100;
 
     const dragStartInfo = useRef()
+    const handle = useRef();
 
     const handleMouseDown = (e) => {
         e.preventDefault();
@@ -20,17 +21,22 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
 
         const [parentRef, sibling1, sibling2] = getSiblings(index);
 
-        let downKey, propKey;
+        let downKey, propKey, hoverClass;
         if (orientation === "row") {
             downKey = "clientY";
             propKey = "height";
+            hoverClass = "handleBarHorizontalHover";
         } else if (orientation === "column"){
             downKey = "clientX";
             propKey = "width";
+            hoverClass = "handleBarVerticalHover";
         }
+        
+        handle.current.classList.add(hoverClass);
 
         dragStartInfo.current = {
             "downValueY": e[downKey],
+            "hoverClass": hoverClass,
             "downKey": downKey,
             "propKey": propKey,
             "sibling1": sibling1,
@@ -78,15 +84,22 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
         e.stopPropagation();
         document.removeEventListener("mousemove", handleMouseMove);
         document.removeEventListener("mouseup", handleMouseUp);
+
+        handle.current.classList.remove(dragStartInfo.current.hoverClass);
+        dragStartInfo.current = null;        
     }
 
     return (
         <React.Fragment > 
             {
                 orientation === "row"?
-                <div ref={ref} onMouseDown={handleMouseDown} className="handleBarHorizontal"></div>:
+                <div ref={ref} onMouseDown={handleMouseDown} className="handleBarHorizontalContainer">
+                    <div ref={handle} className="handleBarHorizontal"></div>
+                </div>:
                 orientation === "column"?
-                <div ref={ref} onMouseDown={handleMouseDown} className="handleBarVertical"></div>:
+                <div ref={ref} onMouseDown={handleMouseDown} className="handleBarVerticalContainer">
+                    <div ref={handle} className="handleBarVertical"></div>
+                </div>:
                 null
             }
         </React.Fragment>
