@@ -1,6 +1,6 @@
 $handle-bar-color: #414141;
 $handle-bar-size: 2px;
-$handle-bar-size-expanded: 6px;
+$handle-bar-size-expanded: 5px;
 $handle-bar-hover-color: #007acc;
 
 // Creates the container which will hold the handle bar
@@ -19,7 +19,7 @@ $handle-bar-hover-color: #007acc;
     left:0;
     right:0;
     transform: translateY(-50%);
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 // Update the height and let it animate
@@ -58,7 +58,7 @@ $handle-bar-hover-color: #007acc;
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .handleBarVertical:hover {
