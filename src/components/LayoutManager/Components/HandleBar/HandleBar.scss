@@ -19,28 +19,13 @@ $handle-bar-hover-color: #007acc;
     left:0;
     right:0;
     transform: translateY(-50%);
-    transition: all 0.3s ease;
 }
 
 // Update the height and let it animate
 .handleBarHorizontal:hover {
     background-color: $handle-bar-hover-color;
     cursor: ns-resize; 
-    height: $handle-bar-size-expanded;
-    z-index: 10;
 }
-
-// Set by the component so hover is active even
-// when mouse isn't over handle during drag
-.handleBarHorizontalHover {
-    background-color: $handle-bar-hover-color;
-    cursor: ns-resize; 
-    height: $handle-bar-size-expanded;
-    z-index: 10;
-}
-
-
-
 
 // See horizontal style comments, they are the same for vertical
 .handleBarVerticalContainer {
@@ -58,19 +43,9 @@ $handle-bar-hover-color: #007acc;
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
-    transition: all 0.3s ease;
 }
 
 .handleBarVertical:hover {
     background-color: $handle-bar-hover-color;
     cursor: ew-resize; 
-    width: $handle-bar-size-expanded;
-    z-index: 10;
-}
-
-.handleBarVerticalHover {
-    background-color: $handle-bar-hover-color;
-    cursor: ew-resize; 
-    width: $handle-bar-size-expanded;
-    z-index: 10;
 }
