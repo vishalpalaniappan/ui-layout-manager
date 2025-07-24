@@ -8,7 +8,7 @@ import "./HandleBar.scss";
  */
 export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, ref) => {
 
-    const MIN_PANEL_SIZE = 100;
+    const MIN_PANEL_SIZE = 50;
 
     const dragStartInfo = useRef()
     const handle = useRef();
