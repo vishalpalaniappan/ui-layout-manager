@@ -13,6 +13,16 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
     const dragStartInfo = useRef()
     const handle = useRef();
 
+    /**
+     * This function saves the relevant info on mouse down.
+     * It does the following:
+     * - Determines the dynamic prop being modified (width or height)
+     * - Determines the mouse down property to track (clientY or clientX)
+     * - Get references to parent container and both siblings using callback to parent
+     * - Saves the initial size of the siblings and parents 
+     * 
+     * @param {Event} e 
+     */
     const handleMouseDown = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -21,7 +31,7 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
 
         const [parentRef, sibling1, sibling2] = getSiblings(index);
 
-        let downKey, propKey, hoverClass;
+        let downKey, propKey;
         if (orientation === "row") {
             downKey = "clientY";
             propKey = "height";
@@ -45,9 +55,10 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
     /**
      * This function is called when the mouse is being dragged and 
      * it uses the delta from the starting down point to calculate
-     * the new heights. If it is within the bounds, it sets the new
-     * height. It sets the height as a percentage so the relative 
-     * sizes are respected if a parent up the hierarchy is moved.
+     * the new sizes (width or height). If it is within the bounds, 
+     * it sets the new size. It sets the size as a percentage so 
+     * the relative sizes are respected if a parent up the hierarchy
+     * is moved.
      * @param {Event} e 
      * @returns 
      */
