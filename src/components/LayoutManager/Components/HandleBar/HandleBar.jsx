@@ -31,17 +31,22 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
 
         const [parentRef, sibling1, sibling2] = getSiblings(index);
 
-        let downKey, propKey;
+        let downKey, propKey, hoverClass;
         if (orientation === "row") {
             downKey = "clientY";
             propKey = "height";
+            hoverClass = "handleBarHorizontalHover";
         } else if (orientation === "column"){
             downKey = "clientX";
             propKey = "width";
+            hoverClass = "handleBarVerticalHover";
         }
+        
+        handle.current.classList.add(hoverClass);   
 
         dragStartInfo.current = {
             "downValueY": e[downKey],
+            "hoverClass": hoverClass,
             "downKey": downKey,
             "propKey": propKey,
             "sibling1": sibling1,
@@ -90,6 +95,7 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
         e.stopPropagation();
         document.removeEventListener("mousemove", handleMouseMove);
         document.removeEventListener("mouseup", handleMouseUp);
+        handle.current.classList.remove(dragStartInfo.current.hoverClass);  
         dragStartInfo.current = null;        
     }
 

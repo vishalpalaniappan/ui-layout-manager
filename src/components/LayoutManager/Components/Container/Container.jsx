@@ -22,7 +22,7 @@ export const Container = ({layout}) => {
     const containerRef = useRef();
     const childRefs = useRef([]);
 
-    const HANDLE_SIZE_PX = 2;
+    const HANDLE_SIZE_PX = 1;
    
     /**
      * This function loops through the children, sets the style and 
