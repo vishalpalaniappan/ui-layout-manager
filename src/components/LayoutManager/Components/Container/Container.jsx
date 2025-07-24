@@ -92,7 +92,7 @@ export const Container = ({layout}) => {
 
             // Create child div and attach ref
             const childIndex = createRefAndGetIndex();
-            const childDiv = <div ref={(el) => (childRefs.current[childIndex] = el)} style={style}>
+            const childDiv = <div key={childIndex} ref={(el) => (childRefs.current[childIndex] = el)} style={style}>
                 {
                     layout.childType == "row" ? 
                     <div className="rowContainer"> {getChildJsx(child)}</div>:
