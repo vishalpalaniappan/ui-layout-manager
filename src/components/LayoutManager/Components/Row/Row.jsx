@@ -130,7 +130,7 @@ export const Row = ({container, renderHandle}) => {
 
     return (
         <div className="rowContainer"> 
-            {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarHorizontal"></div>}
+            {/* {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarHorizontal"></div>} */}
             <div className="contentHorizontal">
                 {childDivs}
             </div>

@@ -105,7 +105,7 @@ export const Column = ({container, renderHandle}) => {
 
     return (
         <div className="columnContainer"> 
-            {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarVertical"></div>}
+            {/* {renderHandle && <div onMouseDown={handleMouseDown} className="handleBarVertical"></div>} */}
             <div className="contentVertical">
                 {childDivs}
             </div>
