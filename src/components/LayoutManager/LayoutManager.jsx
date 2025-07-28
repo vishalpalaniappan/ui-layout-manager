@@ -15,22 +15,12 @@ import "./LayoutManager.scss";
  * @return {JSX}
  */
 export const LayoutManager = ({ldf, registry}) => {
-    const [rootContainer, setRootContainer] = useState(null); 
-    
-    // TODO: Add context to allow children to register references to themselves
-    // TODO: Add worker to manage layout logic
-
-    useEffect(() => {
-        if (ldf) {
-            setRootContainer(<Container layout={ldf.layout}/>);
-        }
-    }, [ldf]);
 
     return (
         <LayoutControllerProvider layout={ldf} registry={registry}>
             <ComponentRegistryContext.Provider value={{registry}}>
                 <div className="background">
-                    {rootContainer}
+                    {ldf? <Container layout={ldf.layout} /> : null}
                 </div>
             </ComponentRegistryContext.Provider>
         </LayoutControllerProvider> 
