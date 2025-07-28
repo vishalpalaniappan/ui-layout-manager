@@ -1,4 +1,3 @@
-
 /**
  * This class exposes functions that allow the containers to register and unregister
  * themselves with the controller. It also creates a worker to execute layout related  
@@ -17,7 +16,10 @@ export class LayoutController {
         this.containers = {};
 
         try {
-            this.worker = new Worker(new URL('./LayoutWorker.js', import.meta.url));
+            this.worker = new Worker(
+                new URL('./LayoutWorker.js', import.meta.url),
+                { type: 'module' }
+            );
             this.worker.onmessage = this.handleWorkerMessage.bind(this);
             this.worker.onerror = (error) => console.error('Worker error:', error);
             this.worker.postMessage("hello");
