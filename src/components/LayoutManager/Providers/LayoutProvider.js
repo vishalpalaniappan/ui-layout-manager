@@ -15,13 +15,13 @@ export function LayoutControllerProvider({ layout, registry, children }) {
         controller.setLayoutTree(layout);
         controller.setRegistry(registry);
         return controller;
-    }, []);
+    }, [layout, registry]);
 
     useEffect(() => {
         return () => {
             controller.destroy();
         }
-    });
+    }, [controller]);
 
     return (
         <LayoutContext.Provider value={controller}>
