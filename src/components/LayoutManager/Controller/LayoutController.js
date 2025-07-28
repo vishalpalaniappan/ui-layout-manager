@@ -15,9 +15,15 @@ export class LayoutController {
      */
     constructor() {
         this.containers = {};
-        this.worker = new Worker(new URL('./LayoutWorker.js', import.meta.url));
-        this.worker.onmessage = this.handleWorkerMessage.bind(this);
-        this.worker.postMessage("hello");
+
+        try {
+            this.worker = new Worker(new URL('./LayoutWorker.js', import.meta.url));
+            this.worker.onmessage = this.handleWorkerMessage.bind(this);
+            this.worker.onerror = (error) => console.error('Worker error:', error);
+            this.worker.postMessage("hello");
+        } catch (error) {
+            console.error('Failed to create worker:', error);
+        }
     }
 
 
