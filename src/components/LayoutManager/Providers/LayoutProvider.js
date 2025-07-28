@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useMemo } from 'react';
 import { LayoutController } from "../Controller/LayoutController";
 
 const LayoutContext = createContext(null);
@@ -16,6 +16,12 @@ export function LayoutControllerProvider({ layout, registry, children }) {
         controller.setRegistry(registry);
         return controller;
     }, []);
+
+    useEffect(() => {
+        return () => {
+            controller.destroy();
+        }
+    });
 
     return (
         <LayoutContext.Provider value={controller}>

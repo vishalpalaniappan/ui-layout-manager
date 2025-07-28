@@ -36,7 +36,6 @@ export class LayoutController {
      */
     setRegistry(registry) {
         this.registry = registry;
-        console.log(registry);
     }
 
     /**
@@ -47,6 +46,14 @@ export class LayoutController {
     registerContainer(id, containerApi) {
         this.containers[id] = containerApi;
     }
+    
+    /**
+     * Allows containers to unregister themselves with the controller.
+     * @param {String} id 
+     */
+    unregisterContainer(id) {
+        delete this.containers[id];
+    }
 
     /**
      * Handles messages from worker
@@ -55,6 +62,16 @@ export class LayoutController {
     handleWorkerMessage(event) {
         const data = event.data;
         console.log(data);
+    }
+
+    /**
+     * Performs cleanup when the controller is destroyed.
+     */
+    destroy() {
+        if (this.worker) {
+            this.worker.terminate();
+            this.worker = null;
+        }
     }
 
     /**

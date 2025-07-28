@@ -191,8 +191,12 @@ export const Container = ({layout}) => {
                 }
             }
             controller.registerContainer(layout.id, api);
+
+            return () => {
+                controller.unregisterContainer(layout.id);
+            }
         }
-    }, [layout]);
+    }, [layout, controller]);
 
     return (
         <div ref={containerRef} className={containerClass}>
