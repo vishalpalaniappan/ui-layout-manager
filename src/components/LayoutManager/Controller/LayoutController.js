@@ -20,6 +20,25 @@ export class LayoutController {
         this.worker.postMessage("hello");
     }
 
+
+    /**
+     * Sets the layout tree used to render the containers.
+     * @param {Object} tree 
+     */
+    setLayoutTree(tree) {
+        this.ldf = tree;
+    }
+
+
+    /**
+     * Sets the registry used to lazy load the components
+     * @param {Object} registry 
+     */
+    setRegistry(registry) {
+        this.registry = registry;
+        console.log(registry);
+    }
+
     /**
      * Allows containers to register themselves with the controller.
      * @param {String} id 

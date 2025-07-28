@@ -27,13 +27,13 @@ export const LayoutManager = ({ldf, registry}) => {
     }, [ldf]);
 
     return (
-        <LayoutControllerProvider>
+        <LayoutControllerProvider layout={ldf} registry={registry}>
             <ComponentRegistryContext.Provider value={{registry}}>
                 <div className="background">
                     {rootContainer}
                 </div>
             </ComponentRegistryContext.Provider>
-        </LayoutControllerProvider>
+        </LayoutControllerProvider> 
     );
 }
 
