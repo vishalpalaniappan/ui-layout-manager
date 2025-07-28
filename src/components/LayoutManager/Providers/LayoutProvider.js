@@ -8,10 +8,13 @@ const LayoutContext = createContext(null);
  * @param {JSX} children
  * @returns 
  */
-export function LayoutControllerProvider({ children }) {
+export function LayoutControllerProvider({ layout, registry, children }) {
 
     const controller = useMemo( () => {
-        return new LayoutController()
+        const controller = new LayoutController();
+        controller.setLayoutTree(layout);
+        controller.setRegistry(registry);
+        return controller;
     }, []);
 
     return (
