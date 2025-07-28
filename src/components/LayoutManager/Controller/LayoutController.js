@@ -1,8 +1,8 @@
 
 /**
- * This class exposes functions that allow the containers to register themselves
- * with the controller. It also creates a worker to execute layout related tasks 
- * and exposes functionality to update the container sizes with the updated values.
+ * This class exposes functions that allow the containers to register and unregister
+ * themselves with the controller. It also creates a worker to execute layout related  
+ * tasks and exposes functionality to update the container sizes with the updated values.
  * 
  * This class currently only contains the skeleton, more functionality will be added soon.
  * 
