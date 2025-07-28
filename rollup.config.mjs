@@ -40,6 +40,10 @@ export default [
             file: 'dist/esm/LayoutWorker.js',
             format: 'esm',
         },
-        plugins: [],
+        plugins: [
+            resolve({
+                extensions: ['.js', '.jsx'],
+            })
+        ]
     }
 ]
