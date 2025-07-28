@@ -78,6 +78,7 @@ export class LayoutController {
             this.worker.terminate();
             this.worker = null;
         }
+        this.containers = {};
     }
 
     /**
