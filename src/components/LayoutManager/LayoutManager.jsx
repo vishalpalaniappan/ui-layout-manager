@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import PropTypes from 'prop-types';
 import { Container } from "./Components/Container/Container";
 import ComponentRegistryContext from "./Providers/ComponentRegistryContext";
+import { LayoutControllerProvider } from "./Providers/LayoutProvider";
 
 import "./LayoutManager.scss";
 
@@ -14,20 +15,15 @@ import "./LayoutManager.scss";
  * @return {JSX}
  */
 export const LayoutManager = ({ldf, registry}) => {
-    const [rootContainer, setRootContainer] = useState(null);  
-
-    useEffect(() => {
-        if (ldf) {
-            setRootContainer(<Container layout={ldf.layout}/>);
-        }
-    }, [ldf]);
 
     return (
-        <ComponentRegistryContext.Provider value={{registry}}>
-            <div className="background">
-                {rootContainer}
-            </div>
-        </ComponentRegistryContext.Provider>
+        <LayoutControllerProvider layout={ldf}>
+            <ComponentRegistryContext.Provider value={{registry}}>
+                <div className="background">
+                    {ldf? <Container layout={ldf.layout} /> : null}
+                </div>
+            </ComponentRegistryContext.Provider>
+        </LayoutControllerProvider> 
     );
 }
 

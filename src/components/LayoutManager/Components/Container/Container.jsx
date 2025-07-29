@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import { HandleBar } from "../HandleBar/HandleBar";
 import { LazyLoader } from "../LazyLoader/LazyLoader";
+import { useLayoutController } from "../../Providers/LayoutProvider";
 
 import { calculateInitialSizes } from "./calculateSizes";
 
@@ -14,6 +15,8 @@ import "./Container.scss"
  * @return {JSX}
  */
 export const Container = ({layout}) => {
+
+    const controller = useLayoutController();
 
     const [childDivs, setchildDivs] = useState();
 
@@ -175,8 +178,25 @@ export const Container = ({layout}) => {
                 setContainerClass("relative-container-column");
                 processLayout(layout,"height","width");
             }
+
+            const api = {
+                setSize: (width, height) => {
+
+                },
+                setStyle: (prop, value) => {
+
+                },
+                printSize: () => {
+                    console.log(layout.id, containerRef.current.getBoundingClientRect());
+                }
+            }
+            controller.registerContainer(layout.id, api);
+
+            return () => {
+                controller.unregisterContainer(layout.id);
+            }
         }
-    }, [layout]);
+    }, [layout, controller]);
 
     return (
         <div ref={containerRef} className={containerClass}>
