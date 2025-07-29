@@ -11,9 +11,7 @@ const LayoutContext = createContext(null);
 export function LayoutControllerProvider({ layout, children }) {
 
     const controller = useMemo( () => {
-        const controller = new LayoutController();
-        controller.setLayoutTree(layout);
-        return controller;
+        return new LayoutController(layout);
     }, [layout]);
 
     useEffect(() => {

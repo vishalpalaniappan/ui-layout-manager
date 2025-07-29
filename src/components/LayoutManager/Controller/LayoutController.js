@@ -12,8 +12,9 @@ export class LayoutController {
     /**
      * Constructor
      */
-    constructor() {
+    constructor(layout) {
         this.containers = {};
+        this.ldf = layout;
 
         try {
             this.worker = new Worker(
