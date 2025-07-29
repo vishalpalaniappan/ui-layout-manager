@@ -4,14 +4,29 @@ import PropTypes from 'prop-types';
 import "./HandleBar.scss";
 
 /**
- * 
+ * @callback getSiblings
+ * @param {number} index - Index of the handle bar in children array to get siblings.
+ * @returns {Array}
  */
-export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, ref) => {
+
+/**
+ * @typedef {Object} HandleBarProps
+ * @property {string} orientation - Orientation of the handle bar
+ * @property {getSiblings} getSiblings - Callback to get the siblings of handle bar
+ * @property {number} index - Index of the handle bar
+ */
+
+/**
+ * @param {HandleBarProps} props
+ * @param {React.Ref<any>} ref
+ * @returns {React.ReactElement}
+ */
+const HandleBarComponent = ({orientation, getSiblings, index}, ref) => {
 
     const MIN_PANEL_SIZE = 50;
 
-    const dragStartInfo = useRef()
-    const handle = useRef();
+    const dragStartInfo = useRef(null)
+    const handle = useRef(null);
 
     /**
      * This function saves the relevant info on mouse down.
@@ -21,7 +36,7 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
      * - Get references to parent container and both siblings using callback to parent
      * - Saves the initial size of the siblings and parents 
      * 
-     * @param {Event} e 
+     * @param {React.MouseEvent<HTMLDivElement>} e 
      */
     const handleMouseDown = (e) => {
         e.preventDefault();
@@ -114,7 +129,10 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
             }
         </React.Fragment>
     );
-});
+};
+
+/** @type {React.ForwardRefExoticComponent<React.PropsWithoutRef<HandleBarProps> & React.RefAttributes<any>>} */
+export const HandleBar = React.forwardRef(HandleBarComponent);
 
 HandleBar.propTypes = {
     orientation: PropTypes.string,
