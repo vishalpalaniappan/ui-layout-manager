@@ -5,14 +5,14 @@ import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
  * themselves with the controller. It also creates a worker to execute layout related  
  * tasks and exposes functionality to update the container sizes with the updated values.
  * 
- * This class currently only contains the skeleton, more functionality will be added soon.
- * 
  * @class LayoutController
  */
 export class LayoutController {
 
     /**
      * Constructor
+     * 
+     * @param {Object} layout - Layout Definition JSON object
      */
     constructor(layout) {
         this.containers = {};
