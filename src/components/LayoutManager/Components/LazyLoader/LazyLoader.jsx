@@ -1,4 +1,4 @@
-import { lazy, useMemo, Suspense, useContext } from "react";
+import React, { lazy, useMemo, Suspense, useContext } from "react";
 import PropTypes from 'prop-types';
 import RegistryContext from "../../Providers/ComponentRegistryContext";
 
@@ -9,9 +9,10 @@ import "./LazyLoader.scss"
  * specified in the ldf file.
  * 
  * @param {Object} content
- * @return {JSX}
+ * @return {React.ReactElement}
  */
 export const LazyLoader = ({content}) => {
+    // @ts-ignore
     const {registry} = useContext(RegistryContext);
 
     const LazyComponent = useMemo(() => {
