@@ -41,7 +41,8 @@ export const Container = ({layout}) => {
         const parentSize = containerRef.current.getBoundingClientRect()[dynamicProp];
 
         layout.children.forEach((child,index) => {
-            let style = {fixedProp: "100%"};
+            let style = {};
+            style[fixedProp] = "100%";
             let renderHandle;
 
             switch(child.type) {
@@ -76,9 +77,9 @@ export const Container = ({layout}) => {
             const childDiv = <div key={childRefIndex} ref={(el) => {(childRefs.current[childRefIndex] = el)}} style={style}>
                 {
                     layout.childType == "row" ? 
-                    <div className="rowContainer"> {getChildJsx(child)}</div>:
+                    <div className="row-container"> {getChildJsx(child)}</div>:
                     layout.childType == "column" ?
-                    <div className="columnContainer">{getChildJsx(child)}</div>:
+                    <div className="column-container">{getChildJsx(child)}</div>:
                     null
                 }
             </div>
