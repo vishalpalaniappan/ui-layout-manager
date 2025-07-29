@@ -5,6 +5,8 @@
  */
 self.onmessage = function (e) {
 
+    //TODO: Implement layout management logic in worker.
+    
     if (e.data == "hello") {
         self.postMessage("hello from worker!")
     }
