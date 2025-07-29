@@ -17,7 +17,7 @@ import "./LayoutManager.scss";
 export const LayoutManager = ({ldf, registry}) => {
 
     return (
-        <LayoutControllerProvider layout={ldf} registry={registry}>
+        <LayoutControllerProvider layout={ldf}>
             <ComponentRegistryContext.Provider value={{registry}}>
                 <div className="background">
                     {ldf? <Container layout={ldf.layout} /> : null}

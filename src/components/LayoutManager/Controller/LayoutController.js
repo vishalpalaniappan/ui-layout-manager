@@ -37,15 +37,6 @@ export class LayoutController {
         this.ldf = tree;
     }
 
-
-    /**
-     * Sets the registry used to lazy load the components
-     * @param {Object} registry 
-     */
-    setRegistry(registry) {
-        this.registry = registry;
-    }
-
     /**
      * Allows containers to register themselves with the controller.
      * @param {String} id 
