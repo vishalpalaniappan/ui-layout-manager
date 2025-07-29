@@ -1,4 +1,5 @@
 import { LayoutEditor } from "./LayoutEditor";
+import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
 
 /**
  * This function receives messages from the main thread and executes
@@ -12,15 +13,12 @@ self.onmessage = function (e) {
     try {
         const args = e.data.args;
         switch (e.data.code) {
-            case "INIT":
+            case LAYOUT_WORKER_PROTOCOL.INITIALIZE:
                 editor = new LayoutEditor(e.data.args.ldf);
                 break;
-            case "SIZE":
+            case LAYOUT_WORKER_PROTOCOL.RENDER_NODE:
                 const d = e.data.args;
                 editor.processTree(d.id, d.width, d.height);
-                break;
-            case "HELLO":
-                self.postMessage("hello from worker!")
                 break;
             default:
                 break;
