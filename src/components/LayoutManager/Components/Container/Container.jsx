@@ -98,6 +98,21 @@ export const Container = ({layout}) => {
         setChildDivs(childElements);
     }
 
+
+    /**
+     * This function lazy loads a component. Soon, this will render 
+     * a panel component that will add toolbars etc.
+     * @param {Object} layout 
+     */
+    const createPanel = (layout) => {
+        const childRefIndex = createRefAndGetIndex();
+        setChildDivs(
+            <div key={childRefIndex}  ref={(el) => {(childRefs.current[childRefIndex] = el)}}>
+                <LazyLoader content={layout} />
+            </div>
+        );
+    }
+
     /**
      * This function adds a child ref to the ref array and returns the index
      * @returns {Number} 
@@ -132,12 +147,7 @@ export const Container = ({layout}) => {
                 processLayout(layout,"height","width");
             } else {
                 setContainerClass("panel-container");
-                const childRefIndex = createRefAndGetIndex();
-                setChildDivs(
-                    <div key={childRefIndex}  ref={(el) => {(childRefs.current[childRefIndex] = el)}}>
-                        <LazyLoader content={layout} />
-                    </div>
-                );
+                createPanel(layout);
             }
 
             const api = {
