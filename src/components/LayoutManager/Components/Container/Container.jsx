@@ -59,7 +59,7 @@ export const Container = ({layout}) => {
      * @param {String} dynamicProp Style prop to set dynamically from ldf file.
      */
     const processLayout = (layout, fixedProp, dynamicProp) => {
-        const _childDivs = [];
+        const childDivs = [];
 
         layout = calculateInitialSizes(containerRef, layout, dynamicProp);
 
@@ -106,35 +106,24 @@ export const Container = ({layout}) => {
                     null
                 }
             </div>
+            childDivs.push(childDiv);
 
             // Add new ref for handlebar, get index and update size to account for handle bar
-            let postHandleDiv;
             if (renderHandle) {
                 style[dynamicProp] = (child[dynamicProp] - handleBarSizeInPercentage)+ "%";
 
                 const handleRefIndex = createRefAndGetIndex();
-                postHandleDiv = <HandleBar key={index + "handle"}
+                const postHandleDiv = <HandleBar key={index + "handle"}
                     index={handleRefIndex} 
                     getSiblings={getSiblings} 
                     orientation={layout.childType}
                     ref={(el) => (childRefs.current[handleRefIndex] = el)}
                 />
+                childDivs.push(postHandleDiv);
             }
-
-            const childElements = [childDiv, postHandleDiv]
-
-            _childDivs.push(
-                <React.Fragment key={index}>
-                    {childElements}
-                </React.Fragment>
-            );
         });
 
-        setChildDivs(
-            <React.Fragment>
-                {_childDivs}
-            </React.Fragment>
-        );
+        setChildDivs(childDivs);
     }
 
     /**
