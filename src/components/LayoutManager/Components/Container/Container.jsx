@@ -12,17 +12,19 @@ import "./Container.scss"
  * Renders each of the children for the current container.
  * 
  * @param {Object} layout The layout of this container including its children.
- * @return {JSX}
+ * @return {React.ReactElement}
  */
 export const Container = ({layout}) => {
 
     const controller = useLayoutController();
 
-    const [childDivs, setchildDivs] = useState();
+    const [childDivs, setChildDivs] = useState(null);
 
     const [containerClass, setContainerClass] = useState("relative-container");
 
-    const containerRef = useRef();
+    const containerRef = useRef(null);
+
+    /** @type {React.RefObject<HTMLDivElement[]>} */
     const childRefs = useRef([]);
 
     const HANDLE_SIZE_PX = 1;
@@ -95,7 +97,7 @@ export const Container = ({layout}) => {
 
             // Create child div and attach ref
             const childRefIndex = createRefAndGetIndex();
-            const childDiv = <div key={childRefIndex} ref={(el) => (childRefs.current[childRefIndex] = el)} style={style}>
+            const childDiv = <div key={childRefIndex} ref={(el) => {(childRefs.current[childRefIndex] = el)}} style={style}>
                 {
                     layout.childType == "row" ? 
                     <div className="rowContainer"> {getChildJsx(child)}</div>:
@@ -128,7 +130,11 @@ export const Container = ({layout}) => {
             );
         });
 
-        setchildDivs(<>{_childDivs}</>);
+        setChildDivs(
+            <React.Fragment>
+                {_childDivs}
+            </React.Fragment>
+        );
     }
 
     /**
@@ -136,7 +142,7 @@ export const Container = ({layout}) => {
      * @returns {Number} 
      */
     const createRefAndGetIndex = () => {
-        childRefs.current.push(React.createRef());
+        childRefs.current.push(React.createRef().current);
         return childRefs.current.length - 1;
     }
 
@@ -161,7 +167,7 @@ export const Container = ({layout}) => {
      * Index refers to the position of the handle bar in the ref array, so the
      * siblings will be one position before and one position after it.
      * @param {Number} index 
-     * @returns 
+     * @returns {[HTMLElement, HTMLElement, HTMLElement]}
      */
     const getSiblings = (index) => {
         const sibling1 = childRefs.current[index - 1];
