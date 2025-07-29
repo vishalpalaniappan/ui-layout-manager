@@ -72,14 +72,11 @@ export const Container = ({layout}) => {
 
             // Create child div and attach ref
             const childRefIndex = createRefAndGetIndex();
+            const className = layout.childType + "-container"
             const childDiv = <div key={childRefIndex} ref={(el) => {(childRefs.current[childRefIndex] = el)}} style={style}>
-                {
-                    layout.childType == "row" ? 
-                    <div className="row-container"> {getChildJsx(child)}</div>:
-                    layout.childType == "column" ?
-                    <div className="column-container">{getChildJsx(child)}</div>:
-                    null
-                }
+                <div className={className}> 
+                    <Container layout={child}/>
+                </div>
             </div>
             childElements.push(childDiv);
 
@@ -111,20 +108,6 @@ export const Container = ({layout}) => {
     }
 
     /**
-     * This function returns a container to render the children if they exist 
-     * or lazy loads the component if there are no children.
-     * @param {Object} child 
-     * @returns 
-     */
-    const getChildJsx = (child) => {
-        if ("children" in child) {
-            return <Container layout={child}/>;
-        } else {
-            return <Container layout={child} />;
-        }
-    }
-
-    /**
      * This function is called by the handlebar component to get the references
      * to the siblings before and after the handle bar in the ref array. 
      * 
@@ -141,8 +124,6 @@ export const Container = ({layout}) => {
 
     useEffect(() => {
         if (layout) {
-
-
             if (layout.childType === "row") {
                 setContainerClass("relative-container-row");
                 processLayout(layout,"width","height");
