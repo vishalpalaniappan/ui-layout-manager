@@ -14,6 +14,7 @@ self.onmessage = function (e) {
         const args = e.data.args;
         switch (e.data.code) {
             case LAYOUT_WORKER_PROTOCOL.INITIALIZE:
+                /** @type {LayoutEditor} */
                 editor = new LayoutEditor(e.data.args.ldf);
                 break;
             case LAYOUT_WORKER_PROTOCOL.RENDER_NODE:
