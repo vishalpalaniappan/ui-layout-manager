@@ -4,8 +4,6 @@ import { HandleBar } from "../HandleBar/HandleBar";
 import { LazyLoader } from "../LazyLoader/LazyLoader";
 import { useLayoutController } from "../../Providers/LayoutProvider";
 
-import { calculateInitialSizes } from "./calculateSizes";
-
 import "./Container.scss"
 
 /**
@@ -37,7 +35,7 @@ export const Container = ({layout}) => {
      * @param {String} dynamicProp Style prop to set dynamically from ldf file.
      */
     const processLayout = (layout, fixedProp, dynamicProp) => {
-        const childDivs = [];
+        const childElements = [];
         const parentSize = containerRef.current.getBoundingClientRect()[dynamicProp];
 
         layout.children.forEach((child,index) => {
@@ -83,7 +81,7 @@ export const Container = ({layout}) => {
                     null
                 }
             </div>
-            childDivs.push(childDiv);
+            childElements.push(childDiv);
 
             // Add new ref for handlebar, get index and update size to account for handle bar
             if (renderHandle) {
@@ -96,11 +94,11 @@ export const Container = ({layout}) => {
                     orientation={layout.childType}
                     ref={(el) => (childRefs.current[handleRefIndex] = el)}
                 />
-                childDivs.push(postHandleDiv);
+                childElements.push(postHandleDiv);
             }
         });
 
-        setChildDivs(childDivs);
+        setChildDivs(childElements);
     }
 
     /**
@@ -122,7 +120,7 @@ export const Container = ({layout}) => {
         if ("children" in child) {
             return <Container layout={child}/>;
         } else {
-            return <LazyLoader content={child} />;
+            return <Container layout={child} />;
         }
     }
 
@@ -143,12 +141,22 @@ export const Container = ({layout}) => {
 
     useEffect(() => {
         if (layout) {
+
+
             if (layout.childType === "row") {
                 setContainerClass("relative-container-row");
                 processLayout(layout,"width","height");
             } else if (layout.childType === "column") {
                 setContainerClass("relative-container-column");
                 processLayout(layout,"height","width");
+            } else {
+                setContainerClass("panel-container");
+                const childRefIndex = createRefAndGetIndex();
+                setChildDivs(
+                    <div key={childRefIndex}  ref={(el) => {(childRefs.current[childRefIndex] = el)}}>
+                        <LazyLoader content={layout} />
+                    </div>
+                );
             }
 
             const api = {
