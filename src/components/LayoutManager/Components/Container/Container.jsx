@@ -183,6 +183,9 @@ export const Container = ({layout}) => {
                 setSize: (width, height) => {
 
                 },
+                getSize: (width, height) => {
+                    return containerRef.current.getBoundingClientRect();
+                },
                 setStyle: (prop, value) => {
 
                 },
