@@ -44,7 +44,6 @@ export class LayoutController {
         });
     }
 
-
     /**
      * Sets the layout tree used to render the containers.
      * @param {Object} tree 
@@ -66,7 +65,6 @@ export class LayoutController {
         }
     }
 
-
     /**
      * Process the layout information for the subtree
      * of the node with the provided id. The starting
@@ -85,8 +83,6 @@ export class LayoutController {
             }
         );
     }
-
-    
     
     /**
      * Allows containers to unregister themselves with the controller.
