@@ -30,29 +30,7 @@ export const Container = ({layout}) => {
     const HANDLE_SIZE_PX = 1;
    
     /**
-     * This function loops through the children, sets the style and 
-     * adds the child component to the list to be rendered. 
-     * 
-     * The function accepts two arguments, fixedProp and dynamicProp.
-     * This indicates which style property should be set to 100%
-     * and which style prop should be loaded from the LDF file.
-     * For example, if the child is a column, then the width should
-     * be dynamic and the height should be fixed (100%);
-     * 
-     * It sets the style based on the child type:
-     * - "percent": apply relative layout in percentage
-     * - "fixed": set fixed size of child in pixels
-     * - "fill": fills the rest of the container
-     * 
-     * Fixed can only be used with fill. You can have one
-     * fixed column before and one after the fill. 
-     * 
-     * Valid Combinations:
-     * [percent][percent][percent]
-     * [percent (with initial size)][percent][percent (with initial size)]
-     * [fixed][fill][fixed]
-     * [fixed][fill]
-     * [fill][fixed]
+     *
      * 
      * @param {Object} layout 
      * @param {String} fixedProp Style prop that is fixed to 100% based on child type.
@@ -60,29 +38,27 @@ export const Container = ({layout}) => {
      */
     const processLayout = (layout, fixedProp, dynamicProp) => {
         const childDivs = [];
-
-        layout = calculateInitialSizes(containerRef, layout, dynamicProp);
-
         const parentSize = containerRef.current.getBoundingClientRect()[dynamicProp];
-        const handleBarSizeInPercentage = (HANDLE_SIZE_PX/parentSize) *100;
 
         layout.children.forEach((child,index) => {
-            let style = {};
+            let style = {fixedProp: "100%"};
             let renderHandle;
 
             switch(child.type) {
+                case "px":
+                    style[dynamicProp] = child[dynamicProp];
+                    renderHandle = (index < layout.children.length - 1);
+                    break;
                 case "percent":
-                    style[fixedProp] = "100%";
-                    style[dynamicProp] = child[dynamicProp] + "%";
+                    const sizeInPx = (child[dynamicProp]/100) * parentSize;
+                    style[dynamicProp] = sizeInPx;
                     renderHandle = (index < layout.children.length - 1);
                     break;
                 case "fixed":
-                    style[fixedProp] = "100%";
                     style[dynamicProp] = child[dynamicProp];
                     renderHandle = false;
                     break;
                 case "fill":
-                    style[fixedProp] = "100%";
                     style.flexGrow = 1;
                     renderHandle = false;
                     break;
@@ -110,7 +86,7 @@ export const Container = ({layout}) => {
 
             // Add new ref for handlebar, get index and update size to account for handle bar
             if (renderHandle) {
-                style[dynamicProp] = (child[dynamicProp] - handleBarSizeInPercentage)+ "%";
+                style[dynamicProp] = style[dynamicProp] - HANDLE_SIZE_PX;
 
                 const handleRefIndex = createRefAndGetIndex();
                 const postHandleDiv = <HandleBar key={index + "handle"}
