@@ -19,7 +19,7 @@ self.onmessage = function (e) {
                 break;
             case LAYOUT_WORKER_PROTOCOL.RENDER_NODE:
                 const d = e.data.args;
-                editor.processTree(d.id, d.width, d.height);
+                editor.processSubTree(d.id, d.width, d.height);
                 break;
             default:
                 break;

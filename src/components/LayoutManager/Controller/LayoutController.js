@@ -98,7 +98,16 @@ export class LayoutController {
      */
     handleWorkerMessage(event) {
         const data = event.data;
-        console.log(data);
+        console.log(data, this.containers);
+        switch(data.type) {
+            case "style":
+                console.log("setting style");
+                const container = this.containers[data.parentId];
+                console.log(container);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
