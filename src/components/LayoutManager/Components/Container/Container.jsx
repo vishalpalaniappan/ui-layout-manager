@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { HandleBar } from "../HandleBar/HandleBar";
 import { LazyLoader } from "../LazyLoader/LazyLoader";
 import { useLayoutController } from "../../Providers/LayoutProvider";
-import { RefContext } from "../../Providers/RefProvider";
 
 import "./Container.scss"
 /**
@@ -13,14 +12,6 @@ import "./Container.scss"
  * @return {React.ReactElement}
  */
 export const Container = ({layout}) => {
-
-    const parentRefs = useContext(RefContext);
-
-    useEffect(() => {
-        if (parentRefs === null) {
-            console.log("Rendering root container.");   
-        }
-    }, [parentRefs]);
 
     const controller = useLayoutController();
 
@@ -118,11 +109,9 @@ export const Container = ({layout}) => {
     }, [layout, controller]);
 
     return (
-        <RefContext.Provider value={childRefs.current}>
-            <div ref={containerRef} className={containerClass}>
-                {childDivs}
-            </div>
-        </RefContext.Provider>
+        <div ref={containerRef} className={containerClass}>
+            {childDivs}
+        </div>
     );
 }
 

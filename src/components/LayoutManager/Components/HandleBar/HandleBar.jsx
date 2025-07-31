@@ -7,8 +7,11 @@ import "./HandleBar.scss";
 
 /**
  * @typedef {Object} HandleBarProps
- * @property {string} orientation - Orientation of the handle bar
- * @property {number} index - Index of the handle bar
+ * @property {Map} siblingRefs - Reference to sibling container.
+ * @property {HTMLElement} parentRef - Reference to parent container.
+ * @property {String} id1 - Id of the first container.
+ * @property {String} id2 - Id of the second container.
+ * @property {String} orientation - Orientation of the handle bar
  */
 
 /**
@@ -16,13 +19,19 @@ import "./HandleBar.scss";
  * @param {React.Ref<any>} ref
  * @returns {React.ReactElement}
  */
-const HandleBarComponent = ({orientation, index}, ref) => {
+const HandleBarComponent = ({orientation, siblingRefs, parentRef, id1, id2}, ref) => {
 
-    const parentRefs = useContext(RefContext);
+    // const parentRefs = useContext(RefContext);
 
     useEffect(() => {
-        console.log(parentRefs);
-    }, [parentRefs]);
+        if (siblingRefs) {
+            console.log(siblingRefs, id1, id2);
+
+            console.log(siblingRefs.get(id1));
+            console.log(siblingRefs.get(id2));
+
+        }
+    }, [siblingRefs]);
 
     const MIN_PANEL_SIZE = 50;
 
@@ -45,7 +54,8 @@ const HandleBarComponent = ({orientation, index}, ref) => {
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
 
-        const [parentRef, sibling1, sibling2] = getSiblings(index);
+        const sibling1 = siblingRefs.get(id1);
+        const sibling2 = siblingRefs.get(id2);
 
         let downKey, propKey, hoverClass;
         if (orientation === "row") {
@@ -136,7 +146,5 @@ const HandleBarComponent = ({orientation, index}, ref) => {
 export const HandleBar = React.forwardRef(HandleBarComponent);
 
 HandleBar.propTypes = {
-    orientation: PropTypes.string,
-    getSiblings: PropTypes.func,
-    index: PropTypes.number
+    orientation: PropTypes.string
 }
