@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import PropTypes from 'prop-types';
-import { RefContext } from "../../Providers/RefProvider";
 
 import "./HandleBar.scss";
 
