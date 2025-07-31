@@ -12,11 +12,15 @@ export class LayoutController {
     /**
      * Constructor
      * 
-     * @param {Object} layout - Layout Definition JSON object
+     * @param {Object} ldf - Layout Definition JSON object
      */
-    constructor(layout) {
+    constructor(ldf) {
         this.containers = {};
-        this.ldf = layout;
+        this.ldf = ldf;
+        this.numberOfContainers = 0;
+        this.registeredContainers = 0;
+
+        this.getNumberOfContainers(ldf.layout);
 
         try {
             this.worker = new Worker(
@@ -25,12 +29,25 @@ export class LayoutController {
             );
             this.worker.onmessage = this.handleWorkerMessage.bind(this);
             this.worker.onerror = (error) => console.error('Worker error:', error);
-            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE, {ldf: layout})
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE, {ldf: ldf})
             
         } catch (error) {
             console.error('Failed to create worker:', error);
         }
     }
+
+    /**
+     * Counts the number of containers in the LDF file.
+     * @param {Object} node 
+     */
+    getNumberOfContainers (node) {
+        this.numberOfContainers += 1;
+        if (node.children && node.children.length > 0) {
+            for (const child of node.children) {
+                this.getNumberOfContainers(child)
+            }
+        }
+    };
 
     /**
      * Sends message to worker with the provided arguments.
@@ -58,10 +75,15 @@ export class LayoutController {
      * @param {Object} containerApi 
      */
     registerContainer(id, containerApi) {
-        this.containers[id] = containerApi;
-        if (id === "root") {
-            const bounds = containerApi.getSize();
-            this.processTreeFromId(id, bounds.width, bounds.height);
+        if (id in this.containers) {
+            this.containers[id] = containerApi;
+        } else {
+            this.containers[id] = containerApi;
+            this.registeredContainers += 1
+        }
+        if (this.registeredContainers === this.numberOfContainers) {
+            const bounds = this.containers["root"].getSize();
+            this.processTreeFromId("root", bounds.width, bounds.height);
         }
     }
 
@@ -98,12 +120,10 @@ export class LayoutController {
      */
     handleWorkerMessage(event) {
         const data = event.data;
-        console.log(data, this.containers);
         switch(data.type) {
             case "style":
-                console.log("setting style");
                 const container = this.containers[data.parentId];
-                console.log(container);
+                container.setSize(data);
                 break;
             default:
                 break;
@@ -118,7 +138,6 @@ export class LayoutController {
             this.worker.terminate();
             this.worker = null;
         }
-        this.containers = {};
     }
 
     /**

@@ -18,6 +18,8 @@ export class LayoutEditor {
      * @param {Number} height 
      */
     processSubTree (parentId, width, height) {
+
+        console.log(width, height);
         const node = this.findTreeById(this.ldf.layout, parentId);
 
         if (!("children" in node) || node.children.length == 0) {
@@ -38,24 +40,29 @@ export class LayoutEditor {
         node.children.forEach((child,index) => {
             let style = {};
             style[fixedProp] = "100%";
+            this.sendTransformation(parentId, child.id, "style", fixedProp, "100%");
             let renderHandle;
 
             switch(child.type) {
                 case "px":
                     style[dynamicProp] = child[dynamicProp];
+                    this.sendTransformation(parentId, child.id, "style", dynamicProp, child[dynamicProp]+ "px");
                     renderHandle = (index < node.children.length - 1);
                     break;
                 case "percent":
                     const sizeInPx = (child[dynamicProp]/100) * parentSize;
                     style[dynamicProp] = sizeInPx;
+                    this.sendTransformation(parentId, child.id, "style", dynamicProp, sizeInPx+ "px");
                     renderHandle = (index < node.children.length - 1);
                     break;
                 case "fixed":
                     style[dynamicProp] = child[dynamicProp];
+                    this.sendTransformation(parentId, child.id, "style", dynamicProp, child[dynamicProp] + "px");
                     renderHandle = false;
                     break;
                 case "fill":
                     style.flexGrow = 1;
+                    this.sendTransformation(parentId, child.id, "style", "flexGrow", 1);
                     renderHandle = false;
                     break;
                 default:
@@ -66,16 +73,23 @@ export class LayoutEditor {
             if ("background" in child) {
                 style["background"] = child.background;
                 this.sendTransformation(parentId, child.id, "style", "background", child.background);
+            } 
+
+            if ("children" in child) {
+                if (fixedProp === "height") {
+                    this.processSubTree(child.id, style["width"], height);
+                } else if (fixedProp === "width") {
+                    this.processSubTree(child.id, width, style["height"]);
+                }
             }
 
-            this.processSubTree(child.id, style["width"], style["height"]);
         });
 
     };
 
     sendTransformation (parentId, id, type, key, value) {
         postMessage({
-            parentId: id,
+            parentId: parentId,
             id: id,
             type: type,
             key: key,

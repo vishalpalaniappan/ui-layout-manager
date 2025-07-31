@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import PropTypes from 'prop-types';
 import { HandleBar } from "../HandleBar/HandleBar";
 import { LazyLoader } from "../LazyLoader/LazyLoader";
@@ -24,102 +24,56 @@ export const Container = ({layout}) => {
 
     /** @type {React.RefObject<HTMLDivElement[]>} */
     const childRefs = useRef([]);
+    
+    // Provide a stable callback with always-updated refs
+    const childRefsRef = useRef(childRefs.current);
+    childRefsRef.current = childRefs.current;
 
     const HANDLE_SIZE_PX = 1;
+
+    const setRefAtIndex = (index, id) => (el) => {
+        el.id = id;
+        childRefs.current[index] = el;
+    };
    
     /**
      *
      * 
      * @param {Object} layout 
-     * @param {String} fixedProp Style prop that is fixed to 100% based on child type.
-     * @param {String} dynamicProp Style prop to set dynamically from ldf file.
      */
-    const processLayout = (layout, fixedProp, dynamicProp) => {
+    const processLayout = (layout) => {
+        if (!("childType" in layout)) {
+            return  (
+                <div key={layout.id} ref={setRefAtIndex(0, layout.id)}>
+                    <LazyLoader content={layout} />
+                </div>
+            )
+        }
+
         const childElements = [];
-        const parentSize = containerRef.current.getBoundingClientRect()[dynamicProp];
-
+        
         layout.children.forEach((child,index) => {
-            let style = {};
-            style[fixedProp] = "100%";
-            let renderHandle;
-
-            switch(child.type) {
-                case "px":
-                    style[dynamicProp] = child[dynamicProp];
-                    renderHandle = (index < layout.children.length - 1);
-                    break;
-                case "percent":
-                    const sizeInPx = (child[dynamicProp]/100) * parentSize;
-                    style[dynamicProp] = sizeInPx;
-                    renderHandle = (index < layout.children.length - 1);
-                    break;
-                case "fixed":
-                    style[dynamicProp] = child[dynamicProp];
-                    renderHandle = false;
-                    break;
-                case "fill":
-                    style.flexGrow = 1;
-                    renderHandle = false;
-                    break;
-                default:
-                    console.error("Child layout type is invalid!")
-                    break;
-            }
-
-            if ("background" in child) {
-                style["background"] = child.background;
-            }
-
             // Create child div and attach ref
-            const childRefIndex = createRefAndGetIndex();
-            const className = layout.childType + "-container"
-            const childDiv = <div key={childRefIndex} ref={(el) => {(childRefs.current[childRefIndex] = el)}} style={style}>
-                <div className={className}> 
+            const childDiv = <div key={index} ref={setRefAtIndex(childElements.length, child.id)}>
+                <div className={layout.childType + "-container"}> 
                     <Container layout={child}/>
                 </div>
             </div>
             childElements.push(childDiv);
 
-            // Add new ref for handlebar, get index and update size to account for handle bar
-            if (renderHandle) {
-                style[dynamicProp] = style[dynamicProp] - HANDLE_SIZE_PX;
-
-                const handleRefIndex = createRefAndGetIndex();
-                const postHandleDiv = <HandleBar key={index + "handle"}
-                    index={handleRefIndex} 
+            if (index < layout.children.length - 1 && !(child.type == "fixed" || child.type == "fill")) {
+                // Add new ref for handlebar, get index and update size to account for handle bar
+                const handleDiv = <HandleBar key={index + "handle"}
+                    index={childRefs.current.length  + 1} 
                     getSiblings={getSiblings} 
                     orientation={layout.childType}
-                    ref={(el) => (childRefs.current[handleRefIndex] = el)}
+                    ref={setRefAtIndex(childElements.length, child.id)}
                 />
-                childElements.push(postHandleDiv);
+                childElements.push(handleDiv);
             }
         });
 
         setChildDivs(childElements);
-    }
-
-
-    /**
-     * This function lazy loads a component. Soon, this will render 
-     * a panel component that will add toolbars etc.
-     * @param {Object} layout 
-     */
-    const createPanel = (layout) => {
-        const childRefIndex = createRefAndGetIndex();
-        setChildDivs(
-            <div key={childRefIndex}  ref={(el) => {(childRefs.current[childRefIndex] = el)}}>
-                <LazyLoader content={layout} />
-            </div>
-        );
-    }
-
-    /**
-     * This function adds a child ref to the ref array and returns the index
-     * @returns {Number} 
-     */
-    const createRefAndGetIndex = () => {
-        childRefs.current.push(React.createRef().current);
-        return childRefs.current.length - 1;
     }
 
     /**
@@ -141,27 +95,27 @@ export const Container = ({layout}) => {
         if (layout) {
             if (layout.childType === "row") {
                 setContainerClass("relative-container-row");
-                processLayout(layout,"width","height");
+                processLayout(layout);
             } else if (layout.childType === "column") {
                 setContainerClass("relative-container-column");
-                processLayout(layout,"height","width");
+                processLayout(layout);
             } else {
                 setContainerClass("panel-container");
-                createPanel(layout);
+                // createPanel(layout);
             }
+            
+            processLayout(layout);
 
             const api = {
-                setSize: (width, height) => {
-
+                setSize: (data) => {
+                    childRefs.current.forEach((ref, index) => {
+                        if(String(ref.id) === String(data.id)) {
+                            ref[data.type][data.key] = data.value;
+                        }
+                    });
                 },
-                getSize: (width, height) => {
+                getSize: () => {
                     return containerRef.current.getBoundingClientRect();
-                },
-                setStyle: (prop, value) => {
-
-                },
-                printSize: () => {
-                    console.log(layout.id, containerRef.current.getBoundingClientRect());
                 }
             }
             controller.registerContainer(layout.id, api);
