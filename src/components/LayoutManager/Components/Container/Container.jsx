@@ -22,14 +22,14 @@ export const Container = ({layout}) => {
 
     const containerRef = useRef(null);
 
-    /** @type {React.RefObject<HTMLDivElement[]>} */
-    const childRefs = useRef([]);
+    /** @type {React.RefObject<Map<string, HTMLDivElement>>} */
+    const childRefs = useRef(new Map());
 
     const HANDLE_SIZE_PX = 1;
 
     const setRefAtIndex = (index, id) => (el) => {
         el.id = id;
-        childRefs.current[index] = el;
+        childRefs.current.set(el.id,el);
     };
    
     /**
@@ -61,11 +61,13 @@ export const Container = ({layout}) => {
             if (index < layout.children.length - 1 && !(child.type == "fixed" || child.type == "fill")) {
                 // Add new ref for handlebar, get index and update size to account for handle bar
                 childElements.push((
-                    <HandleBar key={index + "handle"}
-                    index={childRefs.current.length  + 1} 
-                    getSiblings={getSiblings} 
-                    orientation={layout.childType}
-                    ref={setRefAtIndex(childElements.length, child.id + "-handle")}/>
+                    <HandleBar 
+                        key={index + "handle"}
+                        index={childRefs.current.size  + 1} 
+                        getSiblings={getSiblings} 
+                        orientation={layout.childType}
+                        ref={setRefAtIndex(childElements.length, child.id + "-handle")}
+                    />
                 ));
             }
         });
@@ -102,11 +104,8 @@ export const Container = ({layout}) => {
 
             const api = {
                 setSize: (data) => {
-                    childRefs.current.forEach((ref, index) => {
-                        if(String(ref.id) === String(data.id)) {
-                            ref[data.type][data.key] = data.value;
-                        }
-                    });
+                    const targetRef = childRefs.current.get(String(data.id));
+                    targetRef[data.type][data.key] = data.value;
                 },
                 getSize: () => {
                     return containerRef.current.getBoundingClientRect();
