@@ -33,6 +33,7 @@ export const Container = ({layout}) => {
     const HANDLE_SIZE_PX = 1;
 
     const setRefAtIndex = (index, id) => (el) => {
+        if (!el) return;
         el.id = id;
         childRefs.current.set(el.id,el);
     };
@@ -52,7 +53,7 @@ export const Container = ({layout}) => {
         }
 
         const childElements = [];        
-        for(const index in layout.children) {
+        for (let index = 0; index < layout.children.length; index++) {
             const child = layout.children[index];
             // Add Container
             childElements.push((
@@ -66,12 +67,18 @@ export const Container = ({layout}) => {
             if (Number(index) == layout.children.length - 1 || ['fixed', 'fill'].includes(child.type)){
                 continue;
             }
+            
+            const id1 = child.id;
+            const id2 = layout.children[index + 1].id;
 
             // Add Handle Bar
             childElements.push((
                 <HandleBar 
                     key={index + "handle"}
-                    index={childRefs.current.size  + 1} 
+                    id1={String(id1)}
+                    id2={String(id2)}
+                    siblingRefs={childRefs.current}
+                    parentRef={containerRef.current}
                     orientation={layout.childType}
                     ref={setRefAtIndex(childElements.length, child.id + "-handle")}
                 />
