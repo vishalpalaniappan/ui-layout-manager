@@ -1,18 +1,13 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import PropTypes from 'prop-types';
+import { RefContext } from "../../Providers/RefProvider";
 
 import "./HandleBar.scss";
 
-/**
- * @callback getSiblings
- * @param {number} index - Index of the handle bar in children array to get siblings.
- * @returns {Array}
- */
 
 /**
  * @typedef {Object} HandleBarProps
  * @property {string} orientation - Orientation of the handle bar
- * @property {getSiblings} getSiblings - Callback to get the siblings of handle bar
  * @property {number} index - Index of the handle bar
  */
 
@@ -21,7 +16,13 @@ import "./HandleBar.scss";
  * @param {React.Ref<any>} ref
  * @returns {React.ReactElement}
  */
-const HandleBarComponent = ({orientation, getSiblings, index}, ref) => {
+const HandleBarComponent = ({orientation, index}, ref) => {
+
+    const parentRefs = useContext(RefContext);
+
+    useEffect(() => {
+        console.log(parentRefs);
+    }, [parentRefs]);
 
     const MIN_PANEL_SIZE = 50;
 

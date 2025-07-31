@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, createContext, useContext } from "react";
 import PropTypes from 'prop-types';
 import { HandleBar } from "../HandleBar/HandleBar";
 import { LazyLoader } from "../LazyLoader/LazyLoader";
 import { useLayoutController } from "../../Providers/LayoutProvider";
+import { RefContext } from "../../Providers/RefProvider";
 
 import "./Container.scss"
-
 /**
  * Renders each of the children for the current container.
  * 
@@ -14,15 +14,20 @@ import "./Container.scss"
  */
 export const Container = ({layout}) => {
 
+    const parentRefs = useContext(RefContext);
+
+    useEffect(() => {
+        if (parentRefs === null) {
+            console.log("Rendering root container.");   
+        }
+    }, [parentRefs]);
+
     const controller = useLayoutController();
 
     const [childDivs, setChildDivs] = useState(null);
-
     const [containerClass, setContainerClass] = useState("relative-container");
 
     const containerRef = useRef(null);
-
-    /** @type {React.RefObject<Map<string, HTMLDivElement>>} */
     const childRefs = useRef(new Map());
 
     const HANDLE_SIZE_PX = 1;
@@ -46,10 +51,10 @@ export const Container = ({layout}) => {
             )
         }
 
-        const childElements = [];
-        
-        layout.children.forEach((child,index) => {
-            // Create child div and attach ref
+        const childElements = [];        
+        for(const index in layout.children) {
+            const child = layout.children[index];
+            // Add Container
             childElements.push((
                 <div key={index} ref={setRefAtIndex(childElements.length, child.id)}>
                     <div className={layout.childType + "-container"}> 
@@ -58,36 +63,22 @@ export const Container = ({layout}) => {
                 </div>
             ));
 
-            if (index < layout.children.length - 1 && !(child.type == "fixed" || child.type == "fill")) {
-                // Add new ref for handlebar, get index and update size to account for handle bar
-                childElements.push((
-                    <HandleBar 
-                        key={index + "handle"}
-                        index={childRefs.current.size  + 1} 
-                        getSiblings={getSiblings} 
-                        orientation={layout.childType}
-                        ref={setRefAtIndex(childElements.length, child.id + "-handle")}
-                    />
-                ));
+            if (Number(index) == layout.children.length - 1 || ['fixed', 'fill'].includes(child.type)){
+                continue;
             }
-        });
+
+            // Add Handle Bar
+            childElements.push((
+                <HandleBar 
+                    key={index + "handle"}
+                    index={childRefs.current.size  + 1} 
+                    orientation={layout.childType}
+                    ref={setRefAtIndex(childElements.length, child.id + "-handle")}
+                />
+            ));
+        };
 
         return childElements;
-    }
-
-    /**
-     * This function is called by the handlebar component to get the references
-     * to the siblings before and after the handle bar in the ref array. 
-     * 
-     * Index refers to the position of the handle bar in the ref array, so the
-     * siblings will be one position before and one position after it.
-     * @param {Number} index 
-     * @returns {[HTMLElement, HTMLElement, HTMLElement]}
-     */
-    const getSiblings = (index) => {
-        const sibling1 = childRefs.current[index - 1];
-        const sibling2 = childRefs.current[index + 1];
-        return [containerRef.current, sibling1, sibling2];
     }
 
     useEffect(() => {
@@ -120,9 +111,11 @@ export const Container = ({layout}) => {
     }, [layout, controller]);
 
     return (
-        <div ref={containerRef} className={containerClass}>
-            {childDivs}
-        </div>
+        <RefContext.Provider value={childRefs.current}>
+            <div ref={containerRef} className={containerClass}>
+                {childDivs}
+            </div>
+        </RefContext.Provider>
     );
 }
 
