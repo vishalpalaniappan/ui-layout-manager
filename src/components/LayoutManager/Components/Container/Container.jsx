@@ -24,10 +24,6 @@ export const Container = ({layout}) => {
 
     /** @type {React.RefObject<HTMLDivElement[]>} */
     const childRefs = useRef([]);
-    
-    // Provide a stable callback with always-updated refs
-    const childRefsRef = useRef(childRefs.current);
-    childRefsRef.current = childRefs.current;
 
     const HANDLE_SIZE_PX = 1;
 
@@ -54,26 +50,27 @@ export const Container = ({layout}) => {
         
         layout.children.forEach((child,index) => {
             // Create child div and attach ref
-            const childDiv = <div key={index} ref={setRefAtIndex(childElements.length, child.id)}>
-                <div className={layout.childType + "-container"}> 
-                    <Container layout={child}/>
+            childElements.push((
+                <div key={index} ref={setRefAtIndex(childElements.length, child.id)}>
+                    <div className={layout.childType + "-container"}> 
+                        <Container layout={child}/>
+                    </div>
                 </div>
-            </div>
-            childElements.push(childDiv);
+            ));
 
             if (index < layout.children.length - 1 && !(child.type == "fixed" || child.type == "fill")) {
                 // Add new ref for handlebar, get index and update size to account for handle bar
-                const handleDiv = <HandleBar key={index + "handle"}
+                childElements.push((
+                    <HandleBar key={index + "handle"}
                     index={childRefs.current.length  + 1} 
                     getSiblings={getSiblings} 
                     orientation={layout.childType}
-                    ref={setRefAtIndex(childElements.length, child.id)}
-                />
-                childElements.push(handleDiv);
+                    ref={setRefAtIndex(childElements.length, child.id + "-handle")}/>
+                ));
             }
         });
 
-        setChildDivs(childElements);
+        return childElements;
     }
 
     /**
@@ -95,16 +92,13 @@ export const Container = ({layout}) => {
         if (layout) {
             if (layout.childType === "row") {
                 setContainerClass("relative-container-row");
-                processLayout(layout);
             } else if (layout.childType === "column") {
                 setContainerClass("relative-container-column");
-                processLayout(layout);
             } else {
                 setContainerClass("panel-container");
-                // createPanel(layout);
             }
             
-            processLayout(layout);
+            setChildDivs(processLayout(layout));
 
             const api = {
                 setSize: (data) => {
