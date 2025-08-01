@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import PropTypes from 'prop-types';
-import { Container } from "./Components/Container/Container";
+import { RootContainer } from "./Components/RootContainer/RootContainer";
 import ComponentRegistryContext from "./Providers/ComponentRegistryContext";
 import { LayoutControllerProvider } from "./Providers/LayoutProvider";
 
@@ -19,9 +19,7 @@ export const LayoutManager = ({ldf, registry}) => {
     return (
         <LayoutControllerProvider layout={ldf}>
             <ComponentRegistryContext.Provider value={{registry}}>
-                <div className="background">
-                    {ldf? <Container layout={ldf.layout} /> : null}
-                </div>
+                {ldf? <RootContainer layout={ldf.layout} /> : null}
             </ComponentRegistryContext.Provider>
         </LayoutControllerProvider> 
     );
