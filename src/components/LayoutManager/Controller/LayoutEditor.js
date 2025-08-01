@@ -91,11 +91,11 @@ export class LayoutEditor {
 
     /**
      * Passes a DOM transformation to the main thread.
-     * @param {String} parentId 
-     * @param {String} id 
-     * @param {String} type 
-     * @param {String} key 
-     * @param {String|Number} value 
+     * @param {String} parentId - ID of the parent node in the layout tree.
+     * @param {String} id - ID of node in the layout tree.
+     * @param {String} type - Type of transofrmation (ex. style)
+     * @param {String} key - Key of transformation (ex. width, height)
+     * @param {String|Number} value - Value of transformation (ex. 123, "#444444")
      */
     sendTransformation (parentId, id, type, key, value) {
         postMessage({
