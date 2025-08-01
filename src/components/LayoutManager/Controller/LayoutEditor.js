@@ -18,8 +18,6 @@ export class LayoutEditor {
      * @param {Number} height 
      */
     processSubTree (parentId, width, height) {
-
-        console.log(width, height);
         const node = this.findTreeById(this.ldf.layout, parentId);
 
         if (!("children" in node) || node.children.length == 0) {
@@ -46,8 +44,8 @@ export class LayoutEditor {
             let style = {};
             style[fixedProp] = size[fixedProp];
             this.sendTransformation(parentId, child.id, "style", fixedProp, style[fixedProp]);
-            let renderHandle;
 
+            let renderHandle;
             switch(child.type) {
                 case "px":
                     style[dynamicProp] = child[dynamicProp];
@@ -67,8 +65,13 @@ export class LayoutEditor {
                     break;
                 case "fill":
                     style.flexGrow = 1;
-                    style[dynamicProp] = (node.childType === "row")?height:width;
-                    this.sendTransformation(parentId, child.id, "style", "flexGrow", 1);
+                    // Subtract the size of the fixed siblings from parent size to get fill size
+                    // Supported: [fixed][fill] [fill][fixed] [fixed][fill][fixed]
+                    // Multiple fixed can be repeated: [fixed][fixed][fixed][fill]
+                    style[dynamicProp] = size[dynamicProp] - node.children.reduce((sum, child) => {
+                        return child[dynamicProp] != null ? sum + Number(child[dynamicProp]) : sum;
+                    }, 0);
+                    this.sendTransformation(parentId, child.id, "style", dynamicProp, style[dynamicProp] + "px");
                     renderHandle = false;
                     break;
                 default:
@@ -84,7 +87,6 @@ export class LayoutEditor {
             if ("children" in child) {
                 this.processSubTree(child.id, style.width, style.height);
             }
-
         });
 
     };
