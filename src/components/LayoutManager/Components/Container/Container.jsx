@@ -21,8 +21,6 @@ export const Container = ({layout}) => {
     const containerRef = useRef(null);
     const childRefs = useRef(new Map());
 
-    const HANDLE_SIZE_PX = 1;
-
     const setRefAtIndex = (index, id) => (el) => {
         if (!el) return;
         el.id = id;
@@ -79,6 +77,17 @@ export const Container = ({layout}) => {
         return childElements;
     }
 
+
+    const containerAPI = {
+        setSize: (data) => {
+            const targetRef = childRefs.current.get(String(data.id));
+            targetRef[data.type][data.key] = data.value;
+        },
+        getSize: () => {
+            return containerRef.current.getBoundingClientRect();
+        }
+    }
+
     useEffect(() => {
         if (layout) {
             if (layout.childType === "row") {
@@ -91,16 +100,7 @@ export const Container = ({layout}) => {
             
             setChildDivs(processLayout(layout));
 
-            const api = {
-                setSize: (data) => {
-                    const targetRef = childRefs.current.get(String(data.id));
-                    targetRef[data.type][data.key] = data.value;
-                },
-                getSize: () => {
-                    return containerRef.current.getBoundingClientRect();
-                }
-            }
-            controller.registerContainer(layout.id, api);
+            controller.registerContainer(layout.id, containerAPI);
 
             return () => {
                 controller.unregisterContainer(layout.id);
