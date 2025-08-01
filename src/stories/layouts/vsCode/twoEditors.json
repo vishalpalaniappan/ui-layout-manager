@@ -9,7 +9,7 @@
                 "id": 1,
                 "type": "fixed",
                 "background": "#3c3c3c",
-                "height": "30px"
+                "height": "30"
             },
             {
                 "id": 2,
@@ -20,7 +20,7 @@
                         "id": 3,
                         "type": "fixed",
                         "background": "#333333",
-                        "width": "65px"
+                        "width": "65"
                     },
                     {
                         "id": 4,
@@ -91,7 +91,7 @@
                 "id": 13,
                 "type": "fixed",
                 "background": "#007acc",
-                "height": "25px"
+                "height": "25"
             }
         ]
     }

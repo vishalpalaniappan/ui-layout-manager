@@ -9,7 +9,7 @@
                 "id": 1,
                 "type": "fixed",
                 "background": "#3c3c3c",
-                "height": "30px"
+                "height": "30"
             },
             {
                 "id": 2,
@@ -20,7 +20,7 @@
                         "id": 4,
                         "type": "fixed",
                         "background": "#333333",
-                        "width": "65px"
+                        "width": "65"
                     },
                     {
                         "id": 5,
@@ -74,7 +74,7 @@
                                 "background":"#1e1e1e",
                                 "component": "Flow",
                                 "type": "percent",
-                                "initialSizePx": 400,
+                                "initialSize": 400,
                                 "height": 50
                             }
                         ]
@@ -85,7 +85,7 @@
                 "id": 12,
                 "type": "fixed",
                 "background": "#007acc",
-                "height": "25px"
+                "height": "25"
             }
         ]
     }

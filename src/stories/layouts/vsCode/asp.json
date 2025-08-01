@@ -9,7 +9,7 @@
                 "id": 1,
                 "type": "fixed",
                 "background": "#3c3c3c",
-                "height": "30px"
+                "height": "30"
             },
             {
                 "id": 2,
@@ -33,7 +33,7 @@
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
-                                        "initialSizePx": 300,
+                                        "initialSize": 300,
                                         "childType": "row",
                                         "children": [
                                             {
@@ -71,7 +71,7 @@
                                         "background": "#252526",
                                         "type": "percent",
                                         "width": 20,
-                                        "initialSizePx": 300,
+                                        "initialSize": 300,
                                         "childType": "row",
                                         "children": [
                                             {
@@ -113,7 +113,7 @@
                 "id": 15,
                 "type": "fixed",
                 "background": "#007acc",
-                "height": "25px"
+                "height": "25"
             }
         ]
     }
