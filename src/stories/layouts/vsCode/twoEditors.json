@@ -1,7 +1,7 @@
 {
     "title": "Two Editors",
     "layout": {
-        "id": 0,
+        "id": "root",
         "type": "root",
         "childType": "row",
         "children": [
