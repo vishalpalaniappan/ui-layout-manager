@@ -9,7 +9,6 @@ import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
 let editor;
 self.onmessage = function (e) {
 
-    console.log(e.data);   
     try {
         const args = e.data.args;
         switch (e.data.code) {
@@ -19,7 +18,7 @@ self.onmessage = function (e) {
                 break;
             case LAYOUT_WORKER_PROTOCOL.RENDER_NODE:
                 const d = e.data.args;
-                editor.processSubTree(d.id, d.width, d.height);
+                editor.processNode(d.id, d.width, d.height);
                 break;
             default:
                 break;

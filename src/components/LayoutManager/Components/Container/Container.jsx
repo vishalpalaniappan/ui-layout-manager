@@ -11,20 +11,24 @@ import "./Container.scss"
  * @param {Object} layout The layout of this container including its children.
  * @return {React.ReactElement}
  */
-export const Container = ({layout}) => {
+export const Container = ({layout, handleBarType}) => {
 
     const controller = useLayoutController();
 
     const [childDivs, setChildDivs] = useState(null);
-    const [containerClass, setContainerClass] = useState("relative-container");
 
     const containerRef = useRef(null);
     const childRefs = useRef(new Map());
 
-    const setRefAtIndex = (index, id) => (el) => {
+    /**
+     * Sets a reference to the provided element using the provided id
+     * @param {String} id 
+     * @returns 
+     */
+    const setRefAtIndex = (id) => (el) => {
         if (!el) return;
         el.id = id;
-        childRefs.current.set(el.id,el);
+        childRefs.current.set(el.id, el);
     };
    
     /**
@@ -35,7 +39,7 @@ export const Container = ({layout}) => {
     const processLayout = (layout) => {
         if (!("childType" in layout)) {
             return  (
-                <div key={layout.id} ref={setRefAtIndex(0, layout.id)}>
+                <div key={layout.id} ref={setRefAtIndex(layout.id)}>
                     <LazyLoader content={layout} />
                 </div>
             )
@@ -44,34 +48,33 @@ export const Container = ({layout}) => {
         const childElements = [];        
         for (let index = 0; index < layout.children.length; index++) {
             const child = layout.children[index];
+            
             // Add Container
             childElements.push((
-                <div key={index} ref={setRefAtIndex(childElements.length, child.id)}>
-                    <div className={layout.childType + "-container"}> 
-                        <Container layout={child}/>
-                    </div>
+                <div key={index} ref={setRefAtIndex(child.id)} >
+                    <Container layout={child}/>
                 </div>
             ));
 
-            if (Number(index) == layout.children.length - 1 || ['fixed', 'fill'].includes(child.type)){
-                continue;
-            }
+            // if (Number(index) == layout.children.length - 1 || ['fixed', 'fill'].includes(child.type)){
+            //     continue;
+            // }
             
-            const id1 = child.id;
-            const id2 = layout.children[index + 1].id;
+            // const id1 = child.id;
+            // const id2 = layout.children[index + 1].id;
 
-            // Add Handle Bar
-            childElements.push((
-                <HandleBar 
-                    key={index + "handle"}
-                    id1={String(id1)}
-                    id2={String(id2)}
-                    siblingRefs={childRefs.current}
-                    parentRef={containerRef.current}
-                    orientation={layout.childType}
-                    ref={setRefAtIndex(childElements.length, child.id + "-handle")}
-                />
-            ));
+            // // Add Handle Bar
+            // childElements.push((
+            //     <HandleBar 
+            //         key={index + "handle"}
+            //         id1={String(id1)}
+            //         id2={String(id2)}
+            //         siblingRefs={childRefs.current}
+            //         parentRef={containerRef.current}
+            //         orientation={layout.childType}
+            //         ref={setRefAtIndex(childElements.length, child.id + "-handle")}
+            //     />
+            // ));
         };
 
         return childElements;
@@ -80,8 +83,16 @@ export const Container = ({layout}) => {
 
     const containerAPI = {
         setSize: (data) => {
-            const targetRef = childRefs.current.get(String(data.id));
-            targetRef[data.type][data.key] = data.value;
+            for (const transformation of data) {
+
+                const id = transformation[0];
+                const type = transformation[1];
+                const key = transformation[2];
+                const value = transformation[3];
+                
+                const targetRef = childRefs.current.get(String(id));
+                targetRef[type][key] = value;
+            }
         },
         getSize: () => {
             return containerRef.current.getBoundingClientRect();
@@ -90,14 +101,6 @@ export const Container = ({layout}) => {
 
     useEffect(() => {
         if (layout) {
-            if (layout.childType === "row") {
-                setContainerClass("relative-container-row");
-            } else if (layout.childType === "column") {
-                setContainerClass("relative-container-column");
-            } else {
-                setContainerClass("panel-container");
-            }
-            
             setChildDivs(processLayout(layout));
 
             controller.registerContainer(layout.id, containerAPI);
@@ -109,7 +112,7 @@ export const Container = ({layout}) => {
     }, [layout, controller]);
 
     return (
-        <div ref={containerRef} className={containerClass}>
+        <div ref={containerRef} className={"relative-container"}>
             {childDivs}
         </div>
     );

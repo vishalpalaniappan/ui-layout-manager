@@ -7,6 +7,13 @@ export class LayoutEditor {
     constructor (ldf) {
         this.ldf = ldf;
         console.log("Created modifier with ", this.ldf);
+        this.transformations = [];
+    }
+
+    processNode (parentId, width, height) {
+        this.processSubTree (parentId, width, height);
+        this.sendTransformations(parentId, this.transformations.reverse());
+        this.transformations = [];
     }
 
     /**
@@ -29,38 +36,53 @@ export class LayoutEditor {
             height: height
         }
 
-        let parentSize, fixedProp, dynamicProp;
+        let parentSize, fixedProp, dynamicProp, fixedPropPosition, offsetPropPosition;
         if (node.childType === "row") {
             dynamicProp = "height";
             fixedProp = "width";
+            fixedPropPosition = "left";
+            offsetPropPosition = "top";
             parentSize = size.height;
         } else if (node.childType === "column") {
             dynamicProp = "width";
             fixedProp = "height";
+            fixedPropPosition = "top";
+            offsetPropPosition = "left";
             parentSize = size.width;
         }
 
+        let transformations = [];
+        let offset = 0;
+
         node.children.forEach((child,index) => {
             let style = {};
-            style[fixedProp] = size[fixedProp];
-            this.sendTransformation(parentId, child.id, "style", fixedProp, style[fixedProp]);
+
+            style["position"] = "absolute";
+            transformations.push([child.id, "style", "position", "absolute"])
+
+            style[fixedPropPosition] = 0;
+            transformations.push([child.id, "style", fixedPropPosition, 0 + "px"])
+
+            style[fixedProp] = Number(size[fixedProp]);
+            transformations.push([child.id, "style", fixedProp, style[fixedProp] + "px"])
+
 
             let renderHandle;
             switch(child.type) {
                 case "px":
-                    style[dynamicProp] = child[dynamicProp];
-                    this.sendTransformation(parentId, child.id, "style", dynamicProp, child[dynamicProp]+ "px");
+                    style[dynamicProp] = Number(child[dynamicProp]);
+                    transformations.push([child.id, "style", dynamicProp, child[dynamicProp]+ "px"])
                     renderHandle = (index < node.children.length - 1);
                     break;
                 case "percent":
                     const sizeInPx = (child[dynamicProp]/100) * parentSize;
-                    style[dynamicProp] = sizeInPx;
-                    this.sendTransformation(parentId, child.id, "style", dynamicProp, sizeInPx + "px");
+                    style[dynamicProp] = Number(sizeInPx);
+                    transformations.push([child.id, "style", dynamicProp, sizeInPx + "px"])
                     renderHandle = (index < node.children.length - 1);
                     break;
                 case "fixed":
-                    style[dynamicProp] = child[dynamicProp];
-                    this.sendTransformation(parentId, child.id, "style", dynamicProp, child[dynamicProp] + "px");
+                    style[dynamicProp] = Number(child[dynamicProp]);
+                    transformations.push([child.id, "style", dynamicProp, child[dynamicProp] + "px"])
                     renderHandle = false;
                     break;
                 case "fill":
@@ -71,7 +93,7 @@ export class LayoutEditor {
                     style[dynamicProp] = size[dynamicProp] - node.children.reduce((sum, child) => {
                         return child[dynamicProp] != null ? sum + Number(child[dynamicProp]) : sum;
                     }, 0);
-                    this.sendTransformation(parentId, child.id, "style", dynamicProp, style[dynamicProp] + "px");
+                    transformations.push([child.id, "style", dynamicProp, style[dynamicProp] + "px"])
                     renderHandle = false;
                     break;
                 default:
@@ -79,9 +101,13 @@ export class LayoutEditor {
                     break;
             }
 
+            style[offsetPropPosition] = offset;
+            transformations.push([child.id, "style", offsetPropPosition, offset+ "px"])
+            offset = offset + style[dynamicProp];
+
             if ("background" in child) {
                 style["background"] = child.background;
-                this.sendTransformation(parentId, child.id, "style", "background", child.background);
+                transformations.push([child.id, "style", "background", child.background])
             } 
 
             if ("children" in child) {
@@ -89,23 +115,19 @@ export class LayoutEditor {
             }
         });
 
+        this.transformations.push({parentId: node.id, transformations: transformations});
     };
 
     /**
      * Passes a DOM transformation to the main thread.
      * @param {String} parentId - ID of the parent node in the layout tree.
-     * @param {String} id - ID of node in the layout tree.
-     * @param {String} type - Type of transofrmation (ex. style)
-     * @param {String} key - Key of transformation (ex. width, height)
-     * @param {String|Number} value - Value of transformation (ex. 123, "#444444")
+     * @param {Array} transformations - An array of transformations.
      */
-    sendTransformation (parentId, id, type, key, value) {
+    sendTransformations (parentId, transformations) {
         postMessage({
+            type: "transformations",
             parentId: parentId,
-            id: id,
-            type: type,
-            key: key,
-            value: value
+            transformations: transformations
         })
     }
 

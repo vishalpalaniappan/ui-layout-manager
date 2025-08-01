@@ -19,6 +19,11 @@ export class LayoutController {
         this.ldf = ldf;
         this.numberOfContainers = 0;
         this.registeredContainers = 0;
+        this.layoutLoaded = false;
+
+        this.scheduled = false;
+
+        this.events = [];
 
         this.getNumberOfContainers(ldf.layout);
 
@@ -84,6 +89,7 @@ export class LayoutController {
         if (this.registeredContainers === this.numberOfContainers) {
             const bounds = this.containers["root"].getSize();
             this.processTreeFromId("root", bounds.width, bounds.height);
+            this.layoutLoaded = true;
         }
     }
 
@@ -96,14 +102,24 @@ export class LayoutController {
      * @param {Number} height 
      */
     processTreeFromId(id, width, height) {
-        this.sendToWorker(
-            LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
-            {
-                id: id,
-                width:width,
-                height:height
-            }
-        );
+        if (this.layoutLoaded) {
+            this.sendToWorker(
+                LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
+                {
+                    id: id,
+                    width:width,
+                    height:height
+                }
+            );
+        }
+    }
+
+    /**
+     * 
+     * @param {Event} event 
+     */
+    addLayoutEvent(event) {
+        this.processTreeFromId(event[0], event[1], event[2]);
     }
     
     /**
@@ -121,9 +137,15 @@ export class LayoutController {
     handleWorkerMessage(event) {
         const data = event.data;
         switch(data.type) {
-            case "style":
-                const container = this.containers[data.parentId];
-                container.setSize(data);
+            case "transformations":
+                requestAnimationFrame(() => {
+                    for (const action of event.data.transformations) {
+                        const parentId = action.parentId;
+                        const transformations = action.transformations;
+                        const container = this.containers[parentId];
+                        container.setSize(transformations);
+                    }
+                });
                 break;
             default:
                 break;
