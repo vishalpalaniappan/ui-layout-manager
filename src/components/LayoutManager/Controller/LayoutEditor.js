@@ -10,6 +10,15 @@ export class LayoutEditor {
         this.transformations = [];
     }
 
+    /**
+     * Processes the subtree from the given node and update styles. After
+     * the transformations have been saved, send them to the main thread
+     * and reset the transformations list.
+     * 
+     * @param {String} parentId Id of parent container.
+     * @param {Number} width Width of container.
+     * @param {Number} height Height of container.
+     */
     processNode (parentId, width, height) {
         this.processSubTree (parentId, width, height);
         this.sendTransformations(parentId, this.transformations.reverse());
@@ -36,12 +45,18 @@ export class LayoutEditor {
             height: height
         }
 
+        /**
+         * Dynamic Prop: The style attribute that will be calculated
+         * Fixed Prop: The style attribute that is fixed to the size of the parent container
+         * Fixed Prop Position: The position style attribute that will anchor div
+         * Offset Prop Position: The position style attribute that will offset div
+         */
         let parentSize, fixedProp, dynamicProp, fixedPropPosition, offsetPropPosition;
         if (node.childType === "row") {
             dynamicProp = "height";
             fixedProp = "width";
             fixedPropPosition = "left";
-            offsetPropPosition = "top";
+            offsetPropPosition = "top"; 
             parentSize = size.height;
         } else if (node.childType === "column") {
             dynamicProp = "width";
@@ -60,14 +75,18 @@ export class LayoutEditor {
                 width: null,
                 height: null,
             }
-            let style = {
-                "position":"absolute"                
-            };
+            
+            let style = {};
 
+            // Ex: 
+            // Row: {position: "absolute", left: "0px", height: "200px"}
+            // Column: {position: "absolute", top: "0px", width: "200px"}
+            style["position"] = "absolute;"
             style[fixedPropPosition] = 0 + "px";
             style[fixedProp] = size[fixedProp] + "px";
             childSize[fixedProp] = size[fixedProp];
 
+            // Calculate Dynamic Prop
             let renderHandle;
             switch(child.type) {
                 case "px":
@@ -102,7 +121,10 @@ export class LayoutEditor {
                     break;
             }
 
+            // Add offset to account for siblings before this node
             style[offsetPropPosition] = offset + "px";
+
+            // Add current size to offset for next sibling
             const widthNumber = Number(style[dynamicProp].substring(0, style[dynamicProp].length - 2));
             offset = offset + widthNumber;
 
@@ -117,6 +139,7 @@ export class LayoutEditor {
             transformations.push({id: child.id, style:style});
         });
 
+        // Push all the transformations for this parent node
         this.transformations.push({parentId: node.id, transformations: transformations});
     };
 
