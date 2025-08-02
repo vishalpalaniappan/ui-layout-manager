@@ -55,43 +55,46 @@ export class LayoutEditor {
         let offset = 0;
 
         node.children.forEach((child,index) => {
-            let style = {};
 
-            style["position"] = "absolute";
-            // transformations.push([child.id, "style", "position", "absolute"])
+            const childSize = {
+                width: null,
+                height: null,
+            }
+            let style = {
+                "position":"absolute"                
+            };
 
             style[fixedPropPosition] = 0 + "px";
-            // transformations.push([child.id, "style", fixedPropPosition, 0 + "px"])
-
             style[fixedProp] = size[fixedProp] + "px";
-            // transformations.push([child.id, "style", fixedProp, style[fixedProp] + "px"])
+            childSize[fixedProp] = size[fixedProp];
 
             let renderHandle;
             switch(child.type) {
                 case "px":
                     style[dynamicProp] = child[dynamicProp] + "px";
-                    // transformations.push([child.id, "style", dynamicProp, child[dynamicProp]+ "px"])
+                    childSize[dynamicProp] = child[dynamicProp];
                     renderHandle = (index < node.children.length - 1);
                     break;
                 case "percent":
                     const sizeInPx = (child[dynamicProp]/100) * parentSize;
                     style[dynamicProp] = sizeInPx + "px";
-                    // transformations.push([child.id, "style", dynamicProp, sizeInPx + "px"])
+                    childSize[dynamicProp] = sizeInPx;
                     renderHandle = (index < node.children.length - 1);
                     break;
                 case "fixed":
                     style[dynamicProp] = child[dynamicProp] + "px";
-                    // transformations.push([child.id, "style", dynamicProp, child[dynamicProp] + "px"])
+                    childSize[dynamicProp] = child[dynamicProp];
                     renderHandle = false;
                     break;
                 case "fill":
                     // Subtract the size of the fixed siblings from parent size to get fill size
                     // Supported: [fixed][fill] [fill][fixed] [fixed][fill][fixed]
                     // Multiple fixed can be repeated: [fixed][fixed][fixed][fill]
-                    style[dynamicProp] = size[dynamicProp] - node.children.reduce((sum, child) => {
+                    const dynamicSize = size[dynamicProp] - node.children.reduce((sum, child) => {
                         return child[dynamicProp] != null ? sum + Number(child[dynamicProp]) : sum;
-                    }, 0) + "px";
-                    // transformations.push([child.id, "style", dynamicProp, style[dynamicProp] + "px"])
+                    }, 0);
+                    style[dynamicProp] = dynamicSize + "px";
+                    childSize[dynamicProp] = dynamicSize;
                     renderHandle = false;
                     break;
                 default:
@@ -100,21 +103,15 @@ export class LayoutEditor {
             }
 
             style[offsetPropPosition] = offset + "px";
-            // transformations.push([child.id, "style", offsetPropPosition, offset+ "px"])
             const widthNumber = Number(style[dynamicProp].substring(0, style[dynamicProp].length - 2));
             offset = offset + widthNumber;
 
             if ("background" in child) {
                 style["background"] = child.background;
-                // transformations.push([child.id, "style", "background", child.background])
             } 
 
             if ("children" in child) {
-                // remove px
-                const widthNumber = Number(style.width.substring(0, style.width.length - 2));
-                const heightNumber = Number(style.height.substring(0, style.height.length - 2));
-                // console.log(widthNumber, heightNumber);
-                this.processSubTree(child.id, widthNumber, heightNumber);
+                this.processSubTree(child.id, childSize.width, childSize.height);
             }
 
             transformations.push({id: child.id, style:style});
