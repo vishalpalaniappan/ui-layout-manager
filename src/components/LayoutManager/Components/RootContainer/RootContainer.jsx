@@ -19,7 +19,7 @@ export const RootContainer = ({layout}) => {
     const timerRef = useRef(null);
     const [size, setSize] = useState({ width: 0, height: 0 });
 
-    let ticking;
+    let layoutUpdateScheduled = false;
     useEffect(() => {
         const el = rootRef.current;
         if (!el) return;
@@ -28,19 +28,13 @@ export const RootContainer = ({layout}) => {
             for (let entry of entries) {
                 const { width, height } = entry.contentRect;
 
-                if (timerRef.current) {
-                    clearTimeout(timerRef.current);
+                if (!layoutUpdateScheduled) {
+                    layoutUpdateScheduled = true;
+                    setTimeout(() => {
+                        controller.addLayoutEvent(["root",width, height]);
+                        layoutUpdateScheduled = false;
+                    }, 16);
                 }
-
-                timerRef.current = window.setTimeout(() => {
-                    if (!ticking) {
-                        window.requestAnimationFrame(() => {
-                            controller.addLayoutEvent(["root",width, height]);
-                            ticking = false;
-                        });
-                        ticking = true;
-                    }
-                }, 0.1);
             }
         });
 

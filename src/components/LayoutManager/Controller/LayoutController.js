@@ -119,7 +119,12 @@ export class LayoutController {
      * @param {Event} event 
      */
     addLayoutEvent(event) {
-        this.processTreeFromId(event[0], event[1], event[2]);
+        if (this.event) {
+            this.event = event;
+        } else {
+            this.event = event;
+            this.processTreeFromId(event[0], event[1], event[2]);
+        }
     }
     
     /**
@@ -138,14 +143,22 @@ export class LayoutController {
         const data = event.data;
         switch(data.type) {
             case "transformations":
-                requestAnimationFrame(() => {
-                    for (const action of event.data.transformations) {
-                        const parentId = action.parentId;
-                        const transformations = action.transformations;
-                        const container = this.containers[parentId];
-                        container.setSize(transformations);
-                    }
-                });
+                if (this.layoutLoaded) {
+                    this.events.push(event.data.data);
+                    requestAnimationFrame(() => {
+                        for (let i = this.events.length - 1; i >= 0; i--) {
+                            const e = this.events[i];
+                            for (const parent of e) {
+                                const parentId = parent.parentId;
+                                const container = this.containers[parentId];
+                                container.setSize(parent.transformations);
+                                this.events.splice(i, 1);
+                            }
+                        }
+                        
+                        this.processTreeFromId(this.event[0], this.event[1], this.event[2]);
+                    });
+                }
                 break;
             default:
                 break;

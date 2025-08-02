@@ -85,13 +85,23 @@ export const Container = ({layout, handleBarType}) => {
         setSize: (data) => {
             for (const transformation of data) {
 
-                const id = transformation[0];
-                const type = transformation[1];
-                const key = transformation[2];
-                const value = transformation[3];
-                
-                const targetRef = childRefs.current.get(String(id));
-                targetRef[type][key] = value;
+                const id = transformation.id;
+                const style = transformation.style;
+
+                const el = childRefs.current.get(String(id));
+
+
+
+                // console.log(id, style);
+                // for (const prop in style) {
+                //     // console.log(prop, el, style[prop]);
+                //     console.log(prop, style[prop]);
+                //     el["style"][prop] = style[prop];
+                // }
+
+                // console.log(id, style, domElem);
+
+                Object.assign(el.style, style);
             }
         },
         getSize: () => {

@@ -58,42 +58,40 @@ export class LayoutEditor {
             let style = {};
 
             style["position"] = "absolute";
-            transformations.push([child.id, "style", "position", "absolute"])
+            // transformations.push([child.id, "style", "position", "absolute"])
 
-            style[fixedPropPosition] = 0;
-            transformations.push([child.id, "style", fixedPropPosition, 0 + "px"])
+            style[fixedPropPosition] = 0 + "px";
+            // transformations.push([child.id, "style", fixedPropPosition, 0 + "px"])
 
-            style[fixedProp] = Number(size[fixedProp]);
-            transformations.push([child.id, "style", fixedProp, style[fixedProp] + "px"])
-
+            style[fixedProp] = size[fixedProp] + "px";
+            // transformations.push([child.id, "style", fixedProp, style[fixedProp] + "px"])
 
             let renderHandle;
             switch(child.type) {
                 case "px":
-                    style[dynamicProp] = Number(child[dynamicProp]);
-                    transformations.push([child.id, "style", dynamicProp, child[dynamicProp]+ "px"])
+                    style[dynamicProp] = child[dynamicProp] + "px";
+                    // transformations.push([child.id, "style", dynamicProp, child[dynamicProp]+ "px"])
                     renderHandle = (index < node.children.length - 1);
                     break;
                 case "percent":
                     const sizeInPx = (child[dynamicProp]/100) * parentSize;
-                    style[dynamicProp] = Number(sizeInPx);
-                    transformations.push([child.id, "style", dynamicProp, sizeInPx + "px"])
+                    style[dynamicProp] = sizeInPx + "px";
+                    // transformations.push([child.id, "style", dynamicProp, sizeInPx + "px"])
                     renderHandle = (index < node.children.length - 1);
                     break;
                 case "fixed":
-                    style[dynamicProp] = Number(child[dynamicProp]);
-                    transformations.push([child.id, "style", dynamicProp, child[dynamicProp] + "px"])
+                    style[dynamicProp] = child[dynamicProp] + "px";
+                    // transformations.push([child.id, "style", dynamicProp, child[dynamicProp] + "px"])
                     renderHandle = false;
                     break;
                 case "fill":
-                    style.flexGrow = 1;
                     // Subtract the size of the fixed siblings from parent size to get fill size
                     // Supported: [fixed][fill] [fill][fixed] [fixed][fill][fixed]
                     // Multiple fixed can be repeated: [fixed][fixed][fixed][fill]
                     style[dynamicProp] = size[dynamicProp] - node.children.reduce((sum, child) => {
                         return child[dynamicProp] != null ? sum + Number(child[dynamicProp]) : sum;
-                    }, 0);
-                    transformations.push([child.id, "style", dynamicProp, style[dynamicProp] + "px"])
+                    }, 0) + "px";
+                    // transformations.push([child.id, "style", dynamicProp, style[dynamicProp] + "px"])
                     renderHandle = false;
                     break;
                 default:
@@ -101,18 +99,25 @@ export class LayoutEditor {
                     break;
             }
 
-            style[offsetPropPosition] = offset;
-            transformations.push([child.id, "style", offsetPropPosition, offset+ "px"])
-            offset = offset + style[dynamicProp];
+            style[offsetPropPosition] = offset + "px";
+            // transformations.push([child.id, "style", offsetPropPosition, offset+ "px"])
+            const widthNumber = Number(style[dynamicProp].substring(0, style[dynamicProp].length - 2));
+            offset = offset + widthNumber;
 
             if ("background" in child) {
                 style["background"] = child.background;
-                transformations.push([child.id, "style", "background", child.background])
+                // transformations.push([child.id, "style", "background", child.background])
             } 
 
             if ("children" in child) {
-                this.processSubTree(child.id, style.width, style.height);
+                // remove px
+                const widthNumber = Number(style.width.substring(0, style.width.length - 2));
+                const heightNumber = Number(style.height.substring(0, style.height.length - 2));
+                // console.log(widthNumber, heightNumber);
+                this.processSubTree(child.id, widthNumber, heightNumber);
             }
+
+            transformations.push({id: child.id, style:style});
         });
 
         this.transformations.push({parentId: node.id, transformations: transformations});
@@ -127,7 +132,7 @@ export class LayoutEditor {
         postMessage({
             type: "transformations",
             parentId: parentId,
-            transformations: transformations
+            data: transformations
         })
     }
 
