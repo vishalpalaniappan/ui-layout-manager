@@ -11,11 +11,14 @@ import "./Container.scss"
  * @param {Object} layout The layout of this container including its children.
  * @return {React.ReactElement}
  */
-export const Container = ({layout, handleBarType}) => {
+export const Container = ({layout}) => {
 
     const controller = useLayoutController();
 
     const [childDivs, setChildDivs] = useState(null);
+    const [renderHandle, setRenderHandle] = useState(null);
+    const [sibling1, setSibling1] = useState(null);
+    const [sibling2, setSibling2] = useState(null);
 
     const containerRef = useRef(null);
     const childRefs = useRef(new Map());
@@ -84,24 +87,16 @@ export const Container = ({layout, handleBarType}) => {
     const containerAPI = {
         setSize: (data) => {
             for (const transformation of data) {
-
                 const id = transformation.id;
                 const style = transformation.style;
-
                 const el = childRefs.current.get(String(id));
-
-
-
-                // console.log(id, style);
-                // for (const prop in style) {
-                //     // console.log(prop, el, style[prop]);
-                //     console.log(prop, style[prop]);
-                //     el["style"][prop] = style[prop];
-                // }
-
-                // console.log(id, style, domElem);
-
                 Object.assign(el.style, style);
+
+                setRenderHandle(transformation.renderHandle);
+                if (transformation.renderHandle) {
+                    setSibling1(transformation.sibling1);
+                    setSibling2(transformation.sibling2);
+                }
             }
         },
         getSize: () => {

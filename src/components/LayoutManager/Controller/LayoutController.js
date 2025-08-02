@@ -155,8 +155,12 @@ export class LayoutController {
                                 this.events.splice(i, 1);
                             }
                         }
-                        
-                        this.processTreeFromId(this.event[0], this.event[1], this.event[2]);
+
+                        if (this.event) {
+                            const event = {...this.event};
+                            this.event = null;
+                            this.processTreeFromId(event[0], event[1], event[2]);
+                        }
                     });
                 }
                 break;

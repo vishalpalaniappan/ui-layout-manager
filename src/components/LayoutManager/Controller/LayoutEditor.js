@@ -81,7 +81,7 @@ export class LayoutEditor {
             // Ex: 
             // Row: {position: "absolute", left: "0px", height: "200px"}
             // Column: {position: "absolute", top: "0px", width: "200px"}
-            style["position"] = "absolute;"
+            style["position"] = "absolute";
             style[fixedPropPosition] = 0 + "px";
             style[fixedProp] = size[fixedProp] + "px";
             childSize[fixedProp] = size[fixedProp];
@@ -136,7 +136,17 @@ export class LayoutEditor {
                 this.processSubTree(child.id, childSize.width, childSize.height);
             }
 
-            transformations.push({id: child.id, style:style});
+            
+            transformations.push(
+                {
+                    id: child.id,
+                    type:"style", 
+                    style:style, 
+                    renderHandle: renderHandle,
+                    sibling1: renderHandle?child.id:null,
+                    sibling2: renderHandle?node.children[index + 1].id:null
+                }
+            );
         });
 
         // Push all the transformations for this parent node
