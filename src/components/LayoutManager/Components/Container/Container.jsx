@@ -1,196 +1,119 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, createContext, useContext } from "react";
 import PropTypes from 'prop-types';
 import { HandleBar } from "../HandleBar/HandleBar";
 import { LazyLoader } from "../LazyLoader/LazyLoader";
 import { useLayoutController } from "../../Providers/LayoutProvider";
 
-import { calculateInitialSizes } from "./calculateSizes";
-
 import "./Container.scss"
-
 /**
  * Renders each of the children for the current container.
  * 
  * @param {Object} layout The layout of this container including its children.
- * @return {JSX}
+ * @return {React.ReactElement}
  */
-export const Container = ({layout}) => {
+export const Container = ({layout, handleBarType}) => {
 
     const controller = useLayoutController();
 
-    const [childDivs, setchildDivs] = useState();
+    const [childDivs, setChildDivs] = useState(null);
 
-    const [containerClass, setContainerClass] = useState("relative-container");
+    const containerRef = useRef(null);
+    const childRefs = useRef(new Map());
 
-    const containerRef = useRef();
-    const childRefs = useRef([]);
-
-    const HANDLE_SIZE_PX = 1;
+    /**
+     * Sets a reference to the provided element using the provided id
+     * @param {String} id 
+     * @returns 
+     */
+    const setRefAtIndex = (id) => (el) => {
+        if (!el) return;
+        el.id = id;
+        childRefs.current.set(el.id, el);
+    };
    
     /**
-     * This function loops through the children, sets the style and 
-     * adds the child component to the list to be rendered. 
-     * 
-     * The function accepts two arguments, fixedProp and dynamicProp.
-     * This indicates which style property should be set to 100%
-     * and which style prop should be loaded from the LDF file.
-     * For example, if the child is a column, then the width should
-     * be dynamic and the height should be fixed (100%);
-     * 
-     * It sets the style based on the child type:
-     * - "percent": apply relative layout in percentage
-     * - "fixed": set fixed size of child in pixels
-     * - "fill": fills the rest of the container
-     * 
-     * Fixed can only be used with fill. You can have one
-     * fixed column before and one after the fill. 
-     * 
-     * Valid Combinations:
-     * [percent][percent][percent]
-     * [percent (with initial size)][percent][percent (with initial size)]
-     * [fixed][fill][fixed]
-     * [fixed][fill]
-     * [fill][fixed]
+     *
      * 
      * @param {Object} layout 
-     * @param {String} fixedProp Style prop that is fixed to 100% based on child type.
-     * @param {String} dynamicProp Style prop to set dynamically from ldf file.
      */
-    const processLayout = (layout, fixedProp, dynamicProp) => {
-        const _childDivs = [];
-
-        layout = calculateInitialSizes(containerRef, layout, dynamicProp);
-
-        const parentSize = containerRef.current.getBoundingClientRect()[dynamicProp];
-        const handleBarSizeInPercentage = (HANDLE_SIZE_PX/parentSize) *100;
-
-        layout.children.forEach((child,index) => {
-            let style = {};
-            let renderHandle;
-
-            switch(child.type) {
-                case "percent":
-                    style[fixedProp] = "100%";
-                    style[dynamicProp] = child[dynamicProp] + "%";
-                    renderHandle = (index < layout.children.length - 1);
-                    break;
-                case "fixed":
-                    style[fixedProp] = "100%";
-                    style[dynamicProp] = child[dynamicProp];
-                    renderHandle = false;
-                    break;
-                case "fill":
-                    style[fixedProp] = "100%";
-                    style.flexGrow = 1;
-                    renderHandle = false;
-                    break;
-                default:
-                    console.error("Child layout type is invalid!")
-                    break;
-            }
-
-            if ("background" in child) {
-                style["background"] = child.background;
-            }
-
-            // Create child div and attach ref
-            const childRefIndex = createRefAndGetIndex();
-            const childDiv = <div key={childRefIndex} ref={(el) => (childRefs.current[childRefIndex] = el)} style={style}>
-                {
-                    layout.childType == "row" ? 
-                    <div className="rowContainer"> {getChildJsx(child)}</div>:
-                    layout.childType == "column" ?
-                    <div className="columnContainer">{getChildJsx(child)}</div>:
-                    null
-                }
-            </div>
-
-            // Add new ref for handlebar, get index and update size to account for handle bar
-            let postHandleDiv;
-            if (renderHandle) {
-                style[dynamicProp] = (child[dynamicProp] - handleBarSizeInPercentage)+ "%";
-
-                const handleRefIndex = createRefAndGetIndex();
-                postHandleDiv = <HandleBar key={index + "handle"}
-                    index={handleRefIndex} 
-                    getSiblings={getSiblings} 
-                    orientation={layout.childType}
-                    ref={(el) => (childRefs.current[handleRefIndex] = el)}
-                />
-            }
-
-            const childElements = [childDiv, postHandleDiv]
-
-            _childDivs.push(
-                <React.Fragment key={index}>
-                    {childElements}
-                </React.Fragment>
-            );
-        });
-
-        setchildDivs(<>{_childDivs}</>);
-    }
-
-    /**
-     * This function adds a child ref to the ref array and returns the index
-     * @returns {Number} 
-     */
-    const createRefAndGetIndex = () => {
-        childRefs.current.push(React.createRef());
-        return childRefs.current.length - 1;
-    }
-
-    /**
-     * This function returns a container to render the children if they exist 
-     * or lazy loads the component if there are no children.
-     * @param {Object} child 
-     * @returns 
-     */
-    const getChildJsx = (child) => {
-        if ("children" in child) {
-            return <Container layout={child}/>;
-        } else {
-            return <LazyLoader content={child} />;
+    const processLayout = (layout) => {
+        if (!("childType" in layout)) {
+            return  (
+                <div key={layout.id} ref={setRefAtIndex(layout.id)}>
+                    <LazyLoader content={layout} />
+                </div>
+            )
         }
+
+        const childElements = [];        
+        for (let index = 0; index < layout.children.length; index++) {
+            const child = layout.children[index];
+            
+            // Add Container
+            childElements.push((
+                <div key={index} ref={setRefAtIndex(child.id)} >
+                    <Container layout={child}/>
+                </div>
+            ));
+
+            // if (Number(index) == layout.children.length - 1 || ['fixed', 'fill'].includes(child.type)){
+            //     continue;
+            // }
+            
+            // const id1 = child.id;
+            // const id2 = layout.children[index + 1].id;
+
+            // // Add Handle Bar
+            // childElements.push((
+            //     <HandleBar 
+            //         key={index + "handle"}
+            //         id1={String(id1)}
+            //         id2={String(id2)}
+            //         siblingRefs={childRefs.current}
+            //         parentRef={containerRef.current}
+            //         orientation={layout.childType}
+            //         ref={setRefAtIndex(childElements.length, child.id + "-handle")}
+            //     />
+            // ));
+        };
+
+        return childElements;
     }
 
-    /**
-     * This function is called by the handlebar component to get the references
-     * to the siblings before and after the handle bar in the ref array. 
-     * 
-     * Index refers to the position of the handle bar in the ref array, so the
-     * siblings will be one position before and one position after it.
-     * @param {Number} index 
-     * @returns 
-     */
-    const getSiblings = (index) => {
-        const sibling1 = childRefs.current[index - 1];
-        const sibling2 = childRefs.current[index + 1];
-        return [containerRef.current, sibling1, sibling2];
+
+    const containerAPI = {
+        setSize: (data) => {
+            for (const transformation of data) {
+
+                const id = transformation.id;
+                const style = transformation.style;
+
+                const el = childRefs.current.get(String(id));
+
+
+
+                // console.log(id, style);
+                // for (const prop in style) {
+                //     // console.log(prop, el, style[prop]);
+                //     console.log(prop, style[prop]);
+                //     el["style"][prop] = style[prop];
+                // }
+
+                // console.log(id, style, domElem);
+
+                Object.assign(el.style, style);
+            }
+        },
+        getSize: () => {
+            return containerRef.current.getBoundingClientRect();
+        }
     }
 
     useEffect(() => {
         if (layout) {
-            if (layout.childType === "row") {
-                setContainerClass("relative-container-row");
-                processLayout(layout,"width","height");
-            } else if (layout.childType === "column") {
-                setContainerClass("relative-container-column");
-                processLayout(layout,"height","width");
-            }
+            setChildDivs(processLayout(layout));
 
-            const api = {
-                setSize: (width, height) => {
-
-                },
-                setStyle: (prop, value) => {
-
-                },
-                printSize: () => {
-                    console.log(layout.id, containerRef.current.getBoundingClientRect());
-                }
-            }
-            controller.registerContainer(layout.id, api);
+            controller.registerContainer(layout.id, containerAPI);
 
             return () => {
                 controller.unregisterContainer(layout.id);
@@ -199,7 +122,7 @@ export const Container = ({layout}) => {
     }, [layout, controller]);
 
     return (
-        <div ref={containerRef} className={containerClass}>
+        <div ref={containerRef} className={"relative-container"}>
             {childDivs}
         </div>
     );

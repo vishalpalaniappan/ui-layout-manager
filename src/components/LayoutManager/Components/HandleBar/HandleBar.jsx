@@ -1,17 +1,41 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import PropTypes from 'prop-types';
 
 import "./HandleBar.scss";
 
+
 /**
- * 
+ * @typedef {Object} HandleBarProps
+ * @property {Map} siblingRefs - Reference to sibling container.
+ * @property {HTMLElement} parentRef - Reference to parent container.
+ * @property {String} id1 - Id of the first container.
+ * @property {String} id2 - Id of the second container.
+ * @property {String} orientation - Orientation of the handle bar
  */
-export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, ref) => {
+
+/**
+ * @param {HandleBarProps} props
+ * @param {React.Ref<any>} ref
+ * @returns {React.ReactElement}
+ */
+const HandleBarComponent = ({orientation, siblingRefs, parentRef, id1, id2}, ref) => {
+
+    // const parentRefs = useContext(RefContext);
+
+    useEffect(() => {
+        if (siblingRefs) {
+            console.log(siblingRefs, id1, id2);
+
+            console.log(siblingRefs.get(id1));
+            console.log(siblingRefs.get(id2));
+
+        }
+    }, [siblingRefs]);
 
     const MIN_PANEL_SIZE = 50;
 
-    const dragStartInfo = useRef()
-    const handle = useRef();
+    const dragStartInfo = useRef(null)
+    const handle = useRef(null);
 
     /**
      * This function saves the relevant info on mouse down.
@@ -21,7 +45,7 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
      * - Get references to parent container and both siblings using callback to parent
      * - Saves the initial size of the siblings and parents 
      * 
-     * @param {Event} e 
+     * @param {React.MouseEvent<HTMLDivElement>} e 
      */
     const handleMouseDown = (e) => {
         e.preventDefault();
@@ -29,7 +53,8 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
         document.addEventListener("mousemove", handleMouseMove);
         document.addEventListener("mouseup", handleMouseUp);
 
-        const [parentRef, sibling1, sibling2] = getSiblings(index);
+        const sibling1 = siblingRefs.get(id1);
+        const sibling2 = siblingRefs.get(id2);
 
         let downKey, propKey, hoverClass;
         if (orientation === "row") {
@@ -114,10 +139,11 @@ export const HandleBar = React.forwardRef(({orientation, getSiblings, index}, re
             }
         </React.Fragment>
     );
-});
+};
+
+/** @type {React.ForwardRefExoticComponent<React.PropsWithoutRef<HandleBarProps> & React.RefAttributes<any>>} */
+export const HandleBar = React.forwardRef(HandleBarComponent);
 
 HandleBar.propTypes = {
-    orientation: PropTypes.string,
-    getSiblings: PropTypes.func,
-    index: PropTypes.number
+    orientation: PropTypes.string
 }

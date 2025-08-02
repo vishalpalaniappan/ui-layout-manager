@@ -1,7 +1,7 @@
 {
     "title": "Default Editor",
     "layout": {
-        "id": 0,
+        "id": "root",
         "type": "root",
         "childType": "row",
         "children": [
@@ -9,7 +9,7 @@
                 "id": 1,
                 "type": "fixed",
                 "background": "#3c3c3c",
-                "height": "30px"
+                "height": "30"
             },
             {
                 "id": 2,
@@ -20,18 +20,19 @@
                         "id": 3,
                         "type": "fixed",
                         "background": "#333333",
-                        "width": "65px"
+                        "width": "65"
                     },
                     {
                         "id": 4,
                         "type": "fill",
+                        "background": "#111111",
                         "childType": "row",
                         "children": [
                             {
                                 "id": 5,
-                                "type": "percent",
+                                "type": "fill",
                                 "description": "Variables",
-                                "height": 100,
+                                "background": "#333333",
                                 "childType": "column",
                                 "children": [
                                     {
@@ -65,7 +66,7 @@
                                         "component": "EditorVSCode",
                                         "background": "#1e1e1e",
                                         "type": "percent",
-                                        "width": 80
+                                        "width": 100
                                     }
                                 ]
                             }
@@ -77,7 +78,7 @@
                 "id": 10,
                 "type": "fixed",
                 "background": "#007acc",
-                "height": "25px"
+                "height": "25"
             }
         ]
     }
