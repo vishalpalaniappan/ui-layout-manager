@@ -17,24 +17,26 @@ export const RootContainer = ({layout}) => {
 
     const rootRef = useRef(null);
     const timerRef = useRef(null);
+    const [resizing, setResizing] = useState(false);
     const [size, setSize] = useState({ width: 0, height: 0 });
 
-    let layoutUpdateScheduled = false;
     useEffect(() => {
         const el = rootRef.current;
         if (!el) return;
 
         const observer = new ResizeObserver(entries => {
+
+            if (!resizing) setResizing(true);
+            
             for (let entry of entries) {
                 const { width, height } = entry.contentRect;
 
-                if (!layoutUpdateScheduled) {
-                    layoutUpdateScheduled = true;
-                    setTimeout(() => {
-                        controller.addLayoutEvent(["root",width, height]);
-                        layoutUpdateScheduled = false;
-                    }, 16);
-                }
+                clearTimeout(timerRef.current);
+                controller.addLayoutEvent(["root",width, height]);
+
+                timerRef.current = setTimeout(() => {
+                    resizeDone(width, height);
+                }, 200);
             }
         });
 
@@ -42,6 +44,16 @@ export const RootContainer = ({layout}) => {
 
         return () => observer.disconnect();
     }, []);
+
+
+    /**
+     * Called when the resize event is done.
+     * @param {Number} width 
+     * @param {Number} height 
+     */
+    const resizeDone = (width, height) => {
+        // Setting up function for future.
+    }
 
     return (
         <div ref={rootRef} className="background">
