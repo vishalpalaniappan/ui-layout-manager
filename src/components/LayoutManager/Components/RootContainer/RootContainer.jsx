@@ -57,7 +57,7 @@ export const RootContainer = ({layout}) => {
 
     return (
         <div ref={rootRef} className="background">
-            <Container layout={layout} />
+            <Container layout={layout} parentOrientation={null}/>
         </div>
     );
 }
