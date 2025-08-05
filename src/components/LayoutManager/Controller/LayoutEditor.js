@@ -21,7 +21,7 @@ export class LayoutEditor {
      */
     processNode (parentId, width, height) {
         this.processSubTree (parentId, width, height);
-        this.sendTransformations(parentId, this.transformations.reverse());
+        this.sendTransformations(this.transformations.reverse());
         this.transformations = [];
     }
 
@@ -68,7 +68,6 @@ export class LayoutEditor {
 
         let transformations = [];
         let offset = 0;
-
         node.children.forEach((child,index) => {
 
             const childSize = {
@@ -132,36 +131,43 @@ export class LayoutEditor {
                 style["background"] = child.background;
             } 
 
+            this.transformations.push({
+                parentId: node.id,
+                transformations: [{
+                    id: child.id,
+                    type: "style",
+                    style: style,
+                }],
+            });
+
+            this.transformations.push({
+                parentId: child.id,
+                transformations: [{
+                    type: "handle",
+                    handleOrientation: node.childType,
+                    sibling1: renderHandle?child.id:null,
+                    sibling2: renderHandle?node.children[index + 1].id:null,
+                    renderHandle: renderHandle,
+                }],
+            });
+
             if ("children" in child) {
                 this.processSubTree(child.id, childSize.width, childSize.height);
             }
 
-            
-            transformations.push(
-                {
-                    id: child.id,
-                    type:"style", 
-                    style:style, 
-                    renderHandle: renderHandle,
-                    sibling1: renderHandle?child.id:null,
-                    sibling2: renderHandle?node.children[index + 1].id:null
-                }
-            );
         });
 
         // Push all the transformations for this parent node
-        this.transformations.push({parentId: node.id, transformations: transformations});
+        // this.transformations.push({parentId: node.id, transformations: transformations});
     };
 
     /**
      * Passes a DOM transformation to the main thread.
-     * @param {String} parentId - ID of the parent node in the layout tree.
      * @param {Array} transformations - An array of transformations.
      */
-    sendTransformations (parentId, transformations) {
+    sendTransformations (transformations) {
         postMessage({
             type: "transformations",
-            parentId: parentId,
             data: transformations
         })
     }

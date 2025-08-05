@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, createContext, useContext, useCallback } from "react";
+import React, { useEffect, useState, useRef, createContext, useContext, useCallback, useMemo } from "react";
 import PropTypes from 'prop-types';
 import { HandleBar } from "../HandleBar/HandleBar";
 import { LazyLoader } from "../LazyLoader/LazyLoader";
@@ -17,9 +17,12 @@ export const Container = ({layout, parentOrientation}) => {
 
     const [childElements, setChildElements] = useState(null);
     const [childContainer, setChildContainer] = useState(<></>);
-    const [renderHandle, setRenderHandle] = useState(true);
+    const [renderHandle, setRenderHandle] = useState(false);
     const [sibling1, setSibling1] = useState(null);
     const [sibling2, setSibling2] = useState(null);
+
+    const [contentContainerClass, setContentContainerClass] = useState(null);
+    const [handleContainerClass, setHandleContainerClass] = useState(null);
 
     const containerRef = useRef(null);
     const handleRef = useRef(null);
@@ -47,15 +50,16 @@ export const Container = ({layout, parentOrientation}) => {
         if (!layout || !("children" in layout)) {
             return childElements;
         }
-        // if (!("children" in layout) && "component" in layout) {
-        //     return  (
-        //         <div key={layout.id} ref={setRefAtIndex(layout.id)} className="panel-container">
-        //             <LazyLoader content={layout} />
-        //         </div>
-        //     )
-        // } else if (!("children" in layout)) {
-        //     return <></>
-        // }
+        if (!("children" in layout) && "component" in layout) {
+            return <React.Fragment></React.Fragment>
+            // return  (
+            //     <div key={layout.id} ref={setRefAtIndex(layout.id)} className="panel-container">
+            //         <LazyLoader content={layout} />
+            //     </div>
+            // )
+        } else if (!("children" in layout)) {
+            return <React.Fragment></React.Fragment>
+        }
    
         for (let index = 0; index < layout.children.length; index++) {
             const child = layout.children[index];
@@ -72,57 +76,47 @@ export const Container = ({layout, parentOrientation}) => {
     }
 
 
-    const containerAPI = React.useMemo(() => ({
-        setSize: (data) => {
-            for (const transformation of data) {
-                const id = transformation.id;
-                const style = transformation.style;
-                const el = childRefs.current.get(String(id));
-                Object.assign(el.style, style);
+    const applyTransformation = (data) => {
+        for (const transformation of data) {
+            switch (transformation.type) {
+                case "style":
+                    const id = transformation.id;
+                    const style = transformation.style;
+                    const el = childRefs.current.get(String(id));
+                    Object.assign(el.style, style);
+                    break;
+                case "handle":
+                    if (transformation.handleOrientation === "row") {
+                        setContentContainerClass("rowContentContainer");
+                        setHandleContainerClass("rowHandleBarContainer");
+                    }else if (transformation.handleOrientation === "column"){
+                        setContentContainerClass("columnContentContainer");
+                        setHandleContainerClass("columnHandleBarContainer");
+                    }
 
-                console.log(layout.id, layout.children, transformation);
-                setRenderHandle(transformation.renderHandle);
-                if (transformation.renderHandle) {
                     setSibling1(transformation.sibling1);
                     setSibling2(transformation.sibling2);
-                }
+                    setRenderHandle(transformation.renderHandle);   
+                    break;
+                default:
+                    break
             }
+        }
+    }
+
+
+    const containerAPI = useRef({});
+    containerAPI.current = {
+        setSize: (data) => {
+            applyTransformation(data);
         },
         getSize: () => {
             return containerRef.current.getBoundingClientRect();
         }
-    }), [controller, renderHandle]);
+    };
 
     useEffect(() => {
-        console.log("IN STATE:",renderHandle);
-    }, [renderHandle]);
-
-    const [contentContainerClass, setContentContainerClass] = useState(null);
-    const [handleContainerClass, setHandleContainerClass] = useState(null);
-
-    useEffect(() => {
-    if (layout) {
-            
-            // setContentContainerClass("columnContentContainer");
-            // setHandleContainerClass("columnHandleBarContainer");
-            // setContentContainerClass("rowContentContainer");
-            // setHandleContainerClass("rowHandleBarContainer");
-            console.log(parentOrientation);
-
-            if (parentOrientation === "column") {
-                console.log("Setting column styes");
-                setContentContainerClass("columnContentContainer");
-                setHandleContainerClass("columnHandleBarContainer");
-            } else if (parentOrientation === "row") {
-                console.log("Setting row styes");
-                setContentContainerClass("rowContentContainer");
-                setHandleContainerClass("rowHandleBarContainer");
-            } else {
-                // setContentContainerClass("rowContentContainer");
-                // setHandleContainerClass("rowHandleBarContainer");
-                
-            }
-
+        if (layout) {
             setChildElements(processLayout(layout));
 
             controller.registerContainer(layout.id, containerAPI);
@@ -131,23 +125,25 @@ export const Container = ({layout, parentOrientation}) => {
                 controller.unregisterContainer(layout.id);
             }
         }
-    }, [layout, controller, containerAPI]);
-
-    // useEffect(() => {
-    //     setTimeout(() => {
-    //         setContentContainerClass("columnContentContainer");
-    //         setHandleContainerClass("columnHandleBarContainer");
-    //         // setRenderHandle(true);
-    //         console.log("Setters called");
-    //     }, 2000);
-    // }, [renderHandle]);
+    }, [layout, controller]);
 
     return (
         <div ref={containerRef} className={"relative-container"}>
             <div className={contentContainerClass}>
                 {childElements}
             </div>
-            {renderHandle && <div className={handleContainerClass}></div>}
+            {renderHandle && 
+                <div className={handleContainerClass}>
+                    <HandleBar 
+                        ref = {handleRef}
+                        orientation={parentOrientation} 
+                        siblingRefs={childRefs.current} 
+                        parentRef={containerRef.current}
+                        id1={sibling1} 
+                        id2={sibling2}
+                    />
+                </div>
+            }
         </div>
     );
 }

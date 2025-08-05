@@ -87,7 +87,7 @@ export class LayoutController {
             this.registeredContainers += 1
         }
         if (this.registeredContainers === this.numberOfContainers) {
-            const bounds = this.containers["root"].getSize();
+            const bounds = this.containers["root"].current.getSize();
             this.processTreeFromId("root", bounds.width, bounds.height);
             this.layoutLoaded = true;
         }
@@ -151,7 +151,7 @@ export class LayoutController {
                             for (const parent of e) {
                                 const parentId = parent.parentId;
                                 const container = this.containers[parentId];
-                                container.setSize(parent.transformations);
+                                container.current.setSize(parent.transformations);
                                 this.events.splice(i, 1);
                             }
                         }

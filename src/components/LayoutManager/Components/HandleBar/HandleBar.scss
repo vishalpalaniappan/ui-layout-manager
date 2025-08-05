@@ -7,7 +7,7 @@ $handle-bar-hover-color: #007acc;
 .handleBarHorizontalContainer {
     position:relative;
     width:100%;
-    height: $handle-bar-size;
+    height:100%;
     background-color: $handle-bar-color;
 }
 
@@ -43,8 +43,8 @@ $handle-bar-hover-color: #007acc;
 // See horizontal style comments, they are the same for vertical
 .handleBarVerticalContainer {
     position:relative;
+    width:100%;
     height:100%;
-    width: $handle-bar-size;
     background-color: $handle-bar-color;
     z-index: 1;
 }
