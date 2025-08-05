@@ -66,7 +66,7 @@
                                         "component": "EditorVSCode",
                                         "background": "#1e1e1e",
                                         "type": "percent",
-                                        "width": 100
+                                        "width": 80
                                     }
                                 ]
                             }
