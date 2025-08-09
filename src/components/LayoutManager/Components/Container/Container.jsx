@@ -119,7 +119,7 @@ export const Container = ({layout, parentOrientation}) => {
         if (layout) {
             setChildElements(processLayout(layout));
 
-            controller.registerContainer(layout.id, containerAPI);
+            controller.registerContainer(layout.id, containerAPI, containerRef.current);
 
             return () => {
                 controller.unregisterContainer(layout.id);

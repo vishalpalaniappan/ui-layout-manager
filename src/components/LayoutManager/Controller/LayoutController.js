@@ -16,6 +16,7 @@ export class LayoutController {
      */
     constructor(ldf) {
         this.containers = {};
+        this.containerRefs = {};
         this.ldf = ldf;
         this.numberOfContainers = 0;
         this.registeredContainers = 0;
@@ -78,14 +79,19 @@ export class LayoutController {
      * Allows containers to register themselves with the controller.
      * @param {String} id 
      * @param {Object} containerApi 
+     * @param {HTMLElement} containerRef 
      */
-    registerContainer(id, containerApi) {
+    registerContainer(id, containerApi, containerRef) {
         if (id in this.containers) {
             this.containers[id] = containerApi;
+            this.containerRefs[id] = containerRef;
         } else {
             this.containers[id] = containerApi;
+            this.containerRefs[id] = containerRef;
             this.registeredContainers += 1
         }
+
+        console.log(containerRef);
         if (this.registeredContainers === this.numberOfContainers) {
             const bounds = this.containers["root"].current.getSize();
             this.processTreeFromId("root", bounds.width, bounds.height);
