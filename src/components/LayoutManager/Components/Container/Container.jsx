@@ -26,17 +26,6 @@ export const Container = ({layout, parentOrientation}) => {
     const containerRef = useRef(null);
     const handleRef = useRef(null);
     const childRefs = useRef(new Map());
-
-    /**
-     * Sets a reference to the provided element using the provided id
-     * @param {String} id 
-     * @returns 
-     */
-    const setRefAtIndex = (id) => (el) => {
-        if (!el) return;
-        el.id = id;
-        childRefs.current.set(el.id, el);
-    };
    
     /**
      *
@@ -44,31 +33,19 @@ export const Container = ({layout, parentOrientation}) => {
      * @param {Object} layout 
      */
     const processLayout = (layout) => {
-        const childElements = [];     
+        const childElements = [];   
 
-        if (!layout || !("children" in layout)) {
+        if (!("children" in layout)) {
+            if ("component" in layout) {
+                childElements.push(<LazyLoader key={layout.id} content={layout} />)
+            } 
             return childElements;
-        }
-        if (!("children" in layout) && "component" in layout) {
-            return <React.Fragment></React.Fragment>
-            // return  (
-            //     <div key={layout.id} ref={setRefAtIndex(layout.id)} className="panel-container">
-            //         <LazyLoader content={layout} />
-            //     </div>
-            // )
-        } else if (!("children" in layout)) {
-            return <React.Fragment></React.Fragment>
         }
    
         for (let index = 0; index < layout.children.length; index++) {
-            const child = layout.children[index];
-            
-            // Add Container
-            childElements.push((
-                <div key={index} ref={setRefAtIndex(child.id)} >
-                    <Container layout={child} parentOrientation={layout.childType}/>
-                </div>
-            ));
+            childElements.push(
+                <Container key={index} layout={layout.children[index]} parentOrientation={layout.childType}/>
+            );
         };
 
         return childElements;
