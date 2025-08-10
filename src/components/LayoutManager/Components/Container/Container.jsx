@@ -72,18 +72,6 @@ export const Container = ({layout, parentOrientation}) => {
             <div className={contentContainerClass}>
                 {childElements}
             </div>
-            {renderHandle && 
-                <div className={handleContainerClass}>
-                    <HandleBar 
-                        ref = {handleRef}
-                        orientation={parentOrientation} 
-                        siblingRefs={childRefs.current} 
-                        parentRef={containerRef.current}
-                        id1={sibling1} 
-                        id2={sibling2}
-                    />
-                </div>
-            }
         </div>
     );
 }
