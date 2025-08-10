@@ -75,44 +75,8 @@ export const Container = ({layout, parentOrientation}) => {
     }
 
 
-    const applyTransformation = (data) => {
-        for (const transformation of data) {
-            switch (transformation.type) {
-                case "style":
-                    const id = transformation.id;
-                    const style = transformation.style;
-                    const el = childRefs.current.get(String(id));
-                    Object.assign(el.style, style);
-                    break;
-                case "handle":
-                    if (transformation.handleOrientation === "row") {
-                        setContentContainerClass("rowContentContainer");
-                        setHandleContainerClass("rowHandleBarContainer");
-                    }else if (transformation.handleOrientation === "column"){
-                        setContentContainerClass("columnContentContainer");
-                        setHandleContainerClass("columnHandleBarContainer");
-                    }
-
-                    setSibling1(transformation.sibling1);
-                    setSibling2(transformation.sibling2);
-                    setRenderHandle(transformation.renderHandle);   
-                    break;
-                default:
-                    break
-            }
-        }
-    }
-
-
     const containerAPI = useRef({});
-    containerAPI.current = {
-        setSize: (data) => {
-            applyTransformation(data);
-        },
-        getSize: () => {
-            return containerRef.current.getBoundingClientRect();
-        }
-    };
+    containerAPI.current = {};
 
     useEffect(() => {
         if (layout) {

@@ -9,7 +9,7 @@ import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
  */
 export class LayoutController {
 
-    /**
+    /** 
      * Constructor
      * 
      * @param {Object} ldf - Layout Definition JSON object
@@ -21,10 +21,6 @@ export class LayoutController {
         this.numberOfContainers = 0;
         this.registeredContainers = 0;
         this.layoutLoaded = false;
-
-        this.scheduled = false;
-
-        this.events = [];
 
         this.getNumberOfContainers(ldf.layout);
 
@@ -68,14 +64,6 @@ export class LayoutController {
     }
 
     /**
-     * Sets the layout tree used to render the containers.
-     * @param {Object} tree 
-     */
-    setLayoutTree(tree) {
-        this.ldf = tree;
-    }
-
-    /**
      * Allows containers to register themselves with the controller.
      * @param {String} id 
      * @param {Object} containerApi 
@@ -91,45 +79,8 @@ export class LayoutController {
             this.registeredContainers += 1
         }
 
-        console.log(containerRef);
         if (this.registeredContainers === this.numberOfContainers) {
-            const bounds = this.containers["root"].current.getSize();
-            this.processTreeFromId("root", bounds.width, bounds.height);
             this.layoutLoaded = true;
-        }
-    }
-
-    /**
-     * Process the layout information for the subtree
-     * of the node with the provided id. The starting
-     * width and height are provided for the calculations.
-     * @param {String} id 
-     * @param {Number} width 
-     * @param {Number} height 
-     */
-    processTreeFromId(id, width, height) {
-        if (this.layoutLoaded) {
-            this.sendToWorker(
-                LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
-                {
-                    id: id,
-                    width:width,
-                    height:height
-                }
-            );
-        }
-    }
-
-    /**
-     * 
-     * @param {Event} event 
-     */
-    addLayoutEvent(event) {
-        if (this.event) {
-            this.event = event;
-        } else {
-            this.event = event;
-            this.processTreeFromId(event[0], event[1], event[2]);
         }
     }
     
@@ -148,28 +99,6 @@ export class LayoutController {
     handleWorkerMessage(event) {
         const data = event.data;
         switch(data.type) {
-            case "transformations":
-                if (this.layoutLoaded) {
-                    this.events.push(event.data.data);
-                    requestAnimationFrame(() => {
-                        for (let i = this.events.length - 1; i >= 0; i--) {
-                            const e = this.events[i];
-                            for (const parent of e) {
-                                const parentId = parent.parentId;
-                                const container = this.containers[parentId];
-                                container.current.setSize(parent.transformations);
-                                this.events.splice(i, 1);
-                            }
-                        }
-
-                        if (this.event) {
-                            const event = {...this.event};
-                            this.event = null;
-                            this.processTreeFromId(event[0], event[1], event[2]);
-                        }
-                    });
-                }
-                break;
             default:
                 break;
         }
@@ -183,12 +112,5 @@ export class LayoutController {
             this.worker.terminate();
             this.worker = null;
         }
-    }
-
-    /**
-     * Say hello! 
-     */
-    sayHello() {
-        console.log("hello");
     }
 }

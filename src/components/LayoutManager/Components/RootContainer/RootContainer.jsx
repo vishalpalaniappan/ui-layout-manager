@@ -32,7 +32,6 @@ export const RootContainer = ({layout}) => {
                 const { width, height } = entry.contentRect;
 
                 clearTimeout(timerRef.current);
-                controller.addLayoutEvent(["root",width, height]);
 
                 timerRef.current = setTimeout(() => {
                     resizeDone(width, height);
