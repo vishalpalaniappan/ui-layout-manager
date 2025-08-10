@@ -33,6 +33,8 @@ export const RootContainer = ({layout}) => {
 
                 clearTimeout(timerRef.current);
 
+                controller.handleRootResize(width, height);
+
                 timerRef.current = setTimeout(() => {
                     resizeDone(width, height);
                 }, 200);

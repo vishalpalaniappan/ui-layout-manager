@@ -93,6 +93,16 @@ export class LayoutController {
     }
 
     /**
+     * This function is called when the root container is resized.
+     * It will notify the worker to process the layout changes.
+     * @param {Number} width 
+     * @param {Number} height 
+     */
+    handleRootResize(width, height) {
+
+    }
+
+    /**
      * Handles messages from worker
      * @param {Object} event 
      */
