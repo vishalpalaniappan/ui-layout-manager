@@ -1,9 +1,10 @@
 import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
 
 /**
- * This class exposes functions that allow the containers to register and unregister
- * themselves with the controller. It also creates a worker to execute layout related  
- * tasks and exposes functionality to update the container sizes with the updated values.
+ * This controller is responsible for managing the layout of the application.
+ * - It will also handle the registration and unregistration of containers.
+ * - It will handle the layout changes and notify the worker to process the layout changes.
+ * - It will update the container sizes with the updated values calculated by the worker.
  * 
  * @class LayoutController
  */
