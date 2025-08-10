@@ -16,7 +16,6 @@ export const Container = ({layout, parentOrientation}) => {
     const controller = useLayoutController();
 
     const [childElements, setChildElements] = useState(null);
-    const [childContainer, setChildContainer] = useState(<></>);
     const [renderHandle, setRenderHandle] = useState(false);
     const [sibling1, setSibling1] = useState(null);
     const [sibling2, setSibling2] = useState(null);
