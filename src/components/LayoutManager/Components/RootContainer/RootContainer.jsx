@@ -5,14 +5,14 @@ import { useLayoutController } from "../../Providers/LayoutProvider";
 
 import "./RootContainer.scss"
 /**
- * Root container of the layout tree. This component will start 
+ * Root node for the layout tree. This component will start 
  * rendering the tree and it will also watch for changes in the
  * root container sizes to process layout changes.
  * 
- * @param {Object} layout The layout of this container including its children.
+ * @param {Object} rootNode The root node of the layout tree.
  * @return {React.ReactElement}
  */
-export const RootContainer = ({layout}) => {
+export const RootContainer = ({rootNode}) => {
     const controller = useLayoutController();
 
     const rootRef = useRef(null);
@@ -58,7 +58,7 @@ export const RootContainer = ({layout}) => {
 
     return (
         <div ref={rootRef} className="background">
-            <Container layout={layout} parentOrientation={null}/>
+            <Container node={rootNode} parentOrientation={null}/>
         </div>
     );
 }

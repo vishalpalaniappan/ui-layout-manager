@@ -19,7 +19,7 @@ export const LayoutManager = ({ldf, registry}) => {
     return (
         <LayoutControllerProvider layout={ldf}>
             <ComponentRegistryContext.Provider value={{registry}}>
-                {ldf? <RootContainer layout={ldf.layout} /> : null}
+                {ldf? <RootContainer rootNode={ldf.layout} /> : null}
             </ComponentRegistryContext.Provider>
         </LayoutControllerProvider> 
     );

@@ -11,6 +11,22 @@ export class LayoutEditor {
     }
 
 
+
+    /**
+     * Processes the node with the given id and dimensions. It recursively
+     * traverses the layout tree to find the node and applies transformations to
+     * all its children.
+     * 
+     * @param {String} id Id of the node to process.
+     * @param {Number} width Width of the node.
+     * @param {Number} height Height of the node.
+     */
+    processNode (id, width, height) {
+        console.log("Processing node");
+
+    }
+
+
     /**
      * Passes a DOM transformation to the main thread.
      * @param {Array} transformations - An array of transformations.

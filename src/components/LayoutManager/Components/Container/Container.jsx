@@ -1,77 +1,64 @@
 import React, { useEffect, useState, useRef, createContext, useContext, useCallback, useMemo } from "react";
 import PropTypes from 'prop-types';
-import { HandleBar } from "../HandleBar/HandleBar";
-import { LazyLoader } from "../LazyLoader/LazyLoader";
 import { useLayoutController } from "../../Providers/LayoutProvider";
 
 import "./Container.scss"
 /**
- * Renders each of the children for the current container.
+ * Renders the node and creates containers for its children.
+ * Also registers itself with the controller to allow the controller
+ * to set the size of the container and to apply transformations.
  * 
- * @param {Object} layout The layout of this container including its children.
+ * @param {Object} node The node in the layout tree.
  * @return {React.ReactElement}
  */
-export const Container = ({layout, parentOrientation}) => {
+export const Container = ({node}) => {
 
     const controller = useLayoutController();
 
-    const [childElements, setChildElements] = useState(null);
-    const [renderHandle, setRenderHandle] = useState(false);
-    const [sibling1, setSibling1] = useState(null);
-    const [sibling2, setSibling2] = useState(null);
-
-    const [contentContainerClass, setContentContainerClass] = useState(null);
-    const [handleContainerClass, setHandleContainerClass] = useState(null);
-
     const containerRef = useRef(null);
-    const handleRef = useRef(null);
-    const childRefs = useRef(new Map());
+    
+    const [childElements, setChildElements] = useState(null);
    
     /**
-     *
-     * 
-     * @param {Object} layout 
+     * Process the node in the layout tree and return the child elements.
+     * @param {Object} node 
      */
-    const processLayout = (layout) => {
-        const childElements = [];   
+    const processNode = (node) => {
 
-        if (!("children" in layout)) {
-            if ("component" in layout) {
-                childElements.push(<LazyLoader key={layout.id} content={layout} />)
-            } 
-            return childElements;
+        if (!node || !node.children || node.children.length === 0) {
+            return null;
         }
+
+        const childElements = [];   
    
-        for (let index = 0; index < layout.children.length; index++) {
-            childElements.push(
-                <Container key={index} layout={layout.children[index]} parentOrientation={layout.childType}/>
-            );
+        for (let index = 0; index < node.children.length; index++) {
+            const child = controller.ldf.containers[node.children[index]];
+            childElements.push(<Container key={index} node={child}/>);
         };
 
         return childElements;
     }
 
-
+    // Create the container API that will be used by the controller.
     const containerAPI = useRef({});
     containerAPI.current = {};
 
+    // Render child containers and regsiter API with the controller.
     useEffect(() => {
-        if (layout) {
-            setChildElements(processLayout(layout));
+        if (node) {
+            setChildElements(processNode(node));
 
-            controller.registerContainer(layout.id, containerAPI, containerRef.current);
+            controller.registerContainer(node.id, containerAPI, containerRef.current);
 
             return () => {
-                controller.unregisterContainer(layout.id);
+                controller.unregisterContainer(node.id);
             }
         }
-    }, [layout, controller]);
+    }, [node, controller]);
 
     return (
         <div ref={containerRef} className={"relative-container"}>
-            <div className={contentContainerClass}>
-                {childElements}
-            </div>
+            {childElements}
         </div>
     );
 }

@@ -23,7 +23,7 @@ export class LayoutController {
         this.registeredContainers = 0;
         this.layoutLoaded = false;
 
-        this.getNumberOfContainers(ldf.layout);
+        this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length + 1 : 0;
 
         try {
             this.worker = new Worker(
@@ -38,19 +38,6 @@ export class LayoutController {
             console.error('Failed to create worker:', error);
         }
     }
-
-    /**
-     * Counts the number of containers in the LDF file.
-     * @param {Object} node 
-     */
-    getNumberOfContainers (node) {
-        this.numberOfContainers += 1;
-        if (node.children && node.children.length > 0) {
-            for (const child of node.children) {
-                this.getNumberOfContainers(child)
-            }
-        }
-    };
 
     /**
      * Sends message to worker with the provided arguments.
@@ -70,18 +57,19 @@ export class LayoutController {
      * @param {Object} containerApi 
      * @param {HTMLElement} containerRef 
      */
-    registerContainer(id, containerApi, containerRef) {
-        if (id in this.containers) {
-            this.containers[id] = containerApi;
-            this.containerRefs[id] = containerRef;
-        } else {
-            this.containers[id] = containerApi;
-            this.containerRefs[id] = containerRef;
+    registerContainer(id, containerApi, containerRef) {        
+        if (!(id in this.containers)) {
             this.registeredContainers += 1
         }
 
+        this.containers[id] = containerApi;
+        this.containerRefs[id] = containerRef;
+
+        console.log("Registered container with id: ", id, " and ref: ", containerRef);
+
         if (this.registeredContainers === this.numberOfContainers) {
             this.layoutLoaded = true;
+            console.log("All containers registered, layout is ready.");
         }
     }
     
