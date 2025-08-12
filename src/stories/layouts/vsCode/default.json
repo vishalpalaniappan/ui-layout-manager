@@ -1,29 +1,30 @@
 {
     "title": "Default Editor",
-    "layout": {
-        "id": "root",
-        "type": "split",
-        "orientation": "horizontal",
-        "sizes": [
-            { "initial": { "value": 50, "unit": "px" }},
-            { "initial": { "value": "fill" }},
-            { "initial": { "value": 50, "unit": "px" }}
-        ],
-        "children": ["header","mainBody", "footer"]         
-    },
+    "layoutRoot": "root",
     "containers": {
+        "root": {
+            "id": "1",
+            "type": "split",
+            "orientation": "horizontal",
+            "sizes": [
+                { "initial": { "value": 50, "unit": "px" }},
+                { "initial": { "value": "fill" }},
+                { "initial": { "value": 50, "unit": "px" }}
+            ],
+            "children": ["header","mainBody", "footer"]     
+        },
         "header": {
-            "id": 1,
+            "id": 2,
             "type": "fixed",
             "background": "#3c3c3c"
         },
         "mainBody": {
-            "id": 2,
+            "id": 3,
             "type": "fixed",
             "background": "#ff0000"
         },
         "footer": {
-            "id": 3,
+            "id": 4,
             "type": "fixed",
             "background": "#007acc"
         }

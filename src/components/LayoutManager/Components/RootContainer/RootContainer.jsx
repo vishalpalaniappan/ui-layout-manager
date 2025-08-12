@@ -9,16 +9,16 @@ import "./RootContainer.scss"
  * rendering the tree and it will also watch for changes in the
  * root container sizes to process layout changes.
  * 
- * @param {Object} rootNode The root node of the layout tree.
  * @return {React.ReactElement}
  */
-export const RootContainer = ({rootNode}) => {
+export const RootContainer = () => {
     const controller = useLayoutController();
 
     const rootRef = useRef(null);
     const timerRef = useRef(null);
+    
+    const [rootNode, setRootNode] = useState(null);
     const [resizing, setResizing] = useState(false);
-    const [size, setSize] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
         const el = rootRef.current;
@@ -56,9 +56,18 @@ export const RootContainer = ({rootNode}) => {
         // Setting up function for future.
     }
 
+    useEffect(() => {
+        if (controller) {
+            setRootNode(controller.ldf.containers[controller.ldf.layoutRoot]);
+        }
+    }, [controller]);
+
     return (
         <div ref={rootRef} className="background">
-            <Container node={rootNode} id={"root"} parentOrientation={null}/>
+            {
+                rootNode && 
+                <Container node={rootNode} meta={controller.ldf.layoutRoot} id={rootNode.id}/>
+            }
         </div>
     );
 }
