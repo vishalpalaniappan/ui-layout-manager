@@ -10,19 +10,35 @@ export class LayoutEditor {
         this.transformations = [];
     }
 
-
-
     /**
      * Processes the node with the given id and dimensions. It recursively
      * traverses the layout tree to find the node and applies transformations to
      * all its children.
      * 
-     * @param {String} id Id of the node to process.
-     * @param {Number} width Width of the node.
-     * @param {Number} height Height of the node.
+     * @param {Object} node Node to process.
+     * @param {Object} size Object containing width and height of the node.
      */
-    processNode (id, width, height) {
-        console.log("Processing node");
+    processNode (node, size) {
+        console.log("Processing node", node.id, "with dimensions", size.width, size.height);
+
+        const isSplit = node.type ? node.type === "split": false;
+
+        if (isSplit) {
+            // If the node is a split, we need to apply transformations to its children.
+            for (const childId of node.children) {
+                console.log("");
+                console.log("Processing child node:", childId);
+                const childNode = this.ldf.containers[childId];
+                if (childNode) {
+                    this.processNode(childNode, size);
+                } else {
+                    console.warn("Child node not found for id:", childId);
+                }
+            }
+
+        }
+
+
 
     }
 
@@ -40,30 +56,20 @@ export class LayoutEditor {
 
 
     /**
-     * Recursively processes tree to find the provided node.
+     * Find the provided node in the layout tree by its id.
      * 
-     * TODO: This can be optimized if instead of the id, the 
-     * full access key path is provided to get the node directly.
-     * I am not bothering with it for now because the tree is quite
-     * small and this optimization isn't a priority right now.
+     * TODO: If I use the id as the container key, I can access the 
+     * node directly without traversing the list.
      * 
-     * @param {Object} node 
      * @param {String} id 
      * @returns 
      */
-    findTreeById (node, id) {
-        if (node.id === id) {
-            return node;
-        }
-        if (node.children && node.children.length > 0) {
-            for (const child of node.children) {
-                const foundNode = this.findTreeById(child, id);
-                if (foundNode) {
-                    return foundNode;
-                }
+    getNodeUsingId (id) {
+        for (const key in this.ldf.containers) {
+            if (this.ldf.containers[key].id === id) {
+                return this.ldf.containers[key];
             }
         }
-
         return null;
     };
 };

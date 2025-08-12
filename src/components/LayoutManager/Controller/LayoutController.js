@@ -23,7 +23,7 @@ export class LayoutController {
         this.registeredContainers = 0;
         this.layoutLoaded = false;
 
-        this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length + 1 : 0;
+        this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length + 1: 0;
 
         try {
             this.worker = new Worker(
@@ -61,15 +61,21 @@ export class LayoutController {
         if (!(id in this.containers)) {
             this.registeredContainers += 1
         }
-
+ 
         this.containers[id] = containerApi;
         this.containerRefs[id] = containerRef;
 
-        console.log("Registered container with id: ", id, " and ref: ", containerRef);
+        console.log(`Registered container with id: ${id} `);
 
         if (this.registeredContainers === this.numberOfContainers) {
-            this.layoutLoaded = true;
             console.log("All containers registered, layout is ready.");
+            this.layoutLoaded = true;
+            const size = this.containerRefs["root"].getBoundingClientRect();
+            const id = this.ldf.containers[this.ldf.layoutRoot].id;
+            this.sendToWorker(
+                LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
+                { id: id, size: size }
+            );
         }
     }
     
