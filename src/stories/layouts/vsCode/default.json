@@ -14,17 +14,17 @@
             "children": ["header","mainBody", "footer"]     
         },
         "header": {
-            "id": 2,
+            "id": "2",
             "type": "fixed",
             "background": "#3c3c3c"
         },
         "mainBody": {
-            "id": 3,
-            "type": "fixed",
+            "id": "3",
+            "type": "fill",
             "background": "#ff0000"
         },
         "footer": {
-            "id": 4,
+            "id": "4",
             "type": "fixed",
             "background": "#007acc"
         }

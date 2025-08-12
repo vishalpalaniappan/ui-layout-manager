@@ -55,10 +55,20 @@ export const RootContainer = () => {
     const resizeDone = (width, height) => {
         // Setting up function for future.
     }
+    
+    // Create the container API that will be used by the controller.
+    const rootContainerAPI = useRef({});
+    rootContainerAPI.current = {};
 
     useEffect(() => {
         if (controller) {
             setRootNode(controller.ldf.containers[controller.ldf.layoutRoot]);
+
+            controller.registerContainer("root", rootContainerAPI, rootRef.current);
+
+            return () => {
+                controller.unregisterContainer("root");
+            }
         }
     }, [controller]);
 
