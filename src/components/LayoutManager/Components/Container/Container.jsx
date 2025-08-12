@@ -64,5 +64,5 @@ export const Container = ({node}) => {
 }
 
 Container.propTypes = {
-    layout: PropTypes.object,
+    node: PropTypes.object,
 }
