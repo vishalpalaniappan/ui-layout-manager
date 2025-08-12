@@ -58,7 +58,7 @@ export const RootContainer = ({rootNode}) => {
 
     return (
         <div ref={rootRef} className="background">
-            <Container node={rootNode} parentOrientation={null}/>
+            <Container node={rootNode} id={"root"} parentOrientation={null}/>
         </div>
     );
 }
