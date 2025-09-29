@@ -6,12 +6,20 @@
             "id": "1",
             "type": "split",
             "orientation": "horizontal",
-            "sizes": [
-                { "initial": { "value": 50, "unit": "px", "type": "fixed" }},
-                { "initial": { "type": "fill" }},
-                { "initial": { "value": 50, "unit": "px", "type": "fixed" }}
-            ],
-            "children": ["header","mainBody", "footer"]     
+            "children": [
+                {
+                    "containerId": "header",
+                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }}
+                },
+                {
+                    "containerId": "mainBody",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "containerId": "footer",
+                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }}
+                }
+            ]
         },
         "header": {
             "id": "2",
