@@ -2,7 +2,7 @@ import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
 
 /**
  * This controller is responsible for managing the layout of the application.
- * - It will also handle the registration and unregistration of containers.
+ * - It will handle the registration and unregistration of containers.
  * - It will handle the layout changes and notify the worker to process the layout changes.
  * - It will update the container sizes with the updated values calculated by the worker.
  * 
@@ -67,7 +67,7 @@ export class LayoutController {
 
         console.log(`Registered container with id: ${id} `);
 
-        if (this.registeredContainers === this.numberOfContainers) {
+        if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
             console.log("All containers registered, layout is ready.");
             this.layoutLoaded = true;
             const size = this.containerRefs["root"].getBoundingClientRect();
