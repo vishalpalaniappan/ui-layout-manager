@@ -32,8 +32,10 @@ export const Container = ({node}) => {
         const childElements = [];   
    
         for (let index = 0; index < node.children.length; index++) {
-            const child = controller.ldf.containers[node.children[index]];
-            childElements.push(<Container key={index} meta={node.children[index]} id={child.id} node={child}/>);
+            const child = controller.ldf.containers[node.children[index].containerId];
+            childElements.push(
+                <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
+            );
         };
 
         return childElements;
