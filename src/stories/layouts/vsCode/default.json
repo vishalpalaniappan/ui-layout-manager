@@ -5,7 +5,7 @@
         "root": {
             "id": "1",
             "type": "split",
-            "orientation": "vertical",
+            "orientation": "horizontal",
             "children": [
                 {
                     "containerId": "header",
@@ -23,15 +23,35 @@
         },
         "header": {
             "id": "2",
-            "background": "#3c3c3c"
+            "background": "#007acc"
         },
         "mainBody": {
             "id": "3",
-            "background": "#ff0000"
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "editor1",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "containerId": "editor2",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
         },
         "footer": {
             "id": "4",
             "background": "#007acc"
+        },
+        "editor1": {
+            "id": "5",
+            "background": "#222222"
+        },
+        "editor2": {
+            "id": "6",
+            "background": "#444444"
         }
     }
 }
