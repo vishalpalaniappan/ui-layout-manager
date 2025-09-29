@@ -39,13 +39,11 @@ export class LayoutEditor {
             }
             
             // Calculate the fixed size sum and the remaining size for fill types.
-            let fixedSizeSum = 0;
-            let fillCount = 0;
             let remainingSize = (node.orientation === "horizontal") ? size.width : size.height;
+            let fillCount = 0;
             for (const child of node.children) {
                 switch(child.size.initial.type) {
                     case "fixed":
-                        fixedSizeSum += child.size.initial.value;
                         remainingSize -= child.size.initial.value;
                         break;
                     case "fill":
@@ -72,11 +70,9 @@ export class LayoutEditor {
                     default:
                         console.warn("Unknown size type:", child.size.initial.type);
                 }
-                console.log(childSize);
+                //Save the current size in LDF for future reference.
+                child.size.current = childSize;
             }
-
-
-            // Process each child node recursively.
         }
     }
 
