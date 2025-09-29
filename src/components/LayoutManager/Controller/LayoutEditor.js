@@ -28,17 +28,14 @@ export class LayoutEditor {
         if (isSplit) {
 
             // Identify the dynamic property based on orientation.
-            let dynamicProp;
-            let fixedProp;
+            let props = {};
             if (node.orientation === "horizontal") {
-                dynamicProp = "width";
-                fixedProp = "height";
+                props = {"dynamic": "width", "fixed": "height"};
             } else if (node.orientation === "vertical") {
-                dynamicProp = "height";
-                fixedProp = "width";
+                props = {"dynamic": "height", "fixed": "width"};
             } else {
                 console.warn("Unknown orientation:", node.orientation);
-                return;
+                //TODO: Decide how to handle invalid ldf configuration.
             }
             
             // Calculate the fixed size sum and the remaining size for fill types.
@@ -56,6 +53,7 @@ export class LayoutEditor {
                         break;
                     default:
                         console.warn("Unknown size type:", child.size.initial.type);
+                        //TODO: Decide how to handle invalid ldf configuration.
                 }
             }
 
@@ -64,12 +62,12 @@ export class LayoutEditor {
                 let childSize = {};
                 switch(child.size.initial.type) {
                     case "fixed":
-                        childSize[dynamicProp] = child.size.initial.value;
-                        childSize[fixedProp] = size[fixedProp];
+                        childSize[props["dynamic"]] = child.size.initial.value;
+                        childSize[props["fixed"]] = size[props["fixed"]];
                         break;
                     case "fill":
-                        childSize[dynamicProp] = remainingSize / fillCount;
-                        childSize[fixedProp] = size[fixedProp];
+                        childSize[props["dynamic"]] = remainingSize / fillCount;
+                        childSize[props["fixed"]] = size[props["fixed"]];
                         break;
                     default:
                         console.warn("Unknown size type:", child.size.initial.type);
