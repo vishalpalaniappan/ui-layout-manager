@@ -43,7 +43,15 @@ export const Container = ({node}) => {
 
     // Create the container API that will be used by the controller.
     const containerAPI = useRef({});
-    containerAPI.current = {};
+    containerAPI.current = {
+        /**
+         * 
+         * @param {*} size 
+         */
+        updateSize: (size) => {
+            console.log("Updating size of container", node.id, "to", size);
+        }
+    };
 
     // Render child containers and regsiter API with the controller.
     useEffect(() => {
