@@ -26,7 +26,18 @@ export const Container = ({node}) => {
     const processNode = (node) => {
 
         if (!node || !node.children || node.children.length === 0) {
+            containerRef.current.style.background = node.background;
             return null;
+        }
+
+        if (node.orientation === "horizontal") {
+            containerRef.current.style.display = "flex";
+            containerRef.current.style.flexDirection = "row";
+        } else if (node.orientation === "vertical") {
+            containerRef.current.style.display = "flex";
+            containerRef.current.style.flexDirection = "column";
+        } else {
+            console.warn("Unknown orientation:", node.orientation);
         }
 
         const childElements = [];   
@@ -50,6 +61,8 @@ export const Container = ({node}) => {
          */
         updateSize: (size) => {
             console.log("Updating size of container", node.id, "to", size);
+            containerRef.current.style.width = size.width + "px";
+            containerRef.current.style.height = size.height + "px";
         }
     };
 
