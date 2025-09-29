@@ -24,18 +24,36 @@ export class LayoutEditor {
 
         const isSplit = node.type ? node.type === "split": false;
 
+        // If the node is a split, we need to apply transformations to its children.
         if (isSplit) {
-            // If the node is a split, we need to apply transformations to its children.
+            let fixedSizeSum = 0;
+            let remainingSize = (node.orientation === "horizontal") ? size.width : size.height;
+            
             for (const child of node.children) {
                 console.log("Child ID:", child.containerId);
-                console.log("Child size:", child.size);
+                console.log("Child size:", child.size.initial);
 
-                //Calculate Child Size based on parent size and child size type
-                
-                let childSize = { width: 0, height: 0 };
-                this.processNode(child.containerId, childSize);
+                // Calculate the fixed size sum and remaining size.
+                if (child.size.initial.type === "fixed") {
+                    const fixedValue = child.size.initial.value;
+                    fixedSizeSum += fixedValue;
+                    remainingSize -= fixedValue;
+                }               
             }
+
+            console.log("Fixed size sum:", fixedSizeSum);
+            console.log("Remaining size for fill:", remainingSize);
         }
+    }
+
+    /**
+     * 
+     * @param {*} parentSize 
+     * @param {*} childSizeDef 
+     * @param {*} orientation 
+     */
+    calculateChildSize (parentSize, childSizeDef, orientation) {
+        console.log("Calculating child size for parent size:", parentSize, "child size definition:", childSizeDef, "orientation:", orientation);
     }
 
 
