@@ -91,12 +91,11 @@ export class LayoutEditor {
 
     /**
      * Passes a DOM transformation to the main thread.
-     * @param {Array} transformations - An array of transformations.
      */
-    sendTransformations (transformations) {
+    sendTransformations () {
         postMessage({
             type: "transformations",
-            data: transformations
+            data: this.transformations
         });
         this.transformations = []
     }
