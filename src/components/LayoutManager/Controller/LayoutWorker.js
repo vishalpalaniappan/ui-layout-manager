@@ -20,6 +20,7 @@ self.onmessage = function (e) {
                 const d = e.data.args;
                 const node = editor.getNodeUsingId(d.id);
                 editor.processNode(node, d.size);
+                console.log("Transformations to apply:", editor.transformations);
                 break;
             default:
                 break;

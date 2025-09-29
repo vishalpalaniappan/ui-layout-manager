@@ -73,17 +73,19 @@ export class LayoutEditor {
                 //Save the current size in LDF for future reference.
                 child.size.current = childSize;
             }
-        }
-    }
 
-    /**
-     * 
-     * @param {*} parentSize 
-     * @param {*} childSizeDef 
-     * @param {*} orientation 
-     */
-    calculateChildSize (parentSize, childSizeDef, orientation) {
-        console.log("Calculating child size for parent size:", parentSize, "child size definition:", childSizeDef, "orientation:", orientation);
+            // Apply transformations to children and recurse.
+            for (const child of node.children) {
+                const childId = this.ldf.containers[child.containerId].id;
+                this.transformations.push({
+                    id: childId,
+                    size: child.size.current
+                });
+                this.processNode(child.containerId, child.size.current);
+            }
+        } else {
+            console.log("Node is a leaf, no children to process.");
+        }
     }
 
 
@@ -95,7 +97,8 @@ export class LayoutEditor {
         postMessage({
             type: "transformations",
             data: transformations
-        })
+        });
+        this.transformations = []
     }
 
 
