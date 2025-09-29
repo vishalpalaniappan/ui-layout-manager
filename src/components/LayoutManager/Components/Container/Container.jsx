@@ -60,7 +60,6 @@ export const Container = ({node}) => {
          * @param {*} size 
          */
         updateSize: (size) => {
-            console.log("Updating size of container", node.id, "to", size);
             containerRef.current.style.width = size.width + "px";
             containerRef.current.style.height = size.height + "px";
         }
@@ -70,9 +69,7 @@ export const Container = ({node}) => {
     useEffect(() => {
         if (node) {
             setChildElements(processNode(node));
-
             controller.registerContainer(node.id, containerAPI, containerRef.current);
-
             return () => {
                 controller.unregisterContainer(node.id);
             }
