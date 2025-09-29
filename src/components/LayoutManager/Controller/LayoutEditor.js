@@ -81,7 +81,7 @@ export class LayoutEditor {
                     id: childId,
                     size: child.size.current
                 });
-                this.processNode(child.containerId, child.size.current);
+                this.processNode(this.ldf.containers[child.containerId], child.size.current);
             }
         } else {
             console.log("Node is a leaf, no children to process.");
