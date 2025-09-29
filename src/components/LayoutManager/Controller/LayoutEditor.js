@@ -19,27 +19,23 @@ export class LayoutEditor {
      * @param {Object} size Object containing width and height of the node.
      */
     processNode (node, size) {
-        console.log("Processing node", node.id, "with dimensions", size.width, size.height);
+        console.log("");
+        console.log("Processing node", node, "with dimensions", size.width, size.height);
 
         const isSplit = node.type ? node.type === "split": false;
 
         if (isSplit) {
             // If the node is a split, we need to apply transformations to its children.
-            for (const childId of node.children) {
-                console.log("");
-                console.log("Processing child node:", childId);
-                const childNode = this.ldf.containers[childId];
-                if (childNode) {
-                    this.processNode(childNode, size);
-                } else {
-                    console.warn("Child node not found for id:", childId);
-                }
+            for (const child of node.children) {
+                console.log("Child ID:", child.containerId);
+                console.log("Child size:", child.size);
+
+                //Calculate Child Size based on parent size and child size type
+                
+                let childSize = { width: 0, height: 0 };
+                this.processNode(child.containerId, childSize);
             }
-
         }
-
-
-
     }
 
 
