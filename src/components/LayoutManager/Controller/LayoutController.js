@@ -103,8 +103,12 @@ export class LayoutController {
      * @param {Object} event 
      */
     handleWorkerMessage(event) {
-        const data = event.data;
-        switch(data.type) {
+        switch(event.data.type) {
+            case "transformations":
+                for (const transformation of event.data.data) {
+                    this.containers[transformation.id].current.updateSize(transformation.size);
+                };
+                break;
             default:
                 break;
         }
