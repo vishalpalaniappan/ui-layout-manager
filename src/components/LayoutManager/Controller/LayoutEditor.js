@@ -26,23 +26,40 @@ export class LayoutEditor {
 
         // If the node is a split, we need to apply transformations to its children.
         if (isSplit) {
-            let fixedSizeSum = 0;
-            let remainingSize = (node.orientation === "horizontal") ? size.width : size.height;
-            
-            for (const child of node.children) {
-                console.log("Child ID:", child.containerId);
-                console.log("Child size:", child.size.initial);
 
-                // Calculate the fixed size sum and remaining size.
-                if (child.size.initial.type === "fixed") {
-                    const fixedValue = child.size.initial.value;
-                    fixedSizeSum += fixedValue;
-                    remainingSize -= fixedValue;
-                }               
+            // Identify the dynamic property based on orientation.
+            let dynamicProp;
+            if (node.orientation === "horizontal") {
+                dynamicProp = "height";
+            } else if (node.orientation === "vertical") {
+                dynamicProp = "width";
+            } else {
+                console.warn("Unknown orientation:", node.orientation);
+                return;
+            }
+            
+            // Calculate the fixed size sum and the remaining size for fill types.
+            let fixedSizeSum = 0;
+            let fillCount = 0;
+            let remainingSize = (node.orientation === "horizontal") ? size.width : size.height;
+            for (const child of node.children) {
+                switch(child.size.initial.type) {
+                    case "fixed":
+                        fixedSizeSum += child.size.initial.value;
+                        remainingSize -= child.size.initial.value;
+                        break;
+                    case "fill":
+                        fillCount += 1;
+                        break;
+                    default:
+                        console.warn("Unknown size type:", child.size.initial.type);
+                }
             }
 
-            console.log("Fixed size sum:", fixedSizeSum);
-            console.log("Remaining size for fill:", remainingSize);
+            // Calculate and apply transformations to each child.
+
+
+            // Process each child node recursively.
         }
     }
 
