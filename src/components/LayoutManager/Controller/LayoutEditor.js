@@ -30,9 +30,9 @@ export class LayoutEditor {
             // Identify the dynamic property based on orientation.
             let dynamicProp;
             if (node.orientation === "horizontal") {
-                dynamicProp = "height";
-            } else if (node.orientation === "vertical") {
                 dynamicProp = "width";
+            } else if (node.orientation === "vertical") {
+                dynamicProp = "height";
             } else {
                 console.warn("Unknown orientation:", node.orientation);
                 return;
@@ -57,6 +57,16 @@ export class LayoutEditor {
             }
 
             // Calculate and apply transformations to each child.
+            for (const child of node.children) {
+                switch(child.size.initial.type) {
+                    case "fixed":
+                        break;
+                    case "fill":
+                        break;
+                    default:
+                        console.warn("Unknown size type:", child.size.initial.type);
+                }
+            }
 
 
             // Process each child node recursively.
