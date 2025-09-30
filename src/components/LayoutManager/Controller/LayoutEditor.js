@@ -68,6 +68,12 @@ export class LayoutEditor {
         }
 
         // Calculate child sizes.
+        if (fillCount === 0 && remainingSize !== 0) {
+            console.warn("No fill children but remaining size is non-zero:", remainingSize);
+            // This won't break the layout, but it indicates an issue in the LDF that will be visible.
+            // TODO: Decide whether these warnings should be errors.
+        }
+
         for (const child of node.children) {
             let childSize = {};
             switch(child.size.initial.type) {
@@ -76,7 +82,7 @@ export class LayoutEditor {
                     childSize[props["fixed"]] = size[props["fixed"]];
                     break;
                 case "fill":
-                    childSize[props["dynamic"]] = remainingSize / fillCount;
+                    childSize[props["dynamic"]] = fillCount > 0 ? remainingSize / fillCount : 0;
                     childSize[props["fixed"]] = size[props["fixed"]];
                     break;
                 default:
