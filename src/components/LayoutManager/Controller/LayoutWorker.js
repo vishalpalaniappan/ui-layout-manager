@@ -18,9 +18,7 @@ self.onmessage = function (e) {
                 break;
             case LAYOUT_WORKER_PROTOCOL.RENDER_NODE:
                 const d = e.data.args;
-                const node = editor.getNodeUsingId(d.id);
-                editor.processNode(node, d.size);
-                editor.sendTransformations();
+                editor.processNodeFromId(d.id, d.size);
                 break;
             default:
                 break;

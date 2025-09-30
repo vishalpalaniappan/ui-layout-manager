@@ -11,7 +11,19 @@ export class LayoutEditor {
     }
 
     /**
-     * Processes the node with the given id and dimensions. It recursively
+     * Given a node id and its size, it processes the node and applies
+     * transformations to all its children.
+     * @param {String} id 
+     * @param {Object} size 
+     */
+    processNodeFromId(id, size) {
+        const node = this.getNodeUsingId(id);
+        this.processNode(node, size);
+        this.sendTransformations();
+    }
+
+    /**
+     * Processes the container with the given id and dimensions. It recursively
      * traverses the layout tree to find the node and applies transformations to
      * all its children.
      * 
