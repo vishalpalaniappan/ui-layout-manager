@@ -27,6 +27,12 @@ self.onmessage = function (e) {
         }
 
     } catch (e) {
-        console.error(e);
+        postMessage({
+            type: "error",
+            error: {
+                message: e.message,
+                stack: e.stack
+            }
+        });
     }
 }

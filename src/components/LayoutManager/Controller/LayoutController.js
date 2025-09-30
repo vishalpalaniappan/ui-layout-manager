@@ -109,6 +109,9 @@ export class LayoutController {
                     this.containers[transformation.id].current.updateSize(transformation.size);
                 };
                 break;
+            case "error":
+                console.error("Error from worker:", event.data);
+                break;
             default:
                 break;
         }
