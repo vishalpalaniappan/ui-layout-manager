@@ -14,11 +14,10 @@ self.onmessage = function (e) {
         switch (e.data.code) {
             case LAYOUT_WORKER_PROTOCOL.INITIALIZE:
                 /** @type {LayoutEditor} */
-                editor = new LayoutEditor(e.data.args.ldf);
+                editor = new LayoutEditor(args.ldf);
                 break;
             case LAYOUT_WORKER_PROTOCOL.RENDER_NODE:
-                const d = e.data.args;
-                editor.processNodeFromId(d.id, d.size);
+                editor.processNodeFromId(args.id, args.size);
                 break;
             default:
                 break;
