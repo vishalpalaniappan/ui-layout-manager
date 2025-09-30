@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, createContext, useContext } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef, createContext, useContext } from "react";
 import PropTypes from 'prop-types';
 import { Container } from "../Container/Container";
 import { useLayoutController } from "../../Providers/LayoutProvider";
@@ -20,9 +20,8 @@ export const RootContainer = () => {
     const [rootNode, setRootNode] = useState(null);
     const [resizing, setResizing] = useState(false);
 
-    useEffect(() => {
-        const el = rootRef.current;
-        if (!el) return;
+    useLayoutEffect(() => {
+        if (!rootRef.current) return;
 
         const observer = new ResizeObserver(entries => {
 
@@ -41,10 +40,10 @@ export const RootContainer = () => {
             }
         });
 
-        observer.observe(el);
+        observer.observe(rootRef.current);
 
         return () => observer.disconnect();
-    }, []);
+    }, [resizing, controller]);
 
 
     /**
@@ -60,7 +59,7 @@ export const RootContainer = () => {
     const rootContainerAPI = useRef({});
     rootContainerAPI.current = {};
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (controller) {
             setRootNode(controller.ldf.containers[controller.ldf.layoutRoot]);
 
