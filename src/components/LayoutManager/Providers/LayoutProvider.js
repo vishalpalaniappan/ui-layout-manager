@@ -31,7 +31,7 @@ export function LayoutControllerProvider({ layout, children }) {
 }
 
 LayoutControllerProvider.propTypes = {
-    layout: PropTypes.object,
+    layout: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired
 }
 
