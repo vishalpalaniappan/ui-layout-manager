@@ -81,7 +81,3 @@ export const RootContainer = () => {
         </div>
     );
 }
-
-RootContainer.propTypes = {
-    ldf: PropTypes.object,
-}
