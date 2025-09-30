@@ -46,8 +46,7 @@ export class LayoutEditor {
         } else if (node.orientation === "vertical") {
             props = {"dynamic": "height", "fixed": "width"};
         } else {
-            console.warn("Unknown orientation:", node.orientation);
-            //TODO: Decide how to handle invalid ldf configuration.
+            throw new Error(`Unknown orientation "${node.orientation}" in LDF configuration`);
         }
         
         // Calculate the fixed size sum and the remaining size for fill types.
@@ -62,8 +61,7 @@ export class LayoutEditor {
                     fillCount += 1;
                     break;
                 default:
-                    console.warn("Unknown size type:", child.size.initial.type);
-                    //TODO: Decide how to handle invalid ldf configuration.
+                    throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
             }
         }
 
@@ -86,7 +84,7 @@ export class LayoutEditor {
                     childSize[props["fixed"]] = size[props["fixed"]];
                     break;
                 default:
-                    console.warn("Unknown size type:", child.size.initial.type);
+                    throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
             }
             //Save the current size in LDF for future reference.
             child.size.current = childSize;
