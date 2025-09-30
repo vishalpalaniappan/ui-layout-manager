@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, createContext, useContext, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect, useCallback } from "react";
 import PropTypes from 'prop-types';
 import { useLayoutController } from "../../Providers/LayoutProvider";
 
@@ -21,27 +21,6 @@ export const Container = ({node}) => {
      * Renders child containers recursively.
      */
     const processContainer = useCallback((node) => {
-         // Ensure ref is mounted
-        if (!containerRef.current) return null;
-
-        // If no children, then this is a leaf node, apply background and return.
-        if (!node || !node.children || node.children.length === 0) {
-            containerRef.current.style.background = node.background;
-            return null;
-        }
-
-        // Set flex properties based on orientation.
-        if (node.orientation === "horizontal") {
-            containerRef.current.style.display = "flex";
-            containerRef.current.style.flexDirection = "row";
-        } else if (node.orientation === "vertical") {
-            containerRef.current.style.display = "flex";
-            containerRef.current.style.flexDirection = "column";
-        } else {
-            console.warn("Unknown orientation:", node.orientation);
-        }
-
-        // Render child containers.
         const childElements = [];      
         for (let index = 0; index < node.children.length; index++) {
             const child = controller.ldf.containers[node.children[index].containerId];
@@ -49,7 +28,6 @@ export const Container = ({node}) => {
                 <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
             );
         };
-
         return childElements;
     },[controller]);
 
@@ -67,9 +45,29 @@ export const Container = ({node}) => {
     };
 
     // Render child containers and regsiter API with the controller.
-    useEffect(() => {
-        if (node) {
-            setChildElements(processContainer(node));
+    useLayoutEffect(() => {
+        if (node && controller && containerRef.current) {
+
+            const hasChildren = node.children && node.children.length > 0
+
+            if (!hasChildren && node.background) {
+                containerRef.current.style.background = node.background;
+            } else {
+                containerRef.current.style.background = "transparent";
+            } 
+            
+            if (hasChildren && node.orientation === "horizontal") {
+                containerRef.current.style.display = "flex";
+                containerRef.current.style.flexDirection = "row";
+            } else if (hasChildren && node.orientation === "vertical") {
+                containerRef.current.style.display = "flex";
+                containerRef.current.style.flexDirection = "column";
+            } else {
+                console.warn("Unknown orientation:", node.orientation);
+            }
+            
+            setChildElements(hasChildren?processContainer(node):null);
+            
             controller.registerContainer(node.id, containerAPI, containerRef.current);
             return () => {
                 controller.unregisterContainer(node.id);
