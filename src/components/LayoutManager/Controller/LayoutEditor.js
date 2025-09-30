@@ -21,9 +21,8 @@ export class LayoutEditor {
     processNode (node, size) {
         const isSplit = node.type ? node.type === "split": false;
 
-        // If the node has no children, then it is a leaf node, so we return.
+        // If node is not split, then it has no children and is a leaf node, so we return.
         if (!isSplit) {
-            console.info("Node is a leaf, no children to process.");
             return;
         }
 
