@@ -6,7 +6,8 @@
     "checkJs": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"]
 }

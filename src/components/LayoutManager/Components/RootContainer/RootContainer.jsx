@@ -30,6 +30,7 @@ export const RootContainer = () => {
 
             controller.registerContainer("root", rootContainerAPI, rootRef.current);
 
+            // Create resize observer to monitor changes in the root container size.
             const observer = new ResizeObserver((entries) => {
 
                 if (!resizingRef.current) resizingRef.current = true;
@@ -43,7 +44,6 @@ export const RootContainer = () => {
                         resizingRef.current = false;
                         console.log("Root resized to", width, height);
                     }, 200);
-
                 }
             });
 
