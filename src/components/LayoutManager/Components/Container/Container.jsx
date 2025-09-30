@@ -14,22 +14,23 @@ import "./Container.scss"
 export const Container = ({node}) => {
 
     const controller = useLayoutController();
-
-    const containerRef = useRef(null);
-    
+    const containerRef = useRef(null);    
     const [childElements, setChildElements] = useState(null);
    
     /**
-     * Process the node in the layout tree and return the child elements.
-     * @param {Object} node 
+     * Renders child containers recursively.
      */
-    const processNode = (node) => {
+    const processContainer = useCallback((node) => {
+         // Ensure ref is mounted
+        if (!containerRef.current) return null;
 
+        // If no children, then this is a leaf node, apply background and return.
         if (!node || !node.children || node.children.length === 0) {
             containerRef.current.style.background = node.background;
             return null;
         }
 
+        // Set flex properties based on orientation.
         if (node.orientation === "horizontal") {
             containerRef.current.style.display = "flex";
             containerRef.current.style.flexDirection = "row";
@@ -40,8 +41,8 @@ export const Container = ({node}) => {
             console.warn("Unknown orientation:", node.orientation);
         }
 
-        const childElements = [];   
-   
+        // Render child containers.
+        const childElements = [];      
         for (let index = 0; index < node.children.length; index++) {
             const child = controller.ldf.containers[node.children[index].containerId];
             childElements.push(
@@ -50,14 +51,14 @@ export const Container = ({node}) => {
         };
 
         return childElements;
-    }
+    },[controller]);
 
     // Create the container API that will be used by the controller.
     const containerAPI = useRef({});
     containerAPI.current = {
         /**
-         * 
-         * @param {*} size 
+         * Applies the provided size to the container reference.
+         * @param {Object} size 
          */
         updateSize: (size) => {
             containerRef.current.style.width = size.width + "px";
@@ -68,13 +69,13 @@ export const Container = ({node}) => {
     // Render child containers and regsiter API with the controller.
     useEffect(() => {
         if (node) {
-            setChildElements(processNode(node));
+            setChildElements(processContainer(node));
             controller.registerContainer(node.id, containerAPI, containerRef.current);
             return () => {
                 controller.unregisterContainer(node.id);
             }
         }
-    }, [node, controller]);
+    }, [node, controller, processContainer]);
 
     return (
         <div ref={containerRef} className={"relative-container"}>
