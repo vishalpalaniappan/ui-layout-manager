@@ -5,11 +5,11 @@
         "root": {
             "id": "1",
             "type": "split",
-            "orientation": "horizontal",
+            "orientation": "vertical",
             "children": [
                 {
                     "containerId": "header",
-                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }}
+                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }}
                 },
                 {
                     "containerId": "mainBody",
@@ -17,26 +17,30 @@
                 },
                 {
                     "containerId": "footer",
-                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }}
+                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }}
                 }
             ]
         },
         "header": {
             "id": "2",
-            "background": "#007acc"
+            "background": "#3c3c3c"
         },
         "mainBody": {
             "id": "3",
             "background": "#3c3c3c",
             "type": "split",
-            "orientation": "vertical",
+            "orientation": "horizontal",
             "children": [
                 {
-                    "containerId": "editor1",
-                    "size": { "initial": { "type": "fill" }}
+                    "containerId": "sidebar",
+                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }}
                 },
                 {
-                    "containerId": "editor2",
+                    "containerId": "menuContainer",
+                    "size": { "initial": { "value": 200, "unit": "px", "type": "fixed" }}
+                },
+                {
+                    "containerId": "editorContainer",
                     "size": { "initial": { "type": "fill" }}
                 }
             ]
@@ -45,13 +49,17 @@
             "id": "4",
             "background": "#007acc"
         },
-        "editor1": {
+        "sidebar": {
             "id": "5",
-            "background": "#222222"
+            "background": "#333"
         },
-        "editor2": {
+        "menuContainer": {
             "id": "6",
-            "background": "#444444"
+            "background": "#252526"
+        },
+        "editorContainer": {
+            "id": "7",
+            "background": "#1e1e1e"
         }
     }
 }
