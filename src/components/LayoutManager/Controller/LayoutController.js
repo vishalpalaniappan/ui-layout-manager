@@ -95,7 +95,7 @@ export class LayoutController {
      * @param {Number} height 
      */
     handleRootResize(width, height) {
-
+        console.log("Root container resized to:", width, height);
     }
 
     /**

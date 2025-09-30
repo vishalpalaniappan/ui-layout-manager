@@ -24,6 +24,15 @@ export const RootContainer = () => {
     const rootContainerAPI = useRef({});
     rootContainerAPI.current = {};
 
+    /**
+     * Invokes function in controller to handle root size changes.
+     * @param {Number} width 
+     * @param {Number} height 
+     */
+    const updateRootSize = (width, height) => {    
+        controller.handleRootResize(width, height);
+    };
+
     useLayoutEffect(() => {
         if (controller) {
             setRootNode(controller.ldf.containers[controller.ldf.layoutRoot]);
@@ -42,7 +51,7 @@ export const RootContainer = () => {
 
                     timerRef.current = setTimeout(() => {
                         resizingRef.current = false;
-                        console.log("Root resized to", width, height);
+                        updateRootSize(width, height);
                     }, 200);
                 }
             });
