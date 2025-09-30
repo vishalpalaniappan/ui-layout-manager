@@ -96,6 +96,12 @@ export class LayoutController {
      */
     handleRootResize(width, height) {
         console.log("Root container resized to:", width, height);
+        const size = {width: width, height: height};
+        const id = this.ldf.containers[this.ldf.layoutRoot].id;
+        this.sendToWorker(
+            LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
+            { id: id, size: size }
+        );
     }
 
     /**
@@ -105,9 +111,11 @@ export class LayoutController {
     handleWorkerMessage(event) {
         switch(event.data.type) {
             case "transformations":
-                for (const transformation of event.data.data) {
-                    this.containers[transformation.id].current.updateSize(transformation.size);
-                };
+                requestAnimationFrame(() => {
+                    for (const transformation of event.data.data) {
+                        this.containers[transformation.id].current.updateSize(transformation.size);
+                    };
+                });
                 break;
             case "error":
                 console.error("Error from worker:", event.data);
