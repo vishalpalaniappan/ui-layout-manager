@@ -1,13 +1,7 @@
 import { useEffect, useMemo, useCallback } from "react";
 import { useArgs } from "@storybook/preview-api";
 import { LayoutManager } from "../components/LayoutManager";
-import defaultLayoutJSON from "./layouts/vsCode/default.json"
-import twoEditorsJSON from "./layouts/vsCode/twoEditors.json"
-import fourEditorsJSON from "./layouts/vsCode/fourEditors.json"
-import variableTreeJSON from "./layouts/vsCode/VariableTree.json"
-import variableTree2JSON from "./layouts/vsCode/VariableTreev2.json"
-import initialSizeDemoJSON from "./layouts/vsCode/InitialSizeDemo.json"
-import aspJSON from "./layouts/vsCode/asp.json"
+import defaultLayoutJSON from "./layouts/vsCode/default.json";
 
 import "./LayoutManager.stories.scss";
 
@@ -55,42 +49,4 @@ export const defaultLayout = Template.bind({})
 defaultLayout.args = {
     ldf: defaultLayoutJSON
 }
-
-export const initialSizeDemo = Template.bind({})
-
-initialSizeDemo.args = {
-    ldf: initialSizeDemoJSON
-}
-
-export const twoEditors = Template.bind({})
-
-twoEditors.args = {
-    ldf: twoEditorsJSON
-}
-
-export const fourEditors = Template.bind({})
-
-fourEditors.args = {
-    ldf: fourEditorsJSON
-}
-
-export const variableTree = Template.bind({})
-
-variableTree.args = {
-    ldf: variableTreeJSON
-}
-
-
-export const variableTree2 = Template.bind({})
-
-variableTree2.args = {
-    ldf: variableTree2JSON
-}
-
-export const asp = Template.bind({})
-
-asp.args = {
-    ldf: aspJSON
-}
-
 
