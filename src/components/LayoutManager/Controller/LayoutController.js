@@ -1,20 +1,29 @@
+import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
+
 /**
- * This class exposes functions that allow the containers to register and unregister
- * themselves with the controller. It also creates a worker to execute layout related  
- * tasks and exposes functionality to update the container sizes with the updated values.
- * 
- * This class currently only contains the skeleton, more functionality will be added soon.
+ * This controller is responsible for managing the layout of the application.
+ * - It will handle the registration and unregistration of containers.
+ * - It will handle the layout changes and notify the worker to process the layout changes.
+ * - It will update the container sizes with the updated values calculated by the worker.
  * 
  * @class LayoutController
  */
 export class LayoutController {
 
-    /**
+    /** 
      * Constructor
+     * 
+     * @param {Object} ldf - Layout Definition JSON object
      */
-    constructor(layout) {
+    constructor(ldf) {
         this.containers = {};
-        this.ldf = layout;
+        this.containerRefs = {};
+        this.ldf = ldf;
+        this.numberOfContainers = 0;
+        this.registeredContainers = 0;
+        this.layoutLoaded = false;
+
+        this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length + 1: 0;
 
         try {
             this.worker = new Worker(
@@ -23,28 +32,52 @@ export class LayoutController {
             );
             this.worker.onmessage = this.handleWorkerMessage.bind(this);
             this.worker.onerror = (error) => console.error('Worker error:', error);
-            this.worker.postMessage("hello");
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE, {ldf: ldf})
+            
         } catch (error) {
             console.error('Failed to create worker:', error);
         }
     }
 
-
     /**
-     * Sets the layout tree used to render the containers.
-     * @param {Object} tree 
+     * Sends message to worker with the provided arguments.
+     * @param {Number} code 
+     * @param {Object} args 
      */
-    setLayoutTree(tree) {
-        this.ldf = tree;
+    sendToWorker(code, args) {
+        this.worker.postMessage({
+            code:code,
+            args: args
+        });
     }
 
     /**
      * Allows containers to register themselves with the controller.
      * @param {String} id 
      * @param {Object} containerApi 
+     * @param {HTMLElement} containerRef 
      */
-    registerContainer(id, containerApi) {
+    registerContainer(id, containerApi, containerRef) {        
+        if (!(id in this.containers)) {
+            this.registeredContainers += 1
+        }
+ 
         this.containers[id] = containerApi;
+        this.containerRefs[id] = containerRef;
+
+        console.log(`Registered container with id: ${id} `);
+
+        if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
+            console.log("All containers registered, layout is ready.");
+            this.layoutLoaded = true;
+            const boundingRect = this.containerRefs["root"].getBoundingClientRect();
+            const size = {width: boundingRect.width, height: boundingRect.height};
+            const id = this.ldf.containers[this.ldf.layoutRoot].id;
+            this.sendToWorker(
+                LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
+                { id: id, size: size }
+            );
+        }
     }
     
     /**
@@ -56,12 +89,32 @@ export class LayoutController {
     }
 
     /**
+     * This function is called when the root container is resized.
+     * It will notify the worker to process the layout changes.
+     * @param {Number} width 
+     * @param {Number} height 
+     */
+    handleRootResize(width, height) {
+
+    }
+
+    /**
      * Handles messages from worker
      * @param {Object} event 
      */
     handleWorkerMessage(event) {
-        const data = event.data;
-        console.log(data);
+        switch(event.data.type) {
+            case "transformations":
+                for (const transformation of event.data.data) {
+                    this.containers[transformation.id].current.updateSize(transformation.size);
+                };
+                break;
+            case "error":
+                console.error("Error from worker:", event.data);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -72,13 +125,5 @@ export class LayoutController {
             this.worker.terminate();
             this.worker = null;
         }
-        this.containers = {};
-    }
-
-    /**
-     * Say hello! 
-     */
-    sayHello() {
-        console.log("hello");
     }
 }

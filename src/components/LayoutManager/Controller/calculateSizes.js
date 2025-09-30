@@ -22,17 +22,12 @@ const INITIAL_SIZE_MARGIN = 100;
  *  If none of the children have an initial size specified or if the sum of the initial sizes of the 
  *  children is greater than the container size, return the layout without modifying it.
  * 
- * @param {Ref} containerRef Reference to the parent container to get the container size.
+ * @param {Object} containerBounds Reference to the parent container to get the container size.
  * @param {Object} layout  Layout containing the children.
  * @param {String} dynamicProp The property (width or height) to resize.
  * @returns 
  */
-export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
-    const containerSize = containerRef.current.getBoundingClientRect()[dynamicProp];
-
-    // TODO: This can be optimized a lot more and I think this will have to change 
-    // once I start adding functionality to re-render containers progrmatically after
-    // the initial render is complete. Leaving this todo to remind me.
+export const calculateInitialSizes= (containerBounds, layout, dynamicProp) => {
 
     // Check if atleast one entry has an initial size
     const hasInitialSize = layout.children.some(child => 'initialSizePx' in child);
@@ -49,7 +44,7 @@ export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
 
     // Sum the initial specified sizes to verify that it is within the container size with a margin of INITIAL_SIZE_MARGIN pixels.
     let initialSizeSum = layout.children.reduce((sum, child) => sum + (child?.initialSizePx ?? 0), 0);
-    if (initialSizeSum > containerSize - INITIAL_SIZE_MARGIN) {
+    if (initialSizeSum > containerBounds - INITIAL_SIZE_MARGIN) {
         console.info("Initial size of containers is too large, using percentage sizes instead.");
         return layout;
     }
@@ -60,7 +55,7 @@ export const calculateInitialSizes= (containerRef, layout, dynamicProp) => {
     let percentageLeft = 0;
     layout.children.forEach((child, index) => {
         if (child.type === "percent" && "initialSizePx" in child) {
-            const initialPercentage = (child["initialSizePx"]/containerSize) * 100;
+            const initialPercentage = (child["initialSizePx"]/containerBounds) * 100;
             percentageLeft += child[dynamicProp] - initialPercentage;
             child[dynamicProp] = initialPercentage;
         }
