@@ -16,9 +16,9 @@ export const RootContainer = () => {
 
     const rootRef = useRef(null);
     const timerRef = useRef(null);
-    
+    const resizingRef = useRef(false);
+
     const [rootNode, setRootNode] = useState(null);
-    const [resizing, setResizing] = useState(false);
     
     // Create the container API that will be used by the controller.
     const rootContainerAPI = useRef({});
@@ -32,15 +32,16 @@ export const RootContainer = () => {
 
             const observer = new ResizeObserver((entries) => {
 
-                if (!resizing) setResizing(true);   
-                             
+                if (!resizingRef.current) resizingRef.current = true;
+
                 for (let entry of entries) {
                     const { width, height } = entry.contentRect;
 
                     clearTimeout(timerRef.current);
 
                     timerRef.current = setTimeout(() => {
-                        setResizing(false);
+                        resizingRef.current = false;
+                        console.log("Root resized to", width, height);
                     }, 200);
 
                 }
