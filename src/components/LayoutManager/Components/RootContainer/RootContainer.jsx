@@ -19,41 +19,6 @@ export const RootContainer = () => {
     
     const [rootNode, setRootNode] = useState(null);
     const [resizing, setResizing] = useState(false);
-
-    useLayoutEffect(() => {
-        if (!rootRef.current) return;
-
-        const observer = new ResizeObserver(entries => {
-
-            if (!resizing) setResizing(true);
-            
-            for (let entry of entries) {
-                const { width, height } = entry.contentRect;
-
-                clearTimeout(timerRef.current);
-
-                controller.handleRootResize(width, height);
-
-                timerRef.current = setTimeout(() => {
-                    resizeDone(width, height);
-                }, 200);
-            }
-        });
-
-        observer.observe(rootRef.current);
-
-        return () => observer.disconnect();
-    }, [resizing, controller]);
-
-
-    /**
-     * Called when the resize event is done.
-     * @param {Number} width 
-     * @param {Number} height 
-     */
-    const resizeDone = (width, height) => {
-        // Setting up function for future.
-    }
     
     // Create the container API that will be used by the controller.
     const rootContainerAPI = useRef({});
@@ -65,8 +30,27 @@ export const RootContainer = () => {
 
             controller.registerContainer("root", rootContainerAPI, rootRef.current);
 
+            const observer = new ResizeObserver((entries) => {
+
+                if (!resizing) setResizing(true);   
+                             
+                for (let entry of entries) {
+                    const { width, height } = entry.contentRect;
+
+                    clearTimeout(timerRef.current);
+
+                    timerRef.current = setTimeout(() => {
+                        setResizing(false);
+                    }, 200);
+
+                }
+            });
+
+            observer.observe(rootRef.current);
+
             return () => {
                 controller.unregisterContainer("root");
+                observer.disconnect();
             }
         }
     }, [controller]);
