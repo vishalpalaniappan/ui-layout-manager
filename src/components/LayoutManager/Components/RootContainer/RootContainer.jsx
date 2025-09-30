@@ -52,7 +52,7 @@ export const RootContainer = () => {
                     timerRef.current = setTimeout(() => {
                         resizingRef.current = false;
                         updateRootSize(width, height);
-                    }, 200);
+                    }, 1);
                 }
             });
 

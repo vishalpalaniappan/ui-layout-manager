@@ -111,8 +111,9 @@ export class LayoutController {
     handleWorkerMessage(event) {
         switch(event.data.type) {
             case "transformations":
+                this.transformations = event.data.data;
                 requestAnimationFrame(() => {
-                    for (const transformation of event.data.data) {
+                    for (const transformation of this.transformations) {
                         this.containers[transformation.id].current.updateSize(transformation.size);
                     };
                 });
