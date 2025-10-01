@@ -39,8 +39,12 @@ export const Container = ({node}) => {
          * @param {Object} size 
          */
         updateSize: (size) => {
-            containerRef.current.style.width = size.width + "px";
-            containerRef.current.style.height = size.height + "px";
+            console.log(size);
+            for (const key in size) {
+                containerRef.current.style[key] = size[key];
+            }
+            // containerRef.current.style.width = size.width + "px";
+            // containerRef.current.style.height = size.height + "px";
         }
     };
 
@@ -55,9 +59,11 @@ export const Container = ({node}) => {
                 if (node.orientation === "horizontal") {
                     containerRef.current.style.display = "flex";
                     containerRef.current.style.flexDirection = "row";
+                    containerRef.current.style.width = "100%";
                 } else if (node.orientation === "vertical") {
                     containerRef.current.style.display = "flex";
                     containerRef.current.style.flexDirection = "column";
+                    containerRef.current.style.height = "100%";
                 } else {
                     console.warn("Unknown orientation:", node.orientation);
                 }
