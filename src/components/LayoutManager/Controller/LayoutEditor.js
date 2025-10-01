@@ -76,12 +76,13 @@ export class LayoutEditor {
             let childSize = {};
             switch(child.size.initial.type) {
                 case "fixed":
-                    childSize[props["dynamic"]] = child.size.initial.value;
-                    childSize[props["fixed"]] = size[props["fixed"]];
+                    childSize[props["dynamic"]] = child.size.initial.value + "px" ;
+                    // childSize[props["fixed"]] = size[props["fixed"]] + "px";
                     break;
                 case "fill":
-                    childSize[props["dynamic"]] = fillCount > 0 ? remainingSize / fillCount : 0;
-                    childSize[props["fixed"]] = size[props["fixed"]];
+                    // childSize[props["dynamic"]] = fillCount > 0 ? remainingSize / fillCount : 0;
+                    childSize["flexGrow"] = 1;
+                    // childSize[props["fixed"]] = size[props["fixed"]] + "px";
                     break;
                 default:
                     throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
