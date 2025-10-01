@@ -77,6 +77,8 @@ export class LayoutEditor {
             switch(child.size.initial.type) {
                 case "fixed":
                     childSize[props["dynamic"]] = child.size.initial.value + "px" ;
+                    
+                    childSize["flex"] = "0 0 auto";
                     // childSize[props["fixed"]] = size[props["fixed"]] + "px";
                     break;
                 case "fill":
