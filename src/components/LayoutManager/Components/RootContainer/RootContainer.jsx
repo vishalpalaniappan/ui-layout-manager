@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState, useRef, createContext, useContext } from "react";
+import React, { useEffect, useLayoutEffect, useState, useRef, useCallback, useContext } from "react";
 import PropTypes from 'prop-types';
 import { Container } from "../Container/Container";
 import { useLayoutController } from "../../Providers/LayoutProvider";
@@ -17,27 +17,43 @@ export const RootContainer = () => {
     const rootRef = useRef(null);
     const timerRef = useRef(null);
     const resizingRef = useRef(false);
-
-    const [rootNode, setRootNode] = useState(null);
     
     // Create the container API that will be used by the controller.
     const rootContainerAPI = useRef({});
     rootContainerAPI.current = {};
 
+    const [childElements, setChildElements] = useState(null);
+    
     /**
-     * Invokes function in controller to handle root size changes.
-     * @param {Number} width 
-     * @param {Number} height 
+     * Renders child containers recursively.
      */
-    const updateRootSize = (width, height) => {    
-        controller.handleRootResize(width, height);
-    };
+    const processContainer = useCallback((node) => {
+        const childElements = [];      
+        for (let index = 0; index < node.children.length; index++) {
+            const child = controller.ldf.containers[node.children[index].containerId];
+            childElements.push(
+                <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
+            );
+        };
+        return childElements;
+    },[controller]);
+
 
     useLayoutEffect(() => {
-        if (controller) {
-            setRootNode(controller.ldf.containers[controller.ldf.layoutRoot]);
+        if (controller) {            
+            const rootNode = controller.ldf.containers[controller.ldf.layoutRoot];
+            const hasChildren = rootNode.children && rootNode.children.length > 0
+            controller.registerContainer(rootNode.id, rootContainerAPI, rootRef.current);
 
-            controller.registerContainer("root", rootContainerAPI, rootRef.current);
+            if (hasChildren) {                          
+                if (rootNode.orientation === "horizontal") {
+                    rootRef.current.style.flexDirection = "row";
+                } else if (rootNode.orientation === "vertical") {
+                    rootRef.current.style.flexDirection = "column";
+                }
+            }
+
+            setChildElements(hasChildren?processContainer(rootNode):null);
 
             // Create resize observer to monitor changes in the root container size.
             const observer = new ResizeObserver((entries) => {
@@ -51,7 +67,6 @@ export const RootContainer = () => {
 
                     timerRef.current = setTimeout(() => {
                         resizingRef.current = false;
-                        updateRootSize(width, height);
                     }, 1);
                 }
             });
@@ -59,18 +74,17 @@ export const RootContainer = () => {
             observer.observe(rootRef.current);
 
             return () => {
-                controller.unregisterContainer("root");
+                controller.unregisterContainer(controller.ldf.layoutRoot);
                 observer.disconnect();
             }
         }
     }, [controller]);
 
     return (
-        <div ref={rootRef} className="background">
-            {
-                rootNode && 
-                <Container node={rootNode} meta={controller.ldf.layoutRoot} id={rootNode.id}/>
-            }
+        <div className="root-container">
+            <div ref={rootRef} className="relative-container">
+                {childElements}
+            </div>
         </div>
     );
 }
