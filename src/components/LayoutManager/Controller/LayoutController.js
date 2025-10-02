@@ -70,7 +70,6 @@ export class LayoutController {
         if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
             console.log("All containers registered, layout is ready.");
             this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX);
-            this.layoutLoaded = true;
         }
     }
     
