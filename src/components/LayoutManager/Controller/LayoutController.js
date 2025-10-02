@@ -66,17 +66,14 @@ export class LayoutController {
         this.containerRefs[id] = containerRef;
 
         console.log(`Registered container with id: ${id} `);
-        
+
         if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
             console.log("All containers registered, layout is ready.");
             this.layoutLoaded = true;
             const id = this.ldf.containers[this.ldf.layoutRoot].id;
             const boundingRect = this.containerRefs[id].getBoundingClientRect();
             const size = {width: boundingRect.width, height: boundingRect.height};
-            this.sendToWorker(
-                LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
-                { id: id, size: size }
-            );
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.RENDER_NODE, {id: id, size: size});
         }
     }
     
@@ -96,12 +93,17 @@ export class LayoutController {
      */
     handleRootResize(width, height) {
         console.log("Root container resized to:", width, height);
-        const size = {width: width, height: height};
-        const id = this.ldf.containers[this.ldf.layoutRoot].id;
+        const sizes = {};
+        for (const id in this.containerRefs) {
+            if (this.containerRefs.hasOwnProperty(id)) {
+                const boundingRect = this.containerRefs[id].getBoundingClientRect();
+                sizes[id] = {width: boundingRect.width, height: boundingRect.height};
+            }
+        }        
         this.sendToWorker(
-            LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
-            { id: id, size: size }
-        );
+            LAYOUT_WORKER_PROTOCOL.APPLY_SIZES, 
+            { sizes: sizes }
+        );    
     }
 
     /**
@@ -110,7 +112,8 @@ export class LayoutController {
      */
     handleWorkerMessage(event) {
         switch(event.data.type) {
-            case "transformations":
+            case LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS:
+                console.log("Applying transformations:");
                 this.transformations = event.data.data;
                 requestAnimationFrame(() => {
                     for (const transformation of this.transformations) {
@@ -118,7 +121,7 @@ export class LayoutController {
                     };
                 });
                 break;
-            case "error":
+            case LAYOUT_WORKER_PROTOCOL.ERROR:
                 console.error("Error from worker:", event.data);
                 break;
             default:
