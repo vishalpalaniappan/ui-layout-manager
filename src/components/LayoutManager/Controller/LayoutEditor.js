@@ -63,6 +63,7 @@ export class LayoutEditor {
                     throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
             }
             const childContainer = this.ldf.containers[child.containerId];
+            childContainer.collapsed = false;
             this.transformations.push({id: childContainer.id, size: childSize});
             this.initializeNode(childContainer);
         }
@@ -115,15 +116,21 @@ export class LayoutEditor {
         const parentSize = this.sizes[node.id];
 
         for (const child of node.children) {
-            if (child.hasOwnProperty("collapse")) {
-                if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") {                    
-                    const childContainer = this.ldf.containers[child.containerId];
-                    let transformation = {"display":"none"};
-                    this.transformations.push({id: childContainer.id, size: transformation});
-                } else {                                   
-                    const childContainer = this.ldf.containers[child.containerId];
-                    let transformation = {"display":"flex"};
-                    this.transformations.push({id: childContainer.id, size: transformation});
+            if (child.hasOwnProperty("collapse")) {                   
+                const childContainer = this.ldf.containers[child.containerId];
+                if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
+                    if (childContainer.collapsed !== true) {
+                        let transformation = {"display":"none"};
+                        this.transformations.push({id: childContainer.id, size: transformation});
+                        childContainer.collapsed = true;
+                    }
+                } else {                             
+                    if (childContainer.collapsed === true) {
+                        const childContainer = this.ldf.containers[child.containerId];
+                        let transformation = {"display":"flex"};
+                        this.transformations.push({id: childContainer.id, size: transformation});
+                        childContainer.collapsed = false;                        
+                    }
                 }
             }
             this.layoutNode(child.containerId);

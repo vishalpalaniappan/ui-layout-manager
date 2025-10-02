@@ -41,10 +41,16 @@ export const Container = ({node}) => {
         updateSize: (size) => {
             console.log(size);
             for (const key in size) {
-                containerRef.current.style[key] = size[key];
+                if (key === "display" && size[key] === "none") {
+                    if (containerRef.current.classList.contains("hiding")) return;
+                    containerRef.current.classList.add("hiding");
+                } else if (key === "display" && size[key] === "flex") {
+                    if (!containerRef.current.classList.contains("hiding")) return;
+                    containerRef.current.classList.remove("hiding");   
+                } else {                    
+                    containerRef.current.style[key] = size[key];
+                }
             }
-            // containerRef.current.style.width = size.width + "px";
-            // containerRef.current.style.height = size.height + "px";
         }
     };
 
