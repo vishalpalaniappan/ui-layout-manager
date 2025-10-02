@@ -25,7 +25,7 @@ self.onmessage = function (e) {
 
     } catch (e) {
         postMessage({
-            type: "error",
+            type: LAYOUT_WORKER_PROTOCOL.ERROR,
             error: {
                 message: e.message,
                 stack: e.stack

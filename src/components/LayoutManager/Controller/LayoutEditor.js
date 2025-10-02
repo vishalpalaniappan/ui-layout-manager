@@ -1,3 +1,5 @@
+import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
+
 export class LayoutEditor {
 
     /**
@@ -73,7 +75,7 @@ export class LayoutEditor {
      */
     sendTransformations () {
         postMessage({
-            type: "transformations",
+            type: LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS,
             data: this.transformations
         });
         this.transformations = []
