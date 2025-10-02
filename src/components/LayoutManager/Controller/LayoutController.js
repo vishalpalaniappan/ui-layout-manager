@@ -23,7 +23,7 @@ export class LayoutController {
         this.registeredContainers = 0;
         this.layoutLoaded = false;
 
-        this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length + 1: 0;
+        this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length: 0;
 
         try {
             this.worker = new Worker(
@@ -69,14 +69,7 @@ export class LayoutController {
 
         if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
             console.log("All containers registered, layout is ready.");
-            this.layoutLoaded = true;
-            const boundingRect = this.containerRefs["root"].getBoundingClientRect();
-            const size = {width: boundingRect.width, height: boundingRect.height};
-            const id = this.ldf.containers[this.ldf.layoutRoot].id;
-            this.sendToWorker(
-                LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
-                { id: id, size: size }
-            );
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX);
         }
     }
     
@@ -95,7 +88,19 @@ export class LayoutController {
      * @param {Number} height 
      */
     handleRootResize(width, height) {
-
+        if (!this.layoutLoaded) return;
+        console.log("Root container resized to:", width, height);
+        const sizes = {};
+        for (const id in this.containerRefs) {
+            if (this.containerRefs.hasOwnProperty(id)) {
+                const boundingRect = this.containerRefs[id].getBoundingClientRect();
+                sizes[id] = {width: boundingRect.width, height: boundingRect.height};
+            }
+        }        
+        this.sendToWorker(
+            LAYOUT_WORKER_PROTOCOL.APPLY_SIZES, 
+            { sizes: sizes }
+        );    
     }
 
     /**
@@ -104,12 +109,27 @@ export class LayoutController {
      */
     handleWorkerMessage(event) {
         switch(event.data.type) {
-            case "transformations":
-                for (const transformation of event.data.data) {
-                    this.containers[transformation.id].current.updateSize(transformation.size);
-                };
+            case LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX:
+                console.log("Applying transformations:");
+                this.transformations = event.data.data;
+                requestAnimationFrame(() => {
+                    for (const transformation of this.transformations) {
+                        console.log(transformation);
+                        this.containers[transformation.id].current.updateSize(transformation.size);
+                    };
+                    this.layoutLoaded = true;
+                });
+            case LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS:
+                console.log("Applying transformations:");
+                this.transformations = event.data.data;
+                requestAnimationFrame(() => {
+                    for (const transformation of this.transformations) {
+                        console.log(transformation);
+                        this.containers[transformation.id].current.updateSize(transformation.size);
+                    };
+                });
                 break;
-            case "error":
+            case LAYOUT_WORKER_PROTOCOL.ERROR:
                 console.error("Error from worker:", event.data);
                 break;
             default:

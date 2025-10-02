@@ -1,3 +1,5 @@
+import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
+
 export class LayoutEditor {
 
     /**
@@ -11,15 +13,15 @@ export class LayoutEditor {
     }
 
     /**
-     * Given a node id and its size, it processes the node and applies
-     * transformations to all its children.
-     * @param {String} id 
-     * @param {Object} size 
+     * Initializes flexbox layout by processing LDF file.
      */
-    processNodeFromId(id, size) {
-        const node = this.getNodeUsingId(id);
-        this.processNode(node, size);
-        this.sendTransformations();
+    initializeFlexBox() {
+        this.initializeNode(this.ldf.containers[this.ldf.layoutRoot]);        
+        postMessage({
+            type: LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX,
+            data: this.transformations
+        });
+        this.transformations = []
     }
 
     /**
@@ -28,16 +30,14 @@ export class LayoutEditor {
      * all its children.
      * 
      * @param {Object} node Node to process.
-     * @param {Object} size Object containing width and height of the node.
      */
-    processNode (node, size) {
+    initializeNode (node) {
         const isSplit = node.type ? node.type === "split": false;
 
         // If node is not split, then it has no children and is a leaf node, so we return.
         if (!isSplit) {
             return;
         }
-
 
         // Identify the dynamic property based on orientation.
         let props = {};
@@ -49,68 +49,92 @@ export class LayoutEditor {
             throw new Error(`Unknown orientation "${node.orientation}" in LDF configuration`);
         }
         
-        // Calculate the fixed size sum and the remaining size for fill types.
-        let remainingSize = (node.orientation === "horizontal") ? size.width : size.height;
-        let fillCount = 0;
-        for (const child of node.children) {
-            switch(child.size.initial.type) {
-                case "fixed":
-                    remainingSize -= child.size.initial.value;
-                    break;
-                case "fill":
-                    fillCount += 1;
-                    break;
-                default:
-                    throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
-            }
-        }
-
-        // Calculate child sizes.
-        if (fillCount === 0 && remainingSize !== 0) {
-            console.warn("No fill children but remaining size is non-zero:", remainingSize);
-            // This won't break the layout, but it indicates an issue in the LDF that will be visible.
-            // TODO: Decide whether these warnings should be errors.
-        }
-
         for (const child of node.children) {
             let childSize = {};
             switch(child.size.initial.type) {
                 case "fixed":
-                    childSize[props["dynamic"]] = child.size.initial.value;
-                    childSize[props["fixed"]] = size[props["fixed"]];
+                    childSize[props["dynamic"]] = child.size.initial.value + "px" ;                    
+                    childSize["flex"] = "0 0 auto";
                     break;
                 case "fill":
-                    childSize[props["dynamic"]] = fillCount > 0 ? remainingSize / fillCount : 0;
-                    childSize[props["fixed"]] = size[props["fixed"]];
+                    childSize["flexGrow"] = 1;
                     break;
                 default:
                     throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
             }
-            //Save the current size in LDF for future reference.
-            child.size.current = childSize;
-        }
-
-        // Apply transformations to children and recurse.
-        for (const child of node.children) {
-            const childId = this.ldf.containers[child.containerId].id;
-            this.transformations.push({
-                id: childId,
-                size: child.size.current
-            });
-            this.processNode(this.ldf.containers[child.containerId], child.size.current);
+            const childContainer = this.ldf.containers[child.containerId];
+            childContainer.collapsed = false;
+            this.transformations.push({id: childContainer.id, size: childSize});
+            this.initializeNode(childContainer);
         }
     }
 
-
     /**
-     * Passes a DOM transformation to the main thread.
+     * Use the given sizes to perform layout calculations and generate
+     * transformations.
+     * @param {Object} sizes 
      */
-    sendTransformations () {
+    applySizes(sizes) {        
+        console.log("Applying sizes:", sizes);
+        this.sizes = sizes; 
+        this.layoutNode(this.ldf.layoutRoot);        
         postMessage({
-            type: "transformations",
+            type: LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS,
             data: this.transformations
         });
         this.transformations = []
+    }
+
+    /**
+     * Applys the layout logic to the node with the given container id. 
+     * 
+     * TODO: Container id is not the same as node id. Container id is the 
+     * key used in the LDF file to identify the container. This is confusing,
+     * I am going to fix it.
+     * @param {String} containerId 
+     * @returns 
+     */
+    layoutNode(containerId) {
+        const node = this.ldf.containers[containerId];        
+        const isSplit = node.type ? node.type === "split": false;
+
+        // If node is not split, then it has no children and is a leaf node, so we return.
+        if (!isSplit) {
+            return;
+        }
+
+        // Identify the dynamic property based on orientation.
+        let props = {};
+        if (node.orientation === "horizontal") {
+            props = {"dynamic": "width", "fixed": "height"};
+        } else if (node.orientation === "vertical") {
+            props = {"dynamic": "height", "fixed": "width"};
+        } else {
+            throw new Error(`Unknown orientation "${node.orientation}" in LDF configuration`);
+        }
+
+        const parentSize = this.sizes[node.id];
+
+        for (const child of node.children) {
+            if (child.hasOwnProperty("collapse")) {                   
+                const childContainer = this.ldf.containers[child.containerId];
+                if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
+                    if (childContainer.collapsed !== true) {
+                        let transformation = {"display":"none"};
+                        this.transformations.push({id: childContainer.id, size: transformation});
+                        childContainer.collapsed = true;
+                    }
+                } else {                             
+                    if (childContainer.collapsed === true) {
+                        const childContainer = this.ldf.containers[child.containerId];
+                        let transformation = {"display":"flex"};
+                        this.transformations.push({id: childContainer.id, size: transformation});
+                        childContainer.collapsed = false;                        
+                    }
+                }
+            }
+            this.layoutNode(child.containerId);
+        }
     }
 
 

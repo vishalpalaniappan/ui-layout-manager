@@ -39,8 +39,18 @@ export const Container = ({node}) => {
          * @param {Object} size 
          */
         updateSize: (size) => {
-            containerRef.current.style.width = size.width + "px";
-            containerRef.current.style.height = size.height + "px";
+            console.log(size);
+            for (const key in size) {
+                if (key === "display" && size[key] === "none") {
+                    if (containerRef.current.classList.contains("hiding")) return;
+                    containerRef.current.classList.add("hiding");
+                } else if (key === "display" && size[key] === "flex") {
+                    if (!containerRef.current.classList.contains("hiding")) return;
+                    containerRef.current.classList.remove("hiding");   
+                } else {                    
+                    containerRef.current.style[key] = size[key];
+                }
+            }
         }
     };
 
@@ -50,20 +60,26 @@ export const Container = ({node}) => {
 
             const hasChildren = node.children && node.children.length > 0
 
-            if (!hasChildren && node.background) {
-                containerRef.current.style.background = node.background;
+            if (hasChildren) {        
+                // Set flex properties based on orientation for children    
+                if (node.orientation === "horizontal") {
+                    containerRef.current.style.display = "flex";
+                    containerRef.current.style.flexDirection = "row";
+                    containerRef.current.style.width = "100%";
+                } else if (node.orientation === "vertical") {
+                    containerRef.current.style.display = "flex";
+                    containerRef.current.style.flexDirection = "column";
+                    containerRef.current.style.height = "100%";
+                } else {
+                    console.warn("Unknown orientation:", node.orientation);
+                }
             } else {
-                containerRef.current.style.background = "transparent";
-            } 
-            
-            if (hasChildren && node.orientation === "horizontal") {
-                containerRef.current.style.display = "flex";
-                containerRef.current.style.flexDirection = "row";
-            } else if (hasChildren && node.orientation === "vertical") {
-                containerRef.current.style.display = "flex";
-                containerRef.current.style.flexDirection = "column";
-            } else {
-                console.warn("Unknown orientation:", node.orientation);
+                // No children, so its a leaf node, apply background if any.
+                if (node.background) {
+                    containerRef.current.style.background = node.background;
+                } else {
+                    containerRef.current.style.background = "transparent";
+                }
             }
             
             setChildElements(hasChildren?processContainer(node):null);
