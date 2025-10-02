@@ -38,7 +38,6 @@ export class LayoutEditor {
             return;
         }
 
-
         // Identify the dynamic property based on orientation.
         let props = {};
         if (node.orientation === "horizontal") {
@@ -49,58 +48,22 @@ export class LayoutEditor {
             throw new Error(`Unknown orientation "${node.orientation}" in LDF configuration`);
         }
         
-        // Calculate the fixed size sum and the remaining size for fill types.
-        let remainingSize = (node.orientation === "horizontal") ? size.width : size.height;
-        let fillCount = 0;
-        for (const child of node.children) {
-            switch(child.size.initial.type) {
-                case "fixed":
-                    remainingSize -= child.size.initial.value;
-                    break;
-                case "fill":
-                    fillCount += 1;
-                    break;
-                default:
-                    throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
-            }
-        }
-
-        // Calculate child sizes.
-        if (fillCount === 0 && remainingSize !== 0) {
-            console.warn("No fill children but remaining size is non-zero:", remainingSize);
-            // This won't break the layout, but it indicates an issue in the LDF that will be visible.
-            // TODO: Decide whether these warnings should be errors.
-        }
-
         for (const child of node.children) {
             let childSize = {};
             switch(child.size.initial.type) {
                 case "fixed":
-                    childSize[props["dynamic"]] = child.size.initial.value + "px" ;
-                    
+                    childSize[props["dynamic"]] = child.size.initial.value + "px" ;                    
                     childSize["flex"] = "0 0 auto";
-                    // childSize[props["fixed"]] = size[props["fixed"]] + "px";
                     break;
                 case "fill":
-                    // childSize[props["dynamic"]] = fillCount > 0 ? remainingSize / fillCount : 0;
                     childSize["flexGrow"] = 1;
-                    // childSize[props["fixed"]] = size[props["fixed"]] + "px";
                     break;
                 default:
                     throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
             }
-            //Save the current size in LDF for future reference.
-            child.size.current = childSize;
-        }
-
-        // Apply transformations to children and recurse.
-        for (const child of node.children) {
-            const childId = this.ldf.containers[child.containerId].id;
-            this.transformations.push({
-                id: childId,
-                size: child.size.current
-            });
-            this.processNode(this.ldf.containers[child.containerId], child.size.current);
+            const childContainer = this.ldf.containers[child.containerId];
+            this.transformations.push({id: childContainer.id, size: childSize});
+            this.processNode(childContainer, child.size.current);
         }
     }
 
