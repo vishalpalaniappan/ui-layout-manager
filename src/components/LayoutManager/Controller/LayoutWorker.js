@@ -20,7 +20,7 @@ self.onmessage = function (e) {
                 editor.initializeFlexBox();
                 break;
             case LAYOUT_WORKER_PROTOCOL.APPLY_SIZES:
-                console.log("RECEIVED SIZES");
+                editor.applySizes(args.sizes);
                 break;
             default:
                 break;

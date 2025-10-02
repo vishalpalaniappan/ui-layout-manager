@@ -69,8 +69,8 @@ export class LayoutController {
 
         if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
             console.log("All containers registered, layout is ready.");
-            this.layoutLoaded = true;
             this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX);
+            this.layoutLoaded = true;
         }
     }
     
@@ -89,6 +89,7 @@ export class LayoutController {
      * @param {Number} height 
      */
     handleRootResize(width, height) {
+        if (!this.layoutLoaded) return;
         console.log("Root container resized to:", width, height);
         const sizes = {};
         for (const id in this.containerRefs) {
@@ -109,11 +110,22 @@ export class LayoutController {
      */
     handleWorkerMessage(event) {
         switch(event.data.type) {
+            case LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX:
+                console.log("Applying transformations:");
+                this.transformations = event.data.data;
+                requestAnimationFrame(() => {
+                    for (const transformation of this.transformations) {
+                        console.log(transformation);
+                        this.containers[transformation.id].current.updateSize(transformation.size);
+                    };
+                    this.layoutLoaded = true;
+                });
             case LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS:
                 console.log("Applying transformations:");
                 this.transformations = event.data.data;
                 requestAnimationFrame(() => {
                     for (const transformation of this.transformations) {
+                        console.log(transformation);
                         this.containers[transformation.id].current.updateSize(transformation.size);
                     };
                 });

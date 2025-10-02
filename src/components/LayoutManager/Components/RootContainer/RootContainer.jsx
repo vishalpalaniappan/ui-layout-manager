@@ -68,7 +68,7 @@ export const RootContainer = () => {
                     timerRef.current = setTimeout(() => {
                         resizingRef.current = false;
                         controller.handleRootResize(width, height);
-                    }, 200);
+                    }, 1);
                 }
             });
 
