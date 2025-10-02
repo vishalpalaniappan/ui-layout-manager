@@ -70,10 +70,7 @@ export class LayoutController {
         if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
             console.log("All containers registered, layout is ready.");
             this.layoutLoaded = true;
-            const id = this.ldf.containers[this.ldf.layoutRoot].id;
-            const boundingRect = this.containerRefs[id].getBoundingClientRect();
-            const size = {width: boundingRect.width, height: boundingRect.height};
-            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.RENDER_NODE, {id: id, size: size});
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX);
         }
     }
     

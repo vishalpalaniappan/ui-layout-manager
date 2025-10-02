@@ -13,14 +13,10 @@ export class LayoutEditor {
     }
 
     /**
-     * Given a node id and its size, it processes the node and applies
-     * transformations to all its children.
-     * @param {String} id 
-     * @param {Object} size 
+     * Initializes flexbox layout by processing LDF file.
      */
-    processNodeFromId(id, size) {
-        const node = this.getNodeUsingId(id);
-        this.processNode(node, size);
+    initializeFlexBox() {
+        this.initializeNode(this.ldf.containers[this.ldf.layoutRoot]);
         this.sendTransformations();
     }
 
@@ -30,9 +26,8 @@ export class LayoutEditor {
      * all its children.
      * 
      * @param {Object} node Node to process.
-     * @param {Object} size Object containing width and height of the node.
      */
-    processNode (node, size) {
+    initializeNode (node) {
         const isSplit = node.type ? node.type === "split": false;
 
         // If node is not split, then it has no children and is a leaf node, so we return.
@@ -65,7 +60,7 @@ export class LayoutEditor {
             }
             const childContainer = this.ldf.containers[child.containerId];
             this.transformations.push({id: childContainer.id, size: childSize});
-            this.processNode(childContainer, child.size.current);
+            this.initializeNode(childContainer);
         }
     }
 

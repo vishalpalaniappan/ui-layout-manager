@@ -16,8 +16,11 @@ self.onmessage = function (e) {
                 /** @type {LayoutEditor} */
                 editor = new LayoutEditor(args.ldf);
                 break;
-            case LAYOUT_WORKER_PROTOCOL.RENDER_NODE:
-                editor.processNodeFromId(args.id, args.size);
+            case LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX:
+                editor.initializeFlexBox();
+                break;
+            case LAYOUT_WORKER_PROTOCOL.APPLY_SIZES:
+                console.log("RECEIVED SIZES");
                 break;
             default:
                 break;
