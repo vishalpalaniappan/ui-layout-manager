@@ -37,7 +37,8 @@
                 },
                 {
                     "containerId": "menuContainer",
-                    "size": { "initial": { "value": 200, "unit": "px", "type": "fixed" }}
+                    "size": { "initial": { "value": 200, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 700, "condition": "lessThan" }
                 },
                 {
                     "containerId": "editorContainer",
