@@ -120,6 +120,11 @@ export class LayoutEditor {
         
         const parentSize = this.sizes[containerId];
 
+        if (!parentSize) {
+            console.warn(`Parent size not found for node ${node.id}. Skipping collapse checks.`);
+            return;
+        }
+
         for (const child of node.children) {
             if (child.hasOwnProperty("collapse")) {                   
                 const childContainer = this.ldf.containers[child.containerId];
@@ -161,23 +166,4 @@ export class LayoutEditor {
             this.layoutNode(child.containerId);
         }
     }
-
-
-    /**
-     * Find the provided node in the layout tree by its id.
-     * 
-     * TODO: If I use the id as the container key, I can access the 
-     * node directly without traversing the list.
-     * 
-     * @param {String} id 
-     * @returns 
-     */
-    getNodeUsingId (id) {
-        for (const key in this.ldf.containers) {
-            if (this.ldf.containers[key].id === id) {
-                return this.ldf.containers[key];
-            }
-        }
-        return null;
-    };
 };
