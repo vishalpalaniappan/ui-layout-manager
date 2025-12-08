@@ -15,7 +15,7 @@ export const Container = ({node}) => {
 
     const controller = useLayoutController();
     const containerRef = useRef(null);    
-    const [parentOrientation, setParentOrientation] = useState();
+    const parentOrientationRef = useRef(null);
     const [childElements, setChildElements] = useState(null);
    
     /**
@@ -41,7 +41,7 @@ export const Container = ({node}) => {
          * @param {Object} styles
          */
         updateStyles: (styles) => {
-            const className = "hiding-" + parentOrientation;
+            const className = "hiding-" + parentOrientationRef.current;
             for (const key in styles) {
                 if (key === "display" && styles[key] === "none") {
                     if (containerRef.current.classList.contains(className)) return;
@@ -59,8 +59,7 @@ export const Container = ({node}) => {
     // Render child containers and regsiter API with the controller.
     useLayoutEffect(() => {
         if (node && controller && containerRef.current) {
-            setParentOrientation(node.parent.orientation);
-
+            parentOrientationRef.current = node.parent.orientation;
             const hasChildren = node.children && node.children.length > 0
 
             if (hasChildren) {        
