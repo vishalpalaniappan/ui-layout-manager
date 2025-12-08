@@ -119,18 +119,14 @@ export class LayoutEditor {
             if (child.hasOwnProperty("collapse")) {                   
                 const childContainer = this.ldf.containers[child.containerId];
                 if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
-                    if (childContainer.collapsed !== true) {
-                        let transformation = {"display":"none"};
-                        this.transformations.push({id: childContainer.id, size: transformation});
-                        childContainer.collapsed = true;
-                    }
+                    let transformation = {"display":"none"};
+                    this.transformations.push({id: childContainer.id, size: transformation});
+                    childContainer.collapsed = true;
                 } else {                             
-                    if (childContainer.collapsed === true) {
-                        const childContainer = this.ldf.containers[child.containerId];
-                        let transformation = {"display":"flex"};
-                        this.transformations.push({id: childContainer.id, size: transformation});
-                        childContainer.collapsed = false;                        
-                    }
+                    const childContainer = this.ldf.containers[child.containerId];
+                    let transformation = {"display":"flex"};
+                    this.transformations.push({id: childContainer.id, size: transformation});
+                    childContainer.collapsed = false;     
                 }
             }
             this.layoutNode(child.containerId);
