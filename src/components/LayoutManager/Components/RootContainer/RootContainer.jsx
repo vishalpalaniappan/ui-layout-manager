@@ -40,9 +40,13 @@ export const RootContainer = () => {
                 );
             } else if (childNode.type === "handleBar") {
                 if (node.orientation === "horizontal") {
-                    console.log("Draw vertical line")
+                    childElements.push(
+                        <div className="verticalLine"></div>
+                    );
                 } else if (node.orientation === "vertical") {
-                    console.log("Draw horizontal line");
+                    childElements.push(
+                        <div className="horizontalLine"></div>
+                    );
                 }
             }
         };
