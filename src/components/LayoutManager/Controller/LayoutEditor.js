@@ -69,9 +69,12 @@ export class LayoutEditor {
                 {
                     id: childContainer.id, 
                     type: TRANSFORMATION_TYPES.UPDATE_SIZE,
-                    size: childSize, 
-                    orientation: node.orientation}
-                );
+                    args: {
+                        size: childSize,
+                        orientation: node.orientation
+                    }
+                }
+            );
             this.initializeNode(childContainer);
         }
     }
@@ -125,24 +128,26 @@ export class LayoutEditor {
             if (child.hasOwnProperty("collapse")) {                   
                 const childContainer = this.ldf.containers[child.containerId];
 
-                let transformation, type;
+                let type, args;
                 if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
-                    transformation = {"display":"none"};
                     type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                    childContainer.collapsed = true;
+                    args = {
+                        size: {"display":"none"},
+                        orientation: node.orientation
+                    }
                 } else {                             
-                    const childContainer = this.ldf.containers[child.containerId];
-                    transformation = {"display":"flex"};
                     type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                    childContainer.collapsed = false;     
+                    args = {
+                        size: {"display":"flex"},
+                        orientation: node.orientation
+                    }
                 }
                 
                 this.transformations.push(
                     {
                         id: childContainer.id,
                         type: type,
-                        size: transformation, 
-                        orientation: node.orientation
+                        args: args
                     }
                 );
             }

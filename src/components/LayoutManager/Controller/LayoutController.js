@@ -115,8 +115,10 @@ export class LayoutController {
                 switch (transformation.type) {
                     case TRANSFORMATION_TYPES.UPDATE_SIZE:
                         this.containers[transformation.id].current.updateSize(
-                            transformation.size, transformation.orientation
+                            transformation.args.size, transformation.args.orientation
                         );
+                        break;
+                    case TRANSFORMATION_TYPES.REMOVE_NODE:
                         break;
                     default:
                         console.warn("Unknown transformation was requested.");
