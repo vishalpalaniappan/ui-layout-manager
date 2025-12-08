@@ -51,28 +51,31 @@ export class LayoutEditor {
         }
         
         for (const child of node.children) {
-            let childStyle = {};
-            switch(child.size.initial.type) {
-                case "fixed":
-                    childStyle[props["dynamic"]] = child.size.initial.value + "px" ;                    
-                    childStyle["flex"] = "0 0 auto";
-                    break;
-                case "fill":
-                    childStyle["flexGrow"] = 1;
-                    break;
-                default:
-                    throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
-            }
-            const childContainer = this.ldf.containers[child.containerId];
-            childContainer.collapsed = false;
-            this.transformations.push(
-                {
-                    id: childContainer.id, 
-                    type: TRANSFORMATION_TYPES.UPDATE_SIZE,
-                    args: {style: childStyle}
+            console.log(child);
+            if (child.type === "container") {
+                let childStyle = {};
+                switch(child.size.initial.type) {
+                    case "fixed":
+                        childStyle[props["dynamic"]] = child.size.initial.value + "px" ;                    
+                        childStyle["flex"] = "0 0 auto";
+                        break;
+                    case "fill":
+                        childStyle["flexGrow"] = 1;
+                        break;
+                    default:
+                        throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
                 }
-            );
-            this.initializeNode(childContainer);
+                const childContainer = this.ldf.containers[child.containerId];
+                childContainer.collapsed = false;
+                this.transformations.push(
+                    {
+                        id: childContainer.id, 
+                        type: TRANSFORMATION_TYPES.UPDATE_SIZE,
+                        args: {style: childStyle}
+                    }
+                );
+                this.initializeNode(childContainer);
+            }
         }
     }
 
@@ -123,38 +126,40 @@ export class LayoutEditor {
         }
 
         for (const child of node.children) {
-            if (child.hasOwnProperty("collapse")) {                   
-                const childContainer = this.ldf.containers[child.containerId];
+            if (child.type === "container") {
+                if (child.hasOwnProperty("collapse")) {                   
+                    const childContainer = this.ldf.containers[child.containerId];
 
-                let type, args;
-                if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
-                    // Collapse below threshold
-                    if (!child.hidden) {
-                        type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                        args = {style: {"display":"none"}}
-                        child.hidden = true;
-                    }
-                } else {          
-                    // Expand above threshold
-                    if (child.hidden) {
-                        type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                        args = {style: {"display":"flex"}}
-                        child.hidden = false;
-                    }
-                }
-                
-                // Apply the transformation if it was calculated.
-                if (type) {
-                    this.transformations.push(
-                        {
-                            id: childContainer.id,
-                            type: type,
-                            args: args
+                    let type, args;
+                    if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
+                        // Collapse below threshold
+                        if (!child.hidden) {
+                            type = TRANSFORMATION_TYPES.UPDATE_SIZE;
+                            args = {style: {"display":"none"}}
+                            child.hidden = true;
                         }
-                    );
+                    } else {          
+                        // Expand above threshold
+                        if (child.hidden) {
+                            type = TRANSFORMATION_TYPES.UPDATE_SIZE;
+                            args = {style: {"display":"flex"}}
+                            child.hidden = false;
+                        }
+                    }
+                    
+                    // Apply the transformation if it was calculated.
+                    if (type) {
+                        this.transformations.push(
+                            {
+                                id: childContainer.id,
+                                type: type,
+                                args: args
+                            }
+                        );
+                    }
                 }
+                this.layoutNode(child.containerId);
             }
-            this.layoutNode(child.containerId);
         }
     }
 };

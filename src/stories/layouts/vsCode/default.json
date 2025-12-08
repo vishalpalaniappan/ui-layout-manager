@@ -9,14 +9,17 @@
             "children": [
                 {
                     "containerId": "header",
+                    "type": "container",
                     "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }}
                 },
                 {
                     "containerId": "mainBody",
+                    "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
                     "containerId": "footer",
+                    "type": "container",
                     "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }},
                     "collapse": { "value": 400, "condition": "lessThan" }
                 }
@@ -34,11 +37,14 @@
             "children": [
                 {
                     "containerId": "sidebar",
+                    "type": "container",
                     "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }},
-                    "collapse": { "value": 400, "condition": "lessThan" }
+                    "collapse": { "value": 400, "condition": "lessThan" },
+                    "showHandlebar": true
                 },
                 {
                     "containerId": "contentContainer",
+                    "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 }
             ]
@@ -51,10 +57,15 @@
             "children": [
                 {
                     "containerId": "content",
+                    "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
+                    "type": "handleBar"
+                },
+                {
                     "containerId": "timeline",
+                    "type": "container",
                     "size": { "initial": { "value": 200, "unit": "px", "type": "fixed" }},
                     "collapse": { "value": 500, "condition": "lessThan" }
                 }
@@ -72,11 +83,16 @@
             "children": [
                 {
                     "containerId": "menuContainer",
+                    "type": "container",
                     "size": { "initial": { "value": 200, "unit": "px", "type": "fixed" }},
                     "collapse": { "value": 700, "condition": "lessThan" }
                 },
                 {
+                    "type": "handleBar"
+                },
+                {
                     "containerId": "editorContainer",
+                    "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 }
             ]

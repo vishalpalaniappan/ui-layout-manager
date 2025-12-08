@@ -24,11 +24,27 @@ export const Container = ({node}) => {
     const processContainer = useCallback((node) => {
         const childElements = [];      
         for (let index = 0; index < node.children.length; index++) {
-            const child = controller.ldf.containers[node.children[index].containerId];
-            child.parent = node;
-            childElements.push(
-                <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
-            );
+            const childNode = node.children[index];
+
+            if (childNode.type === "container") {
+                const child = controller.ldf.containers[node.children[index].containerId];
+                child.parent = node;
+                childElements.push(
+                    <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
+                );
+            } else if (childNode.type === "handleBar") {
+                if (node.orientation === "horizontal") {
+                    console.log("Draw vertical line");
+                    childElements.push(
+                        <div className="verticalLine"></div>
+                    );
+                } else if (node.orientation === "vertical") {
+                    console.log("Draw horizontal line");
+                    childElements.push(
+                        <div className="horizontalLine"></div>
+                    );
+                }
+            }
         };
         return childElements;
     },[controller]);
