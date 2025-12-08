@@ -17,7 +17,8 @@
                 },
                 {
                     "containerId": "footer",
-                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }}
+                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 400, "condition": "lessThan" }
                 }
             ]
         },
@@ -33,7 +34,8 @@
             "children": [
                 {
                     "containerId": "sidebar",
-                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }}
+                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 600, "condition": "lessThan" }
                 },
                 {
                     "containerId": "contentContainer",
