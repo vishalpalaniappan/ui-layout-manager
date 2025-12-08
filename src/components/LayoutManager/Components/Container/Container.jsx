@@ -37,16 +37,17 @@ export const Container = ({node}) => {
         /**
          * Applies the provided size to the container reference.
          * @param {Object} size 
+         * @param {Object} orientation 
          */
-        updateSize: (size) => {
-            console.log(size);
+        updateSize: (size, orientation) => {
+            const className = "hiding-" + orientation;
             for (const key in size) {
                 if (key === "display" && size[key] === "none") {
-                    if (containerRef.current.classList.contains("hiding")) return;
-                    containerRef.current.classList.add("hiding");
+                    if (containerRef.current.classList.contains(className)) return;
+                    containerRef.current.classList.add(className);
                 } else if (key === "display" && size[key] === "flex") {
-                    if (!containerRef.current.classList.contains("hiding")) return;
-                    containerRef.current.classList.remove("hiding");   
+                    if (!containerRef.current.classList.contains(className)) return;
+                    containerRef.current.classList.remove(className);   
                 } else {                    
                     containerRef.current.style[key] = size[key];
                 }

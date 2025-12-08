@@ -113,7 +113,9 @@ export class LayoutController {
                 this.transformations = event.data.data;
                 requestAnimationFrame(() => {
                     for (const transformation of this.transformations) {
-                        this.containers[transformation.id].current.updateSize(transformation.size);
+                        this.containers[transformation.id].current.updateSize(
+                            transformation.size, transformation.orientation
+                        );
                     };
                     this.layoutLoaded = true;
                 });
@@ -121,7 +123,9 @@ export class LayoutController {
                 this.transformations = event.data.data;
                 requestAnimationFrame(() => {
                     for (const transformation of this.transformations) {
-                        this.containers[transformation.id].current.updateSize(transformation.size);
+                        this.containers[transformation.id].current.updateSize(
+                            transformation.size, transformation.orientation
+                        );
                     };
                 });
                 break;

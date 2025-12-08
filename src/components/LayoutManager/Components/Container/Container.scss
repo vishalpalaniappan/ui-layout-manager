@@ -1,8 +1,13 @@
 .relative-container {
     position: relative;    
-    transition: width 0.1s ease;
+    transition: all 0.1s ease;
+    transition-property: height, width;
 }
 
-.relative-container.hiding {
+.relative-container.hiding-horizontal {
     width: 0px !important;
+}
+
+.relative-container.hiding-vertical {
+    height: 0px !important;
 }

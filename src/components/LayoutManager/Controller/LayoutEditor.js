@@ -64,7 +64,7 @@ export class LayoutEditor {
             }
             const childContainer = this.ldf.containers[child.containerId];
             childContainer.collapsed = false;
-            this.transformations.push({id: childContainer.id, size: childSize});
+            this.transformations.push({id: childContainer.id, size: childSize, orientation: node.orientation});
             this.initializeNode(childContainer);
         }
     }
@@ -75,7 +75,6 @@ export class LayoutEditor {
      * @param {Object} sizes 
      */
     applySizes(sizes) {        
-        console.log("Applying sizes:", sizes);
         this.sizes = sizes; 
         this.layoutNode(this.ldf.layoutRoot);        
         postMessage({
@@ -120,12 +119,24 @@ export class LayoutEditor {
                 const childContainer = this.ldf.containers[child.containerId];
                 if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
                     let transformation = {"display":"none"};
-                    this.transformations.push({id: childContainer.id, size: transformation});
+                    this.transformations.push(
+                        {
+                            id: childContainer.id,
+                            size: transformation,
+                            orientation: node.orientation
+                        }
+                    );
                     childContainer.collapsed = true;
                 } else {                             
                     const childContainer = this.ldf.containers[child.containerId];
                     let transformation = {"display":"flex"};
-                    this.transformations.push({id: childContainer.id, size: transformation});
+                    this.transformations.push(
+                        {
+                            id: childContainer.id,
+                            size: transformation, 
+                            orientation: node.orientation
+                        }
+                    );
                     childContainer.collapsed = false;     
                 }
             }
