@@ -95,7 +95,10 @@ export class LayoutController {
         for (const id in this.containerRefs) {
             if (this.containerRefs.hasOwnProperty(id)) {
                 const boundingRect = this.containerRefs[id].getBoundingClientRect();
-                sizes[id] = {width: boundingRect.width, height: boundingRect.height};
+                sizes[id] = {
+                    width: boundingRect.width, 
+                    height: boundingRect.height
+                };
             }
         }        
         this.sendToWorker(

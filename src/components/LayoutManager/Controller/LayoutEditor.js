@@ -96,10 +96,6 @@ export class LayoutEditor {
 
     /**
      * Applys the layout logic to the node with the given container id. 
-     * 
-     * TODO: Container id is not the same as node id. Container id is the 
-     * key used in the LDF file to identify the container. This is confusing,
-     * I am going to fix it.
      * @param {String} containerId 
      * @returns 
      */
@@ -121,8 +117,8 @@ export class LayoutEditor {
         } else {
             throw new Error(`Unknown orientation "${node.orientation}" in LDF configuration`);
         }
-
-        const parentSize = this.sizes[node.id];
+        
+        const parentSize = this.sizes[containerId];
 
         for (const child of node.children) {
             if (child.hasOwnProperty("collapse")) {                   
@@ -130,26 +126,37 @@ export class LayoutEditor {
 
                 let type, args;
                 if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
-                    type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                    args = {
-                        size: {"display":"none"},
-                        orientation: node.orientation
+                    // Collapse below threshold
+                    if (!child.hidden) {
+                        type = TRANSFORMATION_TYPES.UPDATE_SIZE;
+                        args = {
+                            size: {"display":"none"},
+                            orientation: node.orientation
+                        }
+                        child.hidden = true;
                     }
-                } else {                             
-                    type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                    args = {
-                        size: {"display":"flex"},
-                        orientation: node.orientation
+                } else {          
+                    // Expand above threshold
+                    if (child.hidden) {
+                        type = TRANSFORMATION_TYPES.UPDATE_SIZE;
+                        args = {
+                            size: {"display":"flex"},
+                            orientation: node.orientation
+                        }
+                        child.hidden = false;
                     }
                 }
                 
-                this.transformations.push(
-                    {
-                        id: childContainer.id,
-                        type: type,
-                        args: args
-                    }
-                );
+                // Apply the transformation if it was calculated.
+                if (type) {
+                    this.transformations.push(
+                        {
+                            id: childContainer.id,
+                            type: type,
+                            args: args
+                        }
+                    );
+                }
             }
             this.layoutNode(child.containerId);
         }
