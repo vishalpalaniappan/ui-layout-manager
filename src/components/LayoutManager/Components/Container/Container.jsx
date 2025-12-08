@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useLayoutEffect, useCallback } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect, useCallback, Children } from "react";
 import PropTypes from 'prop-types';
 import { useLayoutController } from "../../Providers/LayoutProvider";
 
@@ -15,6 +15,7 @@ export const Container = ({node}) => {
 
     const controller = useLayoutController();
     const containerRef = useRef(null);    
+    const parentOrientationRef = useRef(null);
     const [childElements, setChildElements] = useState(null);
    
     /**
@@ -24,6 +25,7 @@ export const Container = ({node}) => {
         const childElements = [];      
         for (let index = 0; index < node.children.length; index++) {
             const child = controller.ldf.containers[node.children[index].containerId];
+            child.parent = node;
             childElements.push(
                 <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
             );
@@ -35,35 +37,51 @@ export const Container = ({node}) => {
     const containerAPI = useRef({});
     containerAPI.current = {
         /**
-         * Applies the provided size to the container reference.
-         * @param {Object} size 
+         * Applies the provided styles (width, height, flex etc.)
+         * @param {Object} styles
          */
-        updateSize: (size) => {
-            containerRef.current.style.width = size.width + "px";
-            containerRef.current.style.height = size.height + "px";
+        updateStyles: (styles) => {
+            const className = "hiding-" + parentOrientationRef.current;
+            for (const key in styles) {
+                if (key === "display" && styles[key] === "none") {
+                    if (containerRef.current.classList.contains(className)) return;
+                    containerRef.current.classList.add(className);
+                } else if (key === "display" && styles[key] === "flex") {
+                    if (!containerRef.current.classList.contains(className)) return;
+                    containerRef.current.classList.remove(className);   
+                } else {                    
+                    containerRef.current.style[key] = styles[key];
+                }
+            }
         }
     };
 
     // Render child containers and regsiter API with the controller.
     useLayoutEffect(() => {
         if (node && controller && containerRef.current) {
-
+            parentOrientationRef.current = node.parent.orientation;
             const hasChildren = node.children && node.children.length > 0
 
-            if (!hasChildren && node.background) {
-                containerRef.current.style.background = node.background;
+            if (hasChildren) {        
+                // Set flex properties based on orientation for children    
+                if (node.orientation === "horizontal") {
+                    containerRef.current.style.display = "flex";
+                    containerRef.current.style.flexDirection = "row";
+                    containerRef.current.style.width = "100%";
+                } else if (node.orientation === "vertical") {
+                    containerRef.current.style.display = "flex";
+                    containerRef.current.style.flexDirection = "column";
+                    containerRef.current.style.height = "100%";
+                } else {
+                    console.warn("Unknown orientation:", node.orientation);
+                }
             } else {
-                containerRef.current.style.background = "transparent";
-            } 
-            
-            if (hasChildren && node.orientation === "horizontal") {
-                containerRef.current.style.display = "flex";
-                containerRef.current.style.flexDirection = "row";
-            } else if (hasChildren && node.orientation === "vertical") {
-                containerRef.current.style.display = "flex";
-                containerRef.current.style.flexDirection = "column";
-            } else {
-                console.warn("Unknown orientation:", node.orientation);
+                // No children, so its a leaf node, apply background if any.
+                if (node.background) {
+                    containerRef.current.style.background = node.background;
+                } else {
+                    containerRef.current.style.background = "transparent";
+                }
             }
             
             setChildElements(hasChildren?processContainer(node):null);

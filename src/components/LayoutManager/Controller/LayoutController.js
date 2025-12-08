@@ -1,4 +1,5 @@
 import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
+import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
 
 /**
  * This controller is responsible for managing the layout of the application.
@@ -23,7 +24,7 @@ export class LayoutController {
         this.registeredContainers = 0;
         this.layoutLoaded = false;
 
-        this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length + 1: 0;
+        this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length: 0;
 
         try {
             this.worker = new Worker(
@@ -69,14 +70,7 @@ export class LayoutController {
 
         if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
             console.log("All containers registered, layout is ready.");
-            this.layoutLoaded = true;
-            const boundingRect = this.containerRefs["root"].getBoundingClientRect();
-            const size = {width: boundingRect.width, height: boundingRect.height};
-            const id = this.ldf.containers[this.ldf.layoutRoot].id;
-            this.sendToWorker(
-                LAYOUT_WORKER_PROTOCOL.RENDER_NODE, 
-                { id: id, size: size }
-            );
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX);
         }
     }
     
@@ -95,21 +89,67 @@ export class LayoutController {
      * @param {Number} height 
      */
     handleRootResize(width, height) {
-
+        if (!this.layoutLoaded) return;
+        // console.log("Root container resized to:", width, height);
+        const sizes = {};
+        for (const id in this.containerRefs) {
+            if (this.containerRefs.hasOwnProperty(id)) {
+                const boundingRect = this.containerRefs[id].getBoundingClientRect();
+                sizes[id] = {
+                    width: boundingRect.width, 
+                    height: boundingRect.height
+                };
+            }
+        }        
+        this.sendToWorker(
+            LAYOUT_WORKER_PROTOCOL.APPLY_SIZES, 
+            { sizes: sizes }
+        );    
     }
+
+    /**
+     * Apply the given transformations
+     * @param {Object} transformations 
+     * @param {Object} isInitial 
+     */
+    applyTransformations (transformations, isInitial) {
+        requestAnimationFrame(() => {
+            for (const transformation of transformations) {
+                switch (transformation.type) {
+                    case TRANSFORMATION_TYPES.UPDATE_SIZE:
+                        this.containers[transformation.id].current.updateStyles(
+                            transformation.args.style
+                        );
+                        break;
+                    case TRANSFORMATION_TYPES.REMOVE_NODE:
+                        break;
+                    default:
+                        console.warn("Unknown transformation was requested.");
+                        break;
+                }
+            };
+            if (isInitial) {
+                this.layoutLoaded = true;
+            }
+        });
+    };
 
     /**
      * Handles messages from worker
      * @param {Object} event 
      */
     handleWorkerMessage(event) {
+        let transformations;
         switch(event.data.type) {
-            case "transformations":
-                for (const transformation of event.data.data) {
-                    this.containers[transformation.id].current.updateSize(transformation.size);
-                };
+            case LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX:
+                transformations = event.data.data;
+                this.applyTransformations(transformations, true);
                 break;
-            case "error":
+            case LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS:
+                transformations = event.data.data;
+                this.applyTransformations(transformations, false);
+                break;
+            case LAYOUT_WORKER_PROTOCOL.ERROR:
                 console.error("Error from worker:", event.data);
                 break;
             default:
