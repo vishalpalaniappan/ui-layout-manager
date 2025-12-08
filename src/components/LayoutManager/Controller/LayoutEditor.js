@@ -1,4 +1,5 @@
 import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
+import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
 
 export class LayoutEditor {
 
@@ -64,7 +65,13 @@ export class LayoutEditor {
             }
             const childContainer = this.ldf.containers[child.containerId];
             childContainer.collapsed = false;
-            this.transformations.push({id: childContainer.id, size: childSize, orientation: node.orientation});
+            this.transformations.push(
+                {
+                    id: childContainer.id, 
+                    type: TRANSFORMATION_TYPES.UPDATE_SIZE,
+                    size: childSize, 
+                    orientation: node.orientation}
+                );
             this.initializeNode(childContainer);
         }
     }
@@ -117,28 +124,27 @@ export class LayoutEditor {
         for (const child of node.children) {
             if (child.hasOwnProperty("collapse")) {                   
                 const childContainer = this.ldf.containers[child.containerId];
+
+                let transformation, type;
                 if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
-                    let transformation = {"display":"none"};
-                    this.transformations.push(
-                        {
-                            id: childContainer.id,
-                            size: transformation,
-                            orientation: node.orientation
-                        }
-                    );
+                    transformation = {"display":"none"};
+                    type = TRANSFORMATION_TYPES.UPDATE_SIZE;
                     childContainer.collapsed = true;
                 } else {                             
                     const childContainer = this.ldf.containers[child.containerId];
-                    let transformation = {"display":"flex"};
-                    this.transformations.push(
-                        {
-                            id: childContainer.id,
-                            size: transformation, 
-                            orientation: node.orientation
-                        }
-                    );
+                    transformation = {"display":"flex"};
+                    type = TRANSFORMATION_TYPES.UPDATE_SIZE;
                     childContainer.collapsed = false;     
                 }
+                
+                this.transformations.push(
+                    {
+                        id: childContainer.id,
+                        type: type,
+                        size: transformation, 
+                        orientation: node.orientation
+                    }
+                );
             }
             this.layoutNode(child.containerId);
         }

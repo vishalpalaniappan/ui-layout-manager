@@ -1,4 +1,5 @@
 import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
+import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
 
 /**
  * This controller is responsible for managing the layout of the application.
@@ -104,30 +105,43 @@ export class LayoutController {
     }
 
     /**
+     * Apply the given transformations
+     * @param {Object} transformations 
+     * @param {Object} isInitial 
+     */
+    applyTransformations (transformations, isInitial) {
+        requestAnimationFrame(() => {
+            for (const transformation of transformations) {
+                switch (transformation.type) {
+                    case TRANSFORMATION_TYPES.UPDATE_SIZE:
+                        this.containers[transformation.id].current.updateSize(
+                            transformation.size, transformation.orientation
+                        );
+                        break;
+                    default:
+                        console.warn("Unkown transformation was requested");
+                        break;
+                }
+            };
+            if (isInitial) {
+                this.layoutLoaded = true;
+            }
+        });
+    };
+
+    /**
      * Handles messages from worker
      * @param {Object} event 
      */
     handleWorkerMessage(event) {
+        let transformations;
         switch(event.data.type) {
             case LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX:
-                this.transformations = event.data.data;
-                requestAnimationFrame(() => {
-                    for (const transformation of this.transformations) {
-                        this.containers[transformation.id].current.updateSize(
-                            transformation.size, transformation.orientation
-                        );
-                    };
-                    this.layoutLoaded = true;
-                });
+                transformations = event.data.data;
+                this.applyTransformations(transformations, true);
             case LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS:
-                this.transformations = event.data.data;
-                requestAnimationFrame(() => {
-                    for (const transformation of this.transformations) {
-                        this.containers[transformation.id].current.updateSize(
-                            transformation.size, transformation.orientation
-                        );
-                    };
-                });
+                transformations = event.data.data;
+                this.applyTransformations(transformations, false);
                 break;
             case LAYOUT_WORKER_PROTOCOL.ERROR:
                 console.error("Error from worker:", event.data);
