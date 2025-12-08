@@ -6,9 +6,7 @@ import "./HandleBar.scss";
 /**
  * 
  */
-export const HandleBar = ({orientation}) => {
-
-    const MIN_PANEL_SIZE = 50;
+export const HandleBar = ({orientation, sibling1, sibling2}) => {
 
     const dragStartInfo = useRef(null)
     const handleRef = useRef(null);
@@ -18,9 +16,6 @@ export const HandleBar = ({orientation}) => {
      * It does the following:
      * - Determines the dynamic prop being modified (width or height)
      * - Determines the mouse down property to track (clientY or clientX)
-     * - Get references to parent container and both siblings using callback to parent
-     * - Saves the initial size of the siblings and parents 
-     * 
      * @param {Event} e 
      */
     const handleMouseDown = (e) => {
@@ -46,10 +41,7 @@ export const HandleBar = ({orientation}) => {
     /**
      * This function is called when the mouse is being dragged and 
      * it uses the delta from the starting down point to calculate
-     * the new sizes (width or height). If it is within the bounds, 
-     * it sets the new size. It sets the size as a percentage so 
-     * the relative sizes are respected if a parent up the hierarchy
-     * is moved.
+     * the new sizes (width or height). 
      * @param {Event} e 
      * @returns 
      */
@@ -95,5 +87,7 @@ export const HandleBar = ({orientation}) => {
 };
 
 HandleBar.propTypes = {
-    orientation: PropTypes.string
+    orientation: PropTypes.string,
+    sibling1: PropTypes.string,
+    sibling2: PropTypes.string
 }

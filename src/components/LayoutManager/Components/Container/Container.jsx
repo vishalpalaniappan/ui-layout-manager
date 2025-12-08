@@ -34,14 +34,20 @@ export const Container = ({node}) => {
                 );
             } else if (childNode.type === "handleBar") {
                 if (node.orientation === "horizontal") {
-                    console.log("Draw vertical line");
                     childElements.push(
-                        <HandleBar orientation="vertical" />
+                        <HandleBar 
+                            orientation="vertical" 
+                            sibling1={childNode.sibling1}
+                            sibling2={childNode.sibling2}
+                        />
                     );
                 } else if (node.orientation === "vertical") {
-                    console.log("Draw horizontal line");
                     childElements.push(
-                        <HandleBar orientation="horizontal" />
+                        <HandleBar 
+                            orientation="horizontal" 
+                            sibling1={childNode.sibling1}
+                            sibling2={childNode.sibling2}
+                        />
                     );
                 }
             }

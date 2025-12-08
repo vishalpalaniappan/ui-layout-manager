@@ -61,7 +61,9 @@
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
-                    "type": "handleBar"
+                    "type": "handleBar",
+                    "sibling1": "content",
+                    "sibling2": "timeline"
                 },
                 {
                     "containerId": "timeline",
@@ -88,7 +90,9 @@
                     "collapse": { "value": 700, "condition": "lessThan" }
                 },
                 {
-                    "type": "handleBar"
+                    "type": "handleBar",
+                    "sibling1": "menuContainer",
+                    "sibling2": "editorContainer"
                 },
                 {
                     "containerId": "editorContainer",
