@@ -51,14 +51,14 @@ export class LayoutEditor {
         }
         
         for (const child of node.children) {
-            let childSize = {};
+            let childStyle = {};
             switch(child.size.initial.type) {
                 case "fixed":
-                    childSize[props["dynamic"]] = child.size.initial.value + "px" ;                    
-                    childSize["flex"] = "0 0 auto";
+                    childStyle[props["dynamic"]] = child.size.initial.value + "px" ;                    
+                    childStyle["flex"] = "0 0 auto";
                     break;
                 case "fill":
-                    childSize["flexGrow"] = 1;
+                    childStyle["flexGrow"] = 1;
                     break;
                 default:
                     throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
@@ -69,10 +69,7 @@ export class LayoutEditor {
                 {
                     id: childContainer.id, 
                     type: TRANSFORMATION_TYPES.UPDATE_SIZE,
-                    args: {
-                        size: childSize,
-                        orientation: node.orientation
-                    }
+                    args: {style: childStyle}
                 }
             );
             this.initializeNode(childContainer);
@@ -134,20 +131,14 @@ export class LayoutEditor {
                     // Collapse below threshold
                     if (!child.hidden) {
                         type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                        args = {
-                            size: {"display":"none"},
-                            orientation: node.orientation
-                        }
+                        args = {style: {"display":"none"}}
                         child.hidden = true;
                     }
                 } else {          
                     // Expand above threshold
                     if (child.hidden) {
                         type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                        args = {
-                            size: {"display":"flex"},
-                            orientation: node.orientation
-                        }
+                        args = {style: {"display":"flex"}}
                         child.hidden = false;
                     }
                 }

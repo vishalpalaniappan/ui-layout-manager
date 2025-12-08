@@ -118,7 +118,7 @@ export class LayoutController {
                 switch (transformation.type) {
                     case TRANSFORMATION_TYPES.UPDATE_SIZE:
                         this.containers[transformation.id].current.updateSize(
-                            transformation.args.size, transformation.args.orientation
+                            transformation.args.style
                         );
                         break;
                     case TRANSFORMATION_TYPES.REMOVE_NODE:

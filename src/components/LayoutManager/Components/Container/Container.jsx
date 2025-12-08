@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useLayoutEffect, useCallback } from "react";
+import React, { useEffect, useState, useRef, useLayoutEffect, useCallback, Children } from "react";
 import PropTypes from 'prop-types';
 import { useLayoutController } from "../../Providers/LayoutProvider";
 
@@ -15,6 +15,7 @@ export const Container = ({node}) => {
 
     const controller = useLayoutController();
     const containerRef = useRef(null);    
+    const [parentOrientation, setParentOrientation] = useState();
     const [childElements, setChildElements] = useState(null);
    
     /**
@@ -24,6 +25,7 @@ export const Container = ({node}) => {
         const childElements = [];      
         for (let index = 0; index < node.children.length; index++) {
             const child = controller.ldf.containers[node.children[index].containerId];
+            child.parent = node;
             childElements.push(
                 <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
             );
@@ -35,12 +37,11 @@ export const Container = ({node}) => {
     const containerAPI = useRef({});
     containerAPI.current = {
         /**
-         * Applies the provided size to the container reference.
-         * @param {Object} size 
-         * @param {Object} orientation 
+         * Applies the provided styles (width, height, flex etc.)
+         * @param {Object} size
          */
-        updateSize: (size, orientation) => {
-            const className = "hiding-" + orientation;
+        updateSize: (size) => {
+            const className = "hiding-" + parentOrientation;
             for (const key in size) {
                 if (key === "display" && size[key] === "none") {
                     if (containerRef.current.classList.contains(className)) return;
@@ -58,6 +59,7 @@ export const Container = ({node}) => {
     // Render child containers and regsiter API with the controller.
     useLayoutEffect(() => {
         if (node && controller && containerRef.current) {
+            setParentOrientation(node.parent.orientation);
 
             const hasChildren = node.children && node.children.length > 0
 
