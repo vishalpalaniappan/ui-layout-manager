@@ -117,7 +117,7 @@ export class LayoutController {
             for (const transformation of transformations) {
                 switch (transformation.type) {
                     case TRANSFORMATION_TYPES.UPDATE_SIZE:
-                        this.containers[transformation.id].current.updateSize(
+                        this.containers[transformation.id].current.updateStyles(
                             transformation.args.style
                         );
                         break;

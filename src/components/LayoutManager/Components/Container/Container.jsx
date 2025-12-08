@@ -38,19 +38,19 @@ export const Container = ({node}) => {
     containerAPI.current = {
         /**
          * Applies the provided styles (width, height, flex etc.)
-         * @param {Object} size
+         * @param {Object} styles
          */
-        updateSize: (size) => {
+        updateStyles: (styles) => {
             const className = "hiding-" + parentOrientation;
-            for (const key in size) {
-                if (key === "display" && size[key] === "none") {
+            for (const key in styles) {
+                if (key === "display" && styles[key] === "none") {
                     if (containerRef.current.classList.contains(className)) return;
                     containerRef.current.classList.add(className);
-                } else if (key === "display" && size[key] === "flex") {
+                } else if (key === "display" && styles[key] === "flex") {
                     if (!containerRef.current.classList.contains(className)) return;
                     containerRef.current.classList.remove(className);   
                 } else {                    
-                    containerRef.current.style[key] = size[key];
+                    containerRef.current.style[key] = styles[key];
                 }
             }
         }
