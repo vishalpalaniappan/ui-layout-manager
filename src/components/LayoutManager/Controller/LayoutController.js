@@ -119,7 +119,7 @@ export class LayoutController {
                         );
                         break;
                     default:
-                        console.warn("Unkown transformation was requested");
+                        console.warn("Unknown transformation was requested.");
                         break;
                 }
             };
