@@ -139,6 +139,7 @@ export class LayoutController {
             case LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX:
                 transformations = event.data.data;
                 this.applyTransformations(transformations, true);
+                break;
             case LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS:
                 transformations = event.data.data;
                 this.applyTransformations(transformations, false);
