@@ -30,13 +30,19 @@ export const Container = ({node}) => {
                 const child = controller.ldf.containers[node.children[index].containerId];
                 child.parent = node;
                 childElements.push(
-                    <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
+                    <Container 
+                        key={index} 
+                        meta={node.children[index]} 
+                        id={child.id} 
+                        node={child}/>
                 );
             } else if (childNode.type === "handleBar") {
                 if (node.orientation === "horizontal") {
                     childElements.push(
                         <HandleBar 
+                            key={index}
                             orientation="vertical" 
+                            parent={node.id}
                             sibling1={childNode.sibling1}
                             sibling2={childNode.sibling2}
                         />
@@ -44,7 +50,9 @@ export const Container = ({node}) => {
                 } else if (node.orientation === "vertical") {
                     childElements.push(
                         <HandleBar 
+                            key={index}
                             orientation="horizontal" 
+                            parent={node.id}
                             sibling1={childNode.sibling1}
                             sibling2={childNode.sibling2}
                         />

@@ -68,7 +68,11 @@
                 {
                     "containerId": "timeline",
                     "type": "container",
-                    "size": { "initial": { "value": 200, "unit": "px", "type": "fixed" }},
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 100, "unit": "px"},
+                        "max": { "value": 300, "unit": "px"}
+                    },
                     "collapse": { "value": 500, "condition": "lessThan" }
                 }
             ]
@@ -86,7 +90,9 @@
                 {
                     "containerId": "menuContainer",
                     "type": "container",
-                    "size": { "initial": { "value": 200, "unit": "px", "type": "fixed" }},
+                    "size": { "initial": { "value": 400, "unit": "px", "type": "fixed" },
+                    "min": { "value": 200, "unit": "px"},
+                    "max": { "value": 500, "unit": "px"}},
                     "collapse": { "value": 700, "condition": "lessThan" }
                 },
                 {

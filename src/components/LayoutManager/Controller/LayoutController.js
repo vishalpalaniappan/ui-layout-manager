@@ -58,7 +58,7 @@ export class LayoutController {
      * @param {Object} containerApi 
      * @param {HTMLElement} containerRef 
      */
-    registerContainer(id, containerApi, containerRef) {        
+    registerContainer(id, containerApi, containerRef) {     
         if (!(id in this.containers)) {
             this.registeredContainers += 1
         }
@@ -88,7 +88,7 @@ export class LayoutController {
      * @param {Number} width 
      * @param {Number} height 
      */
-    handleRootResize(width, height) {
+    handleRootResize(width, height) { 
         if (!this.layoutLoaded) return;
         // console.log("Root container resized to:", width, height);
         const sizes = {};

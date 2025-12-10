@@ -65,6 +65,15 @@ export class LayoutEditor {
                     default:
                         throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
                 }
+
+                if ("min" in child.size) {
+                    childStyle["min-" + props["dynamic"]] = child.size.min.value + "px"  ;
+                }
+
+                if ("max" in child.size) {
+                    childStyle["max-" + props["dynamic"]] = child.size.max.value + "px" ;
+                }
+
                 const childContainer = this.ldf.containers[child.containerId];
                 childContainer.collapsed = false;
                 this.transformations.push(
@@ -158,6 +167,30 @@ export class LayoutEditor {
                         );
                     }
                 }
+
+                
+
+                // const size = this.sizes[child.containerId];
+                // if (size.width < 100 && child.containerId === "menuContainer") {
+                //     const type = TRANSFORMATION_TYPES.UPDATE_SIZE;
+                //     const args = {style: {"display":"none"}}
+                //     const val = {
+                //         id: child.containerId,
+                //         type: type,
+                //         args: args
+                //     }
+                //     this.transformations.push(val);
+                // } else if (size.width > 100 && child.containerId === "menuContainer") {
+                //     const type = TRANSFORMATION_TYPES.UPDATE_SIZE;
+                //     const args = {style: {"display":"flex"}}
+                //     const val = {
+                //         id: child.containerId,
+                //         type: type,
+                //         args: args
+                //     }
+                //     this.transformations.push(val);
+                // }
+
                 this.layoutNode(child.containerId);
             }
         }
