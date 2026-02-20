@@ -51,7 +51,6 @@ export class LayoutEditor {
         }
         
         for (const child of node.children) {
-            console.log(child);
             if (child.type === "container") {
                 let childStyle = {};
                 switch(child.size.initial.type) {
@@ -104,6 +103,15 @@ export class LayoutEditor {
     }
 
     /**
+     * This function moves the handlebar.
+     * @param {Object} metadata 
+     */
+    moveHandleBar(metadata) {
+        console.log("Moving Handlebar:", metadata);
+        const node = this.ldf.containers[metadata.parent];
+    }
+
+    /**
      * Applys the layout logic to the node with the given container id. 
      * @param {String} containerId 
      * @returns 
@@ -145,6 +153,8 @@ export class LayoutEditor {
                         if (!child.hidden) {
                             type = TRANSFORMATION_TYPES.UPDATE_SIZE;
                             args = {style: {"display":"none"}}
+                            const prop = "min-" + props["dynamic"];
+                            args.style[prop] = 0;
                             child.hidden = true;
                         }
                     } else {          
@@ -152,6 +162,10 @@ export class LayoutEditor {
                         if (child.hidden) {
                             type = TRANSFORMATION_TYPES.UPDATE_SIZE;
                             args = {style: {"display":"flex"}}
+                            if ("min" in child.size) {
+                                const prop = "min-" + props["dynamic"];
+                                args.style[prop] = child.size.min.value + child.size.min.unit;
+                            }
                             child.hidden = false;
                         }
                     }
@@ -167,29 +181,6 @@ export class LayoutEditor {
                         );
                     }
                 }
-
-                
-
-                // const size = this.sizes[child.containerId];
-                // if (size.width < 100 && child.containerId === "menuContainer") {
-                //     const type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                //     const args = {style: {"display":"none"}}
-                //     const val = {
-                //         id: child.containerId,
-                //         type: type,
-                //         args: args
-                //     }
-                //     this.transformations.push(val);
-                // } else if (size.width > 100 && child.containerId === "menuContainer") {
-                //     const type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                //     const args = {style: {"display":"flex"}}
-                //     const val = {
-                //         id: child.containerId,
-                //         type: type,
-                //         args: args
-                //     }
-                //     this.transformations.push(val);
-                // }
 
                 this.layoutNode(child.containerId);
             }

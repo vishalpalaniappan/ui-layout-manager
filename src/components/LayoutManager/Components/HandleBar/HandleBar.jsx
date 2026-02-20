@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import PropTypes from 'prop-types';
 import { useLayoutController } from "../../Providers/LayoutProvider";
@@ -51,6 +52,8 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
             "propKey": propKey,
             "parentSize": parentRef.getBoundingClientRect()[propKey],
             "parentRef": parentRef,
+            "sibling1Ref": sibling1Ref,
+            "sibling2Ref": sibling2Ref,
             "sibling1Size": sibling1Ref.getBoundingClientRect()[propKey],
             "sibling2Size": sibling2Ref.getBoundingClientRect()[propKey],
         }
@@ -79,7 +82,7 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
 
         const startInfo = dragStartInfo.current;
 
-        console.log(getRelativeMousePosition(e, startInfo.parentRef));
+        console.log();
 
         // Use delta from starting down point to calculate new heights
         const delta = e[startInfo.downKey] - startInfo.downValueY;
@@ -93,9 +96,12 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
 
         timerRef.current = setTimeout(() => {
             // Resize here
-            const rootRef = controller.containerRefs["root"];
-            const rect = rootRef.getBoundingClientRect();
-            controller.handleRootResize(rect.width,rect.height);
+            controller.moveHandleBar({
+                handle: getRelativeMousePosition(e, startInfo.parentRef),
+                parent: parent,
+                sibling1: sibling1,
+                sibling2: sibling2
+            });
         }, 0.1);
     }
 

@@ -107,6 +107,35 @@ export class LayoutController {
         );    
     }
 
+
+    /**
+     * Move handle bar is called by the handle bar component with the
+     * metadata about its parent and the siblings being resized. This
+     * information is parsed and passed to the layout editor to enforce
+     * the layout rules.
+     * @param {Object} metadata 
+     */
+    moveHandleBar(metadata) {
+        const sizes = {};
+
+        const containerIds = [metadata.parent, metadata.sibling1, metadata.sibling2];
+        for (const containerId in containerIds) {
+            let boundingRect = this.containerRefs[containerId].getBoundingClientRect();
+            sizes[containerId] = {
+                width: boundingRect.width, 
+                height: boundingRect.height
+            };
+        }
+
+        metadata.sizes = sizes;  
+        this.sendToWorker(
+            LAYOUT_WORKER_PROTOCOL.MOVE_HANDLE_BAR, 
+            { 
+                metadata: metadata
+            }
+        );    
+    }
+
     /**
      * Apply the given transformations
      * @param {Object} transformations 

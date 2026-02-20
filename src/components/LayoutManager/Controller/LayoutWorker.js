@@ -22,6 +22,9 @@ self.onmessage = function (e) {
             case LAYOUT_WORKER_PROTOCOL.APPLY_SIZES:
                 editor.applySizes(args.sizes);
                 break;
+            case LAYOUT_WORKER_PROTOCOL.MOVE_HANDLE_BAR:
+                editor.moveHandleBar(args.metadata);
+                break;
             default:
                 break;
         }
