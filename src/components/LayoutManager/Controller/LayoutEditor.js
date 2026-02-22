@@ -1,6 +1,7 @@
 import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
 import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
 import { ParentRuleEnforcer } from "./ParentRuleEnforcer";
+import { HandleRulesEnforcer } from "./HandleRulesEnforcer";
 
 export class LayoutEditor {
 
@@ -116,11 +117,27 @@ export class LayoutEditor {
      */
     moveHandleBar(metadata) {
         console.log("Moving Handlebar:", metadata);
+
         const parent = this.ldf.containers[metadata.parent];
         const sibling1 = this.ldf.containers[metadata.sibling1];
         const sibling2 = this.ldf.containers[metadata.sibling2];
+        const enforcer = new HandleRulesEnforcer(parent, sibling1, sibling2, metadata);
+        enforcer.evaluate();
 
-        const props = this.getProps(parent);
+        if (enforcer.type) {
+            this.transformations.push(
+                {
+                    id: sibling1.id, 
+                    type: TRANSFORMATION_TYPES.UPDATE_SIZE,
+                    args: enforcer.args
+                }
+            );   
+            postMessage({
+                type: LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS,
+                data: this.transformations
+            });
+            this.transformations = []
+        }
     }
 
     /**
