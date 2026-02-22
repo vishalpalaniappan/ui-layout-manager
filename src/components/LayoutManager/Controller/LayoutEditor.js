@@ -1,6 +1,6 @@
 import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
 import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
-import { RuleEnforcer } from "./RuleEnforcer";
+import { ParentRuleEnforcer } from "./ParentRuleEnforcer";
 
 export class LayoutEditor {
 
@@ -143,7 +143,7 @@ export class LayoutEditor {
 
         for (const child of parent.children) {
             if (child.type === "container") {
-                const enforcer = new RuleEnforcer(this.sizes, parent, child);
+                const enforcer = new ParentRuleEnforcer(this.sizes, parent, child);
                 enforcer.evaluate();
                 if (enforcer.type) {
                     this.transformations.push(

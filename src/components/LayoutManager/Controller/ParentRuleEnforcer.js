@@ -1,10 +1,11 @@
 import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
 /**
  * This class generates transformations based on the
- * layout configuration. It accepts a parent and a child
- * object and uses those to apply the relevant transformations.
+ * parents layout configuration. For example, it collapses
+ * a container if the parent size reaches a threshold
+ * or expands it if the is above a threshold.
  */
-export class RuleEnforcer {
+export class ParentRuleEnforcer {
     /**
      * Initialize the rule enforcer.
      * @param {Object} sizes 
