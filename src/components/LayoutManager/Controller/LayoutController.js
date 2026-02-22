@@ -119,7 +119,7 @@ export class LayoutController {
         const sizes = {};
 
         const containerIds = [metadata.parent, metadata.sibling1, metadata.sibling2];
-        for (const containerId in containerIds) {
+        for (const containerId of containerIds) {
             let boundingRect = this.containerRefs[containerId].getBoundingClientRect();
             sizes[containerId] = {
                 width: boundingRect.width, 

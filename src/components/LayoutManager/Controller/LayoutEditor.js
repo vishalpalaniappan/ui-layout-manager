@@ -1,5 +1,6 @@
 import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
 import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
+import { RuleEnforcer } from "./RuleEnforcer";
 
 export class LayoutEditor {
 
@@ -26,6 +27,21 @@ export class LayoutEditor {
     }
 
     /**
+     * Get props given node orientation.
+     * @param {Object} node 
+     */
+    getProps(node) {
+        // Identify the dynamic property based on orientation.
+        if (node.orientation === "horizontal") {
+            return {"dynamic": "width", "fixed": "height"};
+        } else if (node.orientation === "vertical") {
+            return {"dynamic": "height", "fixed": "width"};
+        } else {
+            throw new Error(`Unknown orientation "${node.orientation}" in LDF configuration`);
+        }  
+    }
+
+    /**
      * Processes the container with the given id and dimensions. It recursively
      * traverses the layout tree to find the node and applies transformations to
      * all its children.
@@ -40,15 +56,7 @@ export class LayoutEditor {
             return;
         }
 
-        // Identify the dynamic property based on orientation.
-        let props = {};
-        if (node.orientation === "horizontal") {
-            props = {"dynamic": "width", "fixed": "height"};
-        } else if (node.orientation === "vertical") {
-            props = {"dynamic": "height", "fixed": "width"};
-        } else {
-            throw new Error(`Unknown orientation "${node.orientation}" in LDF configuration`);
-        }
+        const props = this.getProps(node);
         
         for (const child of node.children) {
             if (child.type === "container") {
@@ -94,7 +102,7 @@ export class LayoutEditor {
      */
     applySizes(sizes) {        
         this.sizes = sizes; 
-        this.layoutNode(this.ldf.layoutRoot);        
+        this.applyLayoutToNode(this.ldf.layoutRoot);        
         postMessage({
             type: LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS,
             data: this.transformations
@@ -108,7 +116,11 @@ export class LayoutEditor {
      */
     moveHandleBar(metadata) {
         console.log("Moving Handlebar:", metadata);
-        const node = this.ldf.containers[metadata.parent];
+        const parent = this.ldf.containers[metadata.parent];
+        const sibling1 = this.ldf.containers[metadata.sibling1];
+        const sibling2 = this.ldf.containers[metadata.sibling2];
+
+        const props = this.getProps(parent);
     }
 
     /**
@@ -116,73 +128,33 @@ export class LayoutEditor {
      * @param {String} containerId 
      * @returns 
      */
-    layoutNode(containerId) {
-        const node = this.ldf.containers[containerId];        
-        const isSplit = node.type ? node.type === "split": false;
+    applyLayoutToNode(containerId) {
+        const parent = this.ldf.containers[containerId];        
 
         // If node is not split, then it has no children and is a leaf node, so we return.
-        if (!isSplit) {
+        if ((!parent.type ? parent.type === "split": false) || (!("children" in parent))) {
             return;
         }
 
-        // Identify the dynamic property based on orientation.
-        let props = {};
-        if (node.orientation === "horizontal") {
-            props = {"dynamic": "width", "fixed": "height"};
-        } else if (node.orientation === "vertical") {
-            props = {"dynamic": "height", "fixed": "width"};
-        } else {
-            throw new Error(`Unknown orientation "${node.orientation}" in LDF configuration`);
-        }
-        
-        const parentSize = this.sizes[containerId];
-
-        if (!parentSize) {
-            console.warn(`Parent size not found for node ${node.id}. Skipping collapse checks.`);
+        if (!this.sizes[containerId]) {
+            console.warn(`Parent size not found for node ${parent.id}. Skipping collapse checks.`);
             return;
         }
 
-        for (const child of node.children) {
+        for (const child of parent.children) {
             if (child.type === "container") {
-                if (child.hasOwnProperty("collapse")) {                   
-                    const childContainer = this.ldf.containers[child.containerId];
-
-                    let type, args;
-                    if (parentSize[props["dynamic"]] <= child.collapse.value && child.collapse.condition === "lessThan") { 
-                        // Collapse below threshold
-                        if (!child.hidden) {
-                            type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                            args = {style: {"display":"none"}}
-                            const prop = "min-" + props["dynamic"];
-                            args.style[prop] = 0;
-                            child.hidden = true;
+                const enforcer = new RuleEnforcer(this.sizes, parent, child);
+                enforcer.evaluate();
+                if (enforcer.type) {
+                    this.transformations.push(
+                        {
+                            id: this.ldf.containers[child.containerId].id,
+                            type: enforcer.type,
+                            args: enforcer.args,
                         }
-                    } else {          
-                        // Expand above threshold
-                        if (child.hidden) {
-                            type = TRANSFORMATION_TYPES.UPDATE_SIZE;
-                            args = {style: {"display":"flex"}}
-                            if ("min" in child.size) {
-                                const prop = "min-" + props["dynamic"];
-                                args.style[prop] = child.size.min.value + child.size.min.unit;
-                            }
-                            child.hidden = false;
-                        }
-                    }
-                    
-                    // Apply the transformation if it was calculated.
-                    if (type) {
-                        this.transformations.push(
-                            {
-                                id: childContainer.id,
-                                type: type,
-                                args: args
-                            }
-                        );
-                    }
+                    );
                 }
-
-                this.layoutNode(child.containerId);
+                this.applyLayoutToNode(child.containerId);
             }
         }
     }
