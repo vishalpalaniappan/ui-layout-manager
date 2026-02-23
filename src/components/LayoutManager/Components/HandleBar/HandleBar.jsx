@@ -45,6 +45,17 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
         const sibling1Ref = controller.containerRefs[sibling1];
         const sibling2Ref = controller.containerRefs[sibling2];
 
+        // Get the min, max sizes of siblings 1 and 2
+        let sibling1LayoutConfig, sibling2LayoutConfig;
+        const parentContainer = controller.ldf.containers[parent];
+        for (let i = 0; i < parentContainer.children.length; i++) {
+            if (parentContainer.children[i].containerId === sibling1) {
+                sibling1LayoutConfig = parentContainer.children[i].size;
+            } else if (parentContainer.children[i].containerId === sibling2) {
+                sibling2LayoutConfig = parentContainer.children[i].size;
+            }
+        }
+
         dragStartInfo.current = {
             "downValueY": e[downKey],
             "hoverClass": hoverClass,
@@ -54,6 +65,8 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
             "parentRef": parentRef,
             "sibling1Ref": sibling1Ref,
             "sibling2Ref": sibling2Ref,
+            "sibling1LayoutConfig": sibling1LayoutConfig,
+            "sibling2LayoutConfig": sibling2LayoutConfig,
             "sibling1Size": sibling1Ref.getBoundingClientRect()[propKey],
             "sibling2Size": sibling2Ref.getBoundingClientRect()[propKey],
         }
@@ -89,9 +102,6 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
         const newSibling1Size = startInfo.sibling1Size + delta;
         const newSibling2Size = startInfo.sibling2Size - delta;
 
-        controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
-        controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
-
         clearTimeout(timerRef.current);
 
         timerRef.current = setTimeout(() => {
@@ -103,6 +113,41 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
                 sibling2: sibling2
             });
         }, 0.1);
+        
+        // Don't update container sizes we are past min or max values.
+        const sibling1SizeKeys = Object.keys(startInfo.sibling1LayoutConfig);
+        if (sibling1SizeKeys.includes("min") && newSibling1Size <= startInfo.sibling1LayoutConfig.min.value) {
+            return;
+        }
+        if (sibling1SizeKeys.includes("max") && newSibling1Size >= startInfo.sibling1LayoutConfig.max.value) {
+            return;
+        }
+        
+        // Don't update container sizes we are past min or max values.
+        const sibling2SizeKeys = Object.keys(startInfo.sibling2LayoutConfig);
+        if (sibling2SizeKeys.includes("min") && newSibling2Size <= startInfo.sibling2LayoutConfig.min.value) {
+            return;
+        }
+        if (sibling2SizeKeys.includes("max") && newSibling2Size >= startInfo.sibling2LayoutConfig.max.value) {
+            return;
+        }
+        
+        // If both siblings are type fill, then set sizes
+        const sibling1Type = startInfo.sibling1LayoutConfig.initial.type;
+        const sibling2Type = startInfo.sibling2LayoutConfig.initial.type;
+        if (sibling1Type === "fill" && sibling2Type === "fill") {
+            controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
+            controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
+            return;
+        }
+
+        // Don't update fill types, flex box will take care of that
+        if (!(sibling1Type === "fill")) {
+            controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
+        }
+        if (!(sibling2Type === "fill")) {
+            controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
+        }
     }
 
     /**

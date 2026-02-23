@@ -104,6 +104,29 @@
                     "containerId": "editorContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "editorContainer",
+                    "sibling2": "editorContainer2"
+                },
+                {
+                    "containerId": "editorContainer2",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "editorContainer2",
+                    "sibling2": "rightMenuContainer"
+                },
+                {
+                    "containerId": "rightMenuContainer",
+                    "type": "container",
+                    "size": { "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                    "min": { "value": 100, "unit": "px"},
+                    "max": { "value": 300, "unit": "px"}},
+                    "collapse": { "value": 900, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
@@ -122,6 +145,14 @@
         "editorContainer": {
             "id": "editorContainer",
             "background": "#1e1e1e"
+        },
+        "editorContainer2": {
+            "id": "editorContainer2",
+            "background": "#1e1e1e"
+        },
+        "rightMenuContainer": {
+            "id": "rightMenuContainer",
+            "background": "#252526"
         }
     }
 }

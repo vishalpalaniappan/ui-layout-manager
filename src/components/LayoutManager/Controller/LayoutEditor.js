@@ -116,18 +116,16 @@ export class LayoutEditor {
      * @param {Object} metadata 
      */
     moveHandleBar(metadata) {
-        console.log("Moving Handlebar:", metadata);
-
         const parent = this.ldf.containers[metadata.parent];
         const sibling1 = this.ldf.containers[metadata.sibling1];
         const sibling2 = this.ldf.containers[metadata.sibling2];
         const enforcer = new HandleRulesEnforcer(parent, sibling1, sibling2, metadata);
         enforcer.evaluate();
 
-        if (enforcer.type) {
+        if (enforcer.activeSibling !== null) {
             this.transformations.push(
                 {
-                    id: sibling1.id, 
+                    id: enforcer.activeSibling, 
                     type: TRANSFORMATION_TYPES.UPDATE_SIZE,
                     args: enforcer.args
                 }
