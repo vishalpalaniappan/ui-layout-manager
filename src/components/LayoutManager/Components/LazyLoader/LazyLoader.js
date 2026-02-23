@@ -15,7 +15,6 @@ export const LazyLoader = ({content}) => {
 
     const LazyComponent = useMemo(() => {
         if (registry && content && "component" in content && content["component"] in registry) {
-            console.log("FOUN");
             return lazy(registry[content["component"]]);
         }
     }, [registry, content]);
