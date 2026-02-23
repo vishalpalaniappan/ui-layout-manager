@@ -4,7 +4,7 @@ import {resolve} from "path"
 import {LayoutEditor} from "../../src/components/LayoutManager/Controller/Worker/LayoutEditor"
 
 describe("LayoutEditor", () => {
-  it("initial editor and check ldf file", async () => {
+  it("initialize editor and check ldf file", async () => {
     const ldfPath = resolve(__dirname, "./layouts/default.json")
     const ldfSrc = await readFile(ldfPath, "utf-8");
     const ldf = JSON.parse(ldfSrc);
