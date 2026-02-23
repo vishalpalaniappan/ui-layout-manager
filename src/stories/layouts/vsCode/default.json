@@ -79,6 +79,7 @@
         },
         "timeline": {
             "id": "timeline",
+            "component": "MapSample",
             "background": "#252526"
         },
         "content": {
@@ -140,14 +141,17 @@
         },
         "menuContainer": {
             "id": "menuContainer",
+            "component": "Stack",
             "background": "#252526"
         },
         "editorContainer": {
             "id": "editorContainer",
+            "component": "EditorVSCode",
             "background": "#1e1e1e"
         },
         "editorContainer2": {
             "id": "editorContainer2",
+            "component": "Flow",
             "background": "#1e1e1e"
         },
         "rightMenuContainer": {

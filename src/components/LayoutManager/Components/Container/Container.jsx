@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useLayoutController } from "../../Providers/LayoutProvider";
 import { HandleBar } from "../HandleBar/HandleBar";
 import "./Container.scss"
+import { LazyLoader } from "../LazyLoader/LazyLoader";
 /**
  * Renders the node and creates containers for its children.
  * Also registers itself with the controller to allow the controller
@@ -114,7 +115,7 @@ export const Container = ({node}) => {
                 }
             }
             
-            setChildElements(hasChildren?processContainer(node):null);
+            setChildElements(hasChildren?processContainer(node):<LazyLoader content={node} />);
             
             controller.registerContainer(node.id, containerAPI, containerRef.current);
             return () => {
