@@ -95,8 +95,6 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
 
         const startInfo = dragStartInfo.current;
 
-        console.log();
-
         // Use delta from starting down point to calculate new heights
         const delta = e[startInfo.downKey] - startInfo.downValueY;
         const newSibling1Size = startInfo.sibling1Size + delta;
@@ -116,19 +114,15 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
         
         // Don't update container sizes we are past min or max values.
         const sibling1SizeKeys = Object.keys(startInfo.sibling1LayoutConfig);
-        if (sibling1SizeKeys.includes("min") && newSibling1Size <= startInfo.sibling1LayoutConfig.min.value) {
-            return;
-        }
-        if (sibling1SizeKeys.includes("max") && newSibling1Size >= startInfo.sibling1LayoutConfig.max.value) {
+        if (sibling1SizeKeys.includes("min") && newSibling1Size <= startInfo.sibling1LayoutConfig.min.value ||
+            sibling1SizeKeys.includes("max") && newSibling1Size >= startInfo.sibling1LayoutConfig.max.value) {
             return;
         }
         
         // Don't update container sizes we are past min or max values.
         const sibling2SizeKeys = Object.keys(startInfo.sibling2LayoutConfig);
-        if (sibling2SizeKeys.includes("min") && newSibling2Size <= startInfo.sibling2LayoutConfig.min.value) {
-            return;
-        }
-        if (sibling2SizeKeys.includes("max") && newSibling2Size >= startInfo.sibling2LayoutConfig.max.value) {
+        if (sibling2SizeKeys.includes("min") && newSibling2Size <= startInfo.sibling2LayoutConfig.min.value ||
+            sibling2SizeKeys.includes("max") && newSibling2Size >= startInfo.sibling2LayoutConfig.max.value) {
             return;
         }
         
