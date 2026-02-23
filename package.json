@@ -61,6 +61,7 @@
     "react-dom": "^18.2.0"
   },
   "dependencies": {
+    "leaflet": "^1.9.4",
     "sample-ui-component-library": "^0.0.0-beta"
   }
 }
