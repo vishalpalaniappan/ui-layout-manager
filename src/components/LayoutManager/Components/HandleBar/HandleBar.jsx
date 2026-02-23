@@ -132,10 +132,11 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
             return;
         }
         
-        // If both siblings are type fill, then set sizes
+        // If both siblings are type fill, then set sizes. Set min size of sibling sizes to 50px;
+        // TODO: Make into constants and I think this should be evaluated inside the controller.
         const sibling1Type = startInfo.sibling1LayoutConfig.initial.type;
         const sibling2Type = startInfo.sibling2LayoutConfig.initial.type;
-        if (sibling1Type === "fill" && sibling2Type === "fill") {
+        if (sibling1Type === "fill" && sibling2Type === "fill" && newSibling1Size > 50 && newSibling2Size > 50) {
             controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
             controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
             return;
