@@ -70,8 +70,7 @@
                     "type": "container",
                     "size": { 
                         "initial": { "value": 200, "unit": "px", "type": "fixed" },
-                        "min": { "value": 100, "unit": "px"},
-                        "max": { "value": 300, "unit": "px"}
+                        "min": { "value": 100, "unit": "px"}
                     },
                     "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
                 }
@@ -91,9 +90,11 @@
                 {
                     "containerId": "menuContainer",
                     "type": "container",
-                    "size": { "initial": { "value": 400, "unit": "px", "type": "fixed" },
-                    "min": { "value": 200, "unit": "px"},
-                    "max": { "value": 500, "unit": "px"}},
+                    "size": { 
+                        "initial": { "value": 400, "unit": "px", "type": "fixed" },
+                        "min": { "value": 200, "unit": "px"},
+                        "max": { "value": 500, "unit": "px"}
+                    },
                     "collapse": { "value": 700, "condition": "lessThan", "relative": "parent" }
                 },
                 {
@@ -124,9 +125,11 @@
                 {
                     "containerId": "rightMenuContainer",
                     "type": "container",
-                    "size": { "initial": { "value": 200, "unit": "px", "type": "fixed" },
-                    "min": { "value": 100, "unit": "px"},
-                    "max": { "value": 300, "unit": "px"}},
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 100, "unit": "px"},
+                        "max": { "value": 300, "unit": "px"}
+                    },
                     "collapse": { "value": 900, "condition": "lessThan", "relative": "parent" }
                 }
             ]
@@ -141,8 +144,38 @@
         },
         "menuContainer": {
             "id": "menuContainer",
+            "background": "#252526",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "fileTabsContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" }
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "fileTabsContainer",
+                    "sibling2": "stackContainer"
+                },
+                {
+                    "containerId": "stackContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "fileTabsContainer": {
+            "id": "fileTabsContainer",
+            "background": "#1e1e1e"
+        },
+        "stackContainer": {
+            "id": "stackContainer",
             "component": "Stack",
-            "background": "#252526"
+            "background": "#1e1e1e"
         },
         "editorContainer": {
             "id": "editorContainer",

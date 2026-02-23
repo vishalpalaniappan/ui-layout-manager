@@ -85,10 +85,8 @@ export class LayoutController {
     /**
      * This function is called when the root container is resized.
      * It will notify the worker to process the layout changes.
-     * @param {Number} width 
-     * @param {Number} height 
      */
-    handleRootResize(width, height) { 
+    handleRootResize() { 
         if (!this.layoutLoaded) return;
         // console.log("Root container resized to:", width, height);
         const sizes = {};
@@ -116,8 +114,7 @@ export class LayoutController {
      * @param {Object} metadata 
      */
     moveHandleBar(metadata) {
-        const sizes = {};
-
+        let sizes = {};
         const containerIds = [metadata.parent, metadata.sibling1, metadata.sibling2];
         for (const containerId of containerIds) {
             let boundingRect = this.containerRefs[containerId].getBoundingClientRect();
@@ -133,7 +130,13 @@ export class LayoutController {
             { 
                 metadata: metadata
             }
-        );    
+        );
+
+        // TODO: This is temporary, after handle bar move, the layout rules are
+        // applied to react to new container sizes. This can be done more efficiently
+        // because we only need to react the containers that were changed. This calculates
+        // the entire layout.
+        this.handleRootResize();
     }
 
     /**
