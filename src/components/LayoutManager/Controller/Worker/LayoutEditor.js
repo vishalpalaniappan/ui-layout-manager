@@ -1,5 +1,5 @@
-import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
-import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
+import LAYOUT_WORKER_PROTOCOL from "../LAYOUT_WORKER_PROTOCOL";
+import TRANSFORMATION_TYPES from "../TRANSFORMATION_TYPES";
 import { ParentRuleEnforcer } from "./ParentRuleEnforcer";
 import { HandleRulesEnforcer } from "./HandleRulesEnforcer";
 

@@ -28,7 +28,7 @@ export class LayoutController {
 
         try {
             this.worker = new Worker(
-                new URL('./LayoutWorker.js', import.meta.url),
+                new URL('./Worker/LayoutWorker.js', import.meta.url),
                 { type: 'module' }
             );
             this.worker.onmessage = this.handleWorkerMessage.bind(this);

@@ -1,5 +1,5 @@
 import { LayoutEditor } from "./LayoutEditor";
-import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
+import LAYOUT_WORKER_PROTOCOL from "../LAYOUT_WORKER_PROTOCOL";
 
 /**
  * This function receives messages from the main thread and executes

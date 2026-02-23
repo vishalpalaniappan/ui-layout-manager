@@ -1,4 +1,4 @@
-import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
+import TRANSFORMATION_TYPES from "../TRANSFORMATION_TYPES";
 /**
  * This class generates transformations based on the
  * parents layout configuration. For example, it collapses

@@ -1,4 +1,4 @@
-import TRANSFORMATION_TYPES from "./TRANSFORMATION_TYPES";
+import TRANSFORMATION_TYPES from "../TRANSFORMATION_TYPES";
 /**
  * This class generates transformations based on the handle
  * bars movements. It sets up thresholds at which it collapses
