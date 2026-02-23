@@ -43,13 +43,14 @@ export class LayoutEditor {
     }
 
     /**
-     * Process the node and applies the initial flex box styles. It recursively
-     * calls itself on its chilren until the entire layout is initialized.
+     * Processes the node and applies the initial flex box styles. It recursively
+     * calls the initialization function on the nodes children until the entire
+     * layout is initialized.
      * 
      * After initialization, the layout is recalculated when the handle bar moves
      * or when the window is resized. In the future, I will add programatic control
-     * to recalculate layout dimensions. This means that the API will ask to divide
-     * a container in two or to delete container.
+     * to modify the layout. This means that the API will ask to divide a container
+     * in two or to delete container.
      * 
      * TODO: Implement the programmatic control of layout containers (see above).
      * 
