@@ -37,7 +37,7 @@ export default [
     {
         input: 'src/components/LayoutManager/Controller/Worker/LayoutWorker.js',
         output: {
-            file: 'dist/esm/LayoutWorker.js',
+            file: 'dist/esm/Worker/LayoutWorker.js',
             format: 'esm',
         },
         plugins: [
