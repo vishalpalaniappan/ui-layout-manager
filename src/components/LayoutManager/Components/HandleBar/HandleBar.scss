@@ -9,6 +9,7 @@ $handle-bar-hover-color: #007acc;
     width:100%;
     height: $handle-bar-size;
     background-color: $handle-bar-color;
+    z-index: 1;
 }
 
 // Create handle bar and center it 
