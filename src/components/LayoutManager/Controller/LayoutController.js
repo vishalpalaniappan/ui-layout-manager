@@ -25,7 +25,13 @@ export class LayoutController {
         this.layoutLoaded = false;
 
         this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length: 0;
+        this.worker = null;        
+    }
 
+    /**
+     * Start the worker.
+     */
+    startWorker() {
         try {
             this.worker = new Worker(
                 new URL('./Worker/LayoutWorker.js', import.meta.url),
@@ -33,7 +39,7 @@ export class LayoutController {
             );
             this.worker.onmessage = this.handleWorkerMessage.bind(this);
             this.worker.onerror = (error) => console.error('Worker error:', error);
-            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE, {ldf: ldf})
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE, {ldf: this.ldf})
             
         } catch (error) {
             console.error('Failed to create worker:', error);
@@ -46,6 +52,9 @@ export class LayoutController {
      * @param {Object} args 
      */
     sendToWorker(code, args) {
+        if (!this.worker) {
+            this.startWorker();
+        }
         this.worker.postMessage({
             code:code,
             args: args
