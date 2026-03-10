@@ -20,7 +20,8 @@
                 {
                     "containerId": "footer",
                     "type": "container",
-                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }}
+                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
@@ -30,31 +31,77 @@
         },
         "mainBody": {
             "id": "mainBody",
+            "background": "#3c3c3c",
             "type": "split",
             "orientation": "horizontal",
             "children": [
                 {
-                    "containerId": "leftMenu",
+                    "containerId": "sidebar",
                     "type": "container",
-                    "size": { "initial": { "value": 250, "unit": "px", "type": "fixed" }},
-                    "collapse": { "value": 500, "condition": "lessThan" }
+                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" },
+                    "showHandlebar": true
                 },
                 {
-                    "type": "handleBar"
+                    "containerId": "contentContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "contentContainer": {
+            "id": "contentContainer",
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "content",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "content": {
+            "id": "content",
+            "background": "#007acc",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "menuContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 400, "unit": "px", "type": "fixed" },
+                        "min": { "value": 200, "unit": "px"},
+                        "max": { "value": 500, "unit": "px"}
+                    },
+                    "collapse": { "value": 700, "condition": "lessThan", "relative": "parent" }
                 },
                 {
-                    "containerId": "treeView",
+                    "type": "handleBar",
+                    "sibling1": "menuContainer",
+                    "sibling2": "editorContainer"
+                },
+                {
+                    "containerId": "editorContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
-                    "type": "handleBar"
+                    "type": "handleBar",
+                    "sibling1": "editorContainer",
+                    "sibling2": "rightMenuContainer"
                 },
                 {
-                    "containerId": "rightMenu",
+                    "containerId": "rightMenuContainer",
                     "type": "container",
-                    "size": { "initial": { "value": 250, "unit": "px", "type": "fixed" }},
-                    "collapse": { "value": 800, "condition": "lessThan" }
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 100, "unit": "px"},
+                        "max": { "value": 300, "unit": "px"}
+                    },
+                    "collapse": { "value": 900, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
@@ -62,90 +109,68 @@
             "id": "footer",
             "background": "#007acc"
         },
-        "leftMenu": {
-            "id": "leftMenu",
+        "sidebar": {
+            "id": "sidebar",
+            "background": "#333"
+        },
+        "menuContainer": {
+            "id": "menuContainer",
+            "background": "#252526",
             "type": "split",
             "orientation": "vertical",
             "children": [
                 {
-                    "containerId": "leftMenuContainer1",
+                    "containerId": "fileTabsContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" }
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "fileTabsContainer",
+                    "sibling2": "stackContainer"
+                },
+                {
+                    "containerId": "stackContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 },
                 {
-                    "type": "handleBar"
+                    "type": "handleBar",
+                    "sibling1": "stackContainer",
+                    "sibling2": "stackContainer2"
                 },
                 {
-                    "containerId": "leftMenuContainer2",
-                    "type": "container",
-                    "size": { "initial": { "type": "fill" }}
-                },
-                {
-                    "type": "handleBar"
-                },
-                {
-                    "containerId": "leftMenuContainer3",
+                    "containerId": "stackContainer2",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
                 }
             ]
         },
-        "treeView": {
-            "id": "treeView",
-            "type": "container",
+        "fileTabsContainer": {
+            "id": "fileTabsContainer",
+            "background": "#1e1e1e"
+        },
+        "stackContainer": {
+            "id": "stackContainer",
+            "component": "Stack",
+            "background": "#1e1e1e"
+        },
+        "stackContainer2": {
+            "id": "stackContainer2",
+            "component":"MapSample",
+            "background": "#1e1e1e"
+        },
+        "editorContainer": {
+            "id": "editorContainer",
+            "component": "EditorVSCode",
+            "background": "#1e1e1e"
+        },
+        "rightMenuContainer": {
+            "id": "rightMenuContainer",
             "background": "#252526"
-        },
-        "rightMenu": {
-            "id": "rightMenu",
-            "type": "split",
-            "orientation": "vertical",
-            "children": [
-                {
-                    "containerId": "rightMenuContainer1",
-                    "type": "container",
-                    "size": { "initial": { "type": "fill" }}
-                },
-                {
-                    "type": "handleBar"
-                },
-                {
-                    "containerId": "rightMenuContainer2",
-                    "type": "container",
-                    "size": { "initial": { "type": "fill" }}
-                },
-                {
-                    "type": "handleBar"
-                },
-                {
-                    "containerId": "rightMenuContainer3",
-                    "type": "container",
-                    "size": { "initial": { "type": "fill" }}
-                }
-            ]
-        },
-        "leftMenuContainer1": {
-            "id": "leftMenuContainer1",
-            "background": "#333"
-        },
-        "leftMenuContainer2": {
-            "id": "leftMenuContainer2",
-            "background": "#444"
-        },
-        "leftMenuContainer3": {
-            "id": "leftMenuContainer3",
-            "background": "#333"
-        },
-        "rightMenuContainer1": {
-            "id": "rightMenuContainer1",
-            "background": "#333"
-        },
-        "rightMenuContainer2": {
-            "id": "rightMenuContainer2",
-            "background": "#444"
-        },
-        "rightMenuContainer3": {
-            "id": "rightMenuContainer3",
-            "background": "#333"
         }
     }
 }
