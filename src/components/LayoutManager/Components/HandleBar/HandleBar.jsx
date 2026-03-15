@@ -167,6 +167,10 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
         return () => {        
             document.removeEventListener("mousemove", handleMouseMove);
             document.removeEventListener("mouseup", handleMouseUp);
+            if (timerRef.current) {
+                clearTimeout(timerRef.current);
+                timerRef.current = null;
+            }
         }
     }, []);
 
