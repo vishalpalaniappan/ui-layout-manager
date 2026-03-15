@@ -11,6 +11,9 @@ import TRANSFORMATION_TYPES from "../TRANSFORMATION_TYPES";
  * So rather than fully collapsing the container, it sets up a 
  * minimum size, this willl be useful for accordians and other containers.
  */
+
+const COLLAPSE_THRESHOLD_PX = 100
+
 export class HandleRulesEnforcer {
     /**
      * Initialize the child rule enforcer.
@@ -69,11 +72,11 @@ export class HandleRulesEnforcer {
             return;
         }
         
-        if (this.handleMetadata.handle.x < 100) {
+        if (this.handleMetadata.handle.x < COLLAPSE_THRESHOLD_PX) {
             this.args = {style: {"display":"none", "min-width":0}}
             this.sibling1.hidden = true;
             this.activeSibling = this.sibling1.id;
-        } else if (this.handleMetadata.handle.x > 100 && this.sibling1.hidden) {
+        } else if (this.handleMetadata.handle.x > COLLAPSE_THRESHOLD_PX && this.sibling1.hidden) {
             this.args = {style: {"display":"flex"}}
             const sibling = this.getSiblingProps(this.sibling1.id);
             if ("min" in sibling.size) {
@@ -84,11 +87,11 @@ export class HandleRulesEnforcer {
         } 
         
         
-        if (this.handleMetadata.handle.x > totalWidth - 100) {
+        if (this.handleMetadata.handle.x > totalWidth - COLLAPSE_THRESHOLD_PX) {
             this.args = {style: {"display":"none", "min-width":0}}
             this.sibling2.hidden = true;
             this.activeSibling = this.sibling2.id;
-        } else if (this.handleMetadata.handle.x < totalWidth - 100 && this.sibling2.hidden) {
+        } else if (this.handleMetadata.handle.x < totalWidth - COLLAPSE_THRESHOLD_PX && this.sibling2.hidden) {
             this.args = {style: {"display":"flex"}}
             const sibling = this.getSiblingProps(this.sibling2.id);
             if ("min" in sibling.size) {
@@ -113,11 +116,11 @@ export class HandleRulesEnforcer {
             return;
         }
         
-        if (this.handleMetadata.handle.y < 100) {
+        if (this.handleMetadata.handle.y < COLLAPSE_THRESHOLD_PX) {
             this.args = {style: {"display":"none", "min-height":0}}
             this.sibling1.hidden = true;
             this.activeSibling = this.sibling1.id;
-        } else if (this.handleMetadata.handle.y > 100 && this.sibling1.hidden) {
+        } else if (this.handleMetadata.handle.y > COLLAPSE_THRESHOLD_PX && this.sibling1.hidden) {
             this.args = {style: {"display":"flex"}}
             const sibling = this.getSiblingProps(this.sibling1.id);
             if ("min" in sibling.size) {
@@ -128,11 +131,11 @@ export class HandleRulesEnforcer {
         } 
         
         
-        if (this.handleMetadata.handle.y > totalHeight - 100) {
+        if (this.handleMetadata.handle.y > totalHeight - COLLAPSE_THRESHOLD_PX) {
             this.args = {style: {"display":"none", "min-height":0}}
             this.sibling2.hidden = true;
             this.activeSibling = this.sibling2.id;
-        } else if (this.handleMetadata.handle.y < totalHeight - 100 && this.sibling2.hidden) {
+        } else if (this.handleMetadata.handle.y < totalHeight - COLLAPSE_THRESHOLD_PX && this.sibling2.hidden) {
             this.args = {style: {"display":"flex"}}
             const sibling = this.getSiblingProps(this.sibling2.id);
             if ("min" in sibling.size) {
