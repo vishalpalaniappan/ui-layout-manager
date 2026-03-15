@@ -39,8 +39,7 @@
                     "containerId": "sidebar",
                     "type": "container",
                     "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }},
-                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" },
-                    "showHandlebar": true
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
                 },
                 {
                     "containerId": "contentContainer",
