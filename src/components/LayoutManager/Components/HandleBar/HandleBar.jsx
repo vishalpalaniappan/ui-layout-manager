@@ -114,7 +114,7 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
                 sibling1: sibling1,
                 sibling2: sibling2
             });
-        }, 0.1);
+        }, 10);
         
         // Don't update container sizes we are past min or max values.
         const sibling1SizeKeys = Object.keys(startInfo.sibling1LayoutConfig);
