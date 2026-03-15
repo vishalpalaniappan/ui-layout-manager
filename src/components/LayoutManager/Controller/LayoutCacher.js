@@ -15,15 +15,16 @@ export class LayoutCacher {
 
     /**
      * Saves the layout state to local storage.
+     * @param {Object} sizes Sizes of the containers.
      */
-    saveToCache () {
-
+    saveToCache (sizes) {
+        localStorage.setItem("sizes", JSON.stringify(sizes));
     }
 
     /**
      * Gets the layout state from local storage.
      */
     getFromCache() {
-
+        return JSON.parse(localStorage.getItem("sizes"));
     }
 }
