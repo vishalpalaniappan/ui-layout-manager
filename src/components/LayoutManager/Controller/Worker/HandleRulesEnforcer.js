@@ -12,7 +12,7 @@ import TRANSFORMATION_TYPES from "../TRANSFORMATION_TYPES";
  * minimum size, this willl be useful for accordians and other containers.
  */
 
-const COLLAPSE_THRESHOLD_PX = 100
+const COLLAPSE_THRESHOLD_PX = 50
 
 export class HandleRulesEnforcer {
     /**
@@ -72,7 +72,9 @@ export class HandleRulesEnforcer {
             return;
         }
         
+        // Hide and unhide containers from left of container.
         if (this.handleMetadata.handle.x < COLLAPSE_THRESHOLD_PX) {
+            // Handle is less than collapse threshold from the left
             this.args = {style: {"display":"none", "min-width":0}}
             this.sibling1.hidden = true;
             this.activeSibling = this.sibling1.id;
@@ -84,10 +86,11 @@ export class HandleRulesEnforcer {
             }
             this.sibling1.hidden = false;
             this.activeSibling = this.sibling1.id;
-        } 
+        }
         
-        
+        // Hide and unhide containrs from right of container.
         if (this.handleMetadata.handle.x > totalWidth - COLLAPSE_THRESHOLD_PX) {
+            // Handle is greater than collapse threshold from right, so unhide container if it is hidden.
             this.args = {style: {"display":"none", "min-width":0}}
             this.sibling2.hidden = true;
             this.activeSibling = this.sibling2.id;
@@ -116,11 +119,14 @@ export class HandleRulesEnforcer {
             return;
         }
         
+        // Hide and unhide containers from top of container.
         if (this.handleMetadata.handle.y < COLLAPSE_THRESHOLD_PX) {
+            // Handle is less than collapse threshold from the top
             this.args = {style: {"display":"none", "min-height":0}}
             this.sibling1.hidden = true;
             this.activeSibling = this.sibling1.id;
         } else if (this.handleMetadata.handle.y > COLLAPSE_THRESHOLD_PX && this.sibling1.hidden) {
+            // Handle is greater than collapse threshold from top, so unhide container if it is hidden.
             this.args = {style: {"display":"flex"}}
             const sibling = this.getSiblingProps(this.sibling1.id);
             if ("min" in sibling.size) {
@@ -130,12 +136,14 @@ export class HandleRulesEnforcer {
             this.activeSibling = this.sibling1.id;
         } 
         
-        
+        // Hide and unhide containrs from bottom of container.
         if (this.handleMetadata.handle.y > totalHeight - COLLAPSE_THRESHOLD_PX) {
+            // Handle is less than collapse threshold from the bottom
             this.args = {style: {"display":"none", "min-height":0}}
             this.sibling2.hidden = true;
             this.activeSibling = this.sibling2.id;
         } else if (this.handleMetadata.handle.y < totalHeight - COLLAPSE_THRESHOLD_PX && this.sibling2.hidden) {
+            // Handle is greater than collapse threshold from bottom, so unhide container if it is hidden.
             this.args = {style: {"display":"flex"}}
             const sibling = this.getSiblingProps(this.sibling2.id);
             if ("min" in sibling.size) {
