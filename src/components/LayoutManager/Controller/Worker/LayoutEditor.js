@@ -82,11 +82,15 @@ export class LayoutEditor {
                 }
 
                 if ("min" in child.size) {
-                    childStyle["min-" + props["dynamic"]] = child.size.min.value + "px"  ;
+                    // styles have to be in camel case since im using style[key] = value to apply style
+                    const camelCaseProp = props["dynamic"].charAt(0).toUpperCase() + props["dynamic"].slice(1)
+                    childStyle["min" + camelCaseProp] = child.size.min.value + "px"  ;
                 }
 
                 if ("max" in child.size) {
-                    childStyle["max-" + props["dynamic"]] = child.size.max.value + "px" ;
+                    // styles have to be in camel case since im using style[key] = value to apply style
+                    const camelCaseProp = props["dynamic"].charAt(0).toUpperCase() + props["dynamic"].slice(1)
+                    childStyle["max" + camelCaseProp] = child.size.max.value + "px" ;
                 }
 
                 const childContainer = this.ldf.containers[child.containerId];
