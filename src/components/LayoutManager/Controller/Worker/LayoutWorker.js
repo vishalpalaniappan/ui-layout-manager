@@ -1,5 +1,5 @@
 import { LayoutEditor } from "./LayoutEditor";
-import LAYOUT_WORKER_PROTOCOL from "./LAYOUT_WORKER_PROTOCOL";
+import LAYOUT_WORKER_PROTOCOL from "../LAYOUT_WORKER_PROTOCOL";
 
 /**
  * This function receives messages from the main thread and executes
@@ -21,6 +21,9 @@ self.onmessage = function (e) {
                 break;
             case LAYOUT_WORKER_PROTOCOL.APPLY_SIZES:
                 editor.applySizes(args.sizes);
+                break;
+            case LAYOUT_WORKER_PROTOCOL.MOVE_HANDLE_BAR:
+                editor.moveHandleBar(args.metadata);
                 break;
             default:
                 break;

@@ -25,15 +25,21 @@ export class LayoutController {
         this.layoutLoaded = false;
 
         this.numberOfContainers = this.ldf.containers ? Object.keys(this.ldf.containers).length: 0;
+        this.worker = null;        
+    }
 
+    /**
+     * Start the worker.
+     */
+    startWorker() {
         try {
             this.worker = new Worker(
-                new URL('./LayoutWorker.js', import.meta.url),
+                new URL('./Worker/LayoutWorker.js', import.meta.url),
                 { type: 'module' }
             );
             this.worker.onmessage = this.handleWorkerMessage.bind(this);
             this.worker.onerror = (error) => console.error('Worker error:', error);
-            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE, {ldf: ldf})
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE, {ldf: this.ldf})
             
         } catch (error) {
             console.error('Failed to create worker:', error);
@@ -46,6 +52,9 @@ export class LayoutController {
      * @param {Object} args 
      */
     sendToWorker(code, args) {
+        if (!this.worker) {
+            this.startWorker();
+        }
         this.worker.postMessage({
             code:code,
             args: args
@@ -58,7 +67,7 @@ export class LayoutController {
      * @param {Object} containerApi 
      * @param {HTMLElement} containerRef 
      */
-    registerContainer(id, containerApi, containerRef) {        
+    registerContainer(id, containerApi, containerRef) {     
         if (!(id in this.containers)) {
             this.registeredContainers += 1
         }
@@ -85,10 +94,8 @@ export class LayoutController {
     /**
      * This function is called when the root container is resized.
      * It will notify the worker to process the layout changes.
-     * @param {Number} width 
-     * @param {Number} height 
      */
-    handleRootResize(width, height) {
+    handleRootResize() { 
         if (!this.layoutLoaded) return;
         // console.log("Root container resized to:", width, height);
         const sizes = {};
@@ -105,6 +112,40 @@ export class LayoutController {
             LAYOUT_WORKER_PROTOCOL.APPLY_SIZES, 
             { sizes: sizes }
         );    
+    }
+
+
+    /**
+     * Move handle bar is called by the handle bar component with the
+     * metadata about its parent and the siblings being resized. This
+     * information is parsed and passed to the layout editor to enforce
+     * the layout rules.
+     * @param {Object} metadata 
+     */
+    moveHandleBar(metadata) {
+        let sizes = {};
+        const containerIds = [metadata.parent, metadata.sibling1, metadata.sibling2];
+        for (const containerId of containerIds) {
+            let boundingRect = this.containerRefs[containerId].getBoundingClientRect();
+            sizes[containerId] = {
+                width: boundingRect.width, 
+                height: boundingRect.height
+            };
+        }
+
+        metadata.sizes = sizes;  
+        this.sendToWorker(
+            LAYOUT_WORKER_PROTOCOL.MOVE_HANDLE_BAR, 
+            { 
+                metadata: metadata
+            }
+        );
+
+        // TODO: This is temporary, after handle bar move, the layout rules are
+        // applied to react to new container sizes. This can be done more efficiently
+        // because we only need to react the containers that were changed. This calculates
+        // the entire layout.
+        this.handleRootResize();
     }
 
     /**

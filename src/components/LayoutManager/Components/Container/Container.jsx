@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef, useLayoutEffect, useCallback, Children } from "react";
 import PropTypes from 'prop-types';
 import { useLayoutController } from "../../Providers/LayoutProvider";
-
+import { HandleBar } from "../HandleBar/HandleBar";
 import "./Container.scss"
+import { LazyLoader } from "../LazyLoader/LazyLoader";
 /**
  * Renders the node and creates containers for its children.
  * Also registers itself with the controller to allow the controller
@@ -24,11 +25,41 @@ export const Container = ({node}) => {
     const processContainer = useCallback((node) => {
         const childElements = [];      
         for (let index = 0; index < node.children.length; index++) {
-            const child = controller.ldf.containers[node.children[index].containerId];
-            child.parent = node;
-            childElements.push(
-                <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
-            );
+            const childNode = node.children[index];
+
+            if (childNode.type === "container") {
+                const child = controller.ldf.containers[node.children[index].containerId];
+                child.parent = node;
+                childElements.push(
+                    <Container 
+                        key={index} 
+                        meta={node.children[index]} 
+                        id={child.id} 
+                        node={child}/>
+                );
+            } else if (childNode.type === "handleBar") {
+                if (node.orientation === "horizontal") {
+                    childElements.push(
+                        <HandleBar 
+                            key={index}
+                            orientation="vertical" 
+                            parent={node.id}
+                            sibling1={childNode.sibling1}
+                            sibling2={childNode.sibling2}
+                        />
+                    );
+                } else if (node.orientation === "vertical") {
+                    childElements.push(
+                        <HandleBar 
+                            key={index}
+                            orientation="horizontal" 
+                            parent={node.id}
+                            sibling1={childNode.sibling1}
+                            sibling2={childNode.sibling2}
+                        />
+                    );
+                }
+            }
         };
         return childElements;
     },[controller]);
@@ -84,7 +115,7 @@ export const Container = ({node}) => {
                 }
             }
             
-            setChildElements(hasChildren?processContainer(node):null);
+            setChildElements(hasChildren?processContainer(node):<LazyLoader content={node} />);
             
             controller.registerContainer(node.id, containerAPI, containerRef.current);
             return () => {

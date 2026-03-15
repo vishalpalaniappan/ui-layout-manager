@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState, useRef, useCallback, useContext } from "react";
 import PropTypes from 'prop-types';
 import { Container } from "../Container/Container";
+import { HandleBar } from "../HandleBar/HandleBar";
 import { useLayoutController } from "../../Providers/LayoutProvider";
 
 import "./RootContainer.scss"
@@ -30,11 +31,37 @@ export const RootContainer = () => {
     const processContainer = useCallback((node) => {
         const childElements = [];      
         for (let index = 0; index < node.children.length; index++) {
-            const child = controller.ldf.containers[node.children[index].containerId];
-            child.parent = node;
-            childElements.push(
-                <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
-            );
+            const childNode = node.children[index];
+
+            if (childNode.type === "container") {
+                const child = controller.ldf.containers[node.children[index].containerId];
+                child.parent = node;
+                childElements.push(
+                    <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
+                );
+            } else if (childNode.type === "handleBar") {
+                if (node.orientation === "horizontal") {
+                    childElements.push(
+                        <HandleBar 
+                            key={index}
+                            orientation="vertical" 
+                            parent={node.id}
+                            sibling1={childNode.sibling1}
+                            sibling2={childNode.sibling2}
+                        />
+                    );
+                } else if (node.orientation === "vertical") {
+                    childElements.push(
+                        <HandleBar 
+                            key={index}
+                            orientation="horizontal" 
+                            parent={node.id}
+                            sibling1={childNode.sibling1}
+                            sibling2={childNode.sibling2}
+                        />
+                    );
+                }
+            }
         };
         return childElements;
     },[controller]);

@@ -1,16 +1,16 @@
 {
-  "name": "ui-layout-manager",
-  "version": "0.0.1",
+  "name": "ui-layout-manager-dev",
+  "version": "0.0.12",
   "description": "A react component to manage layout and themes in single page applications.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "rollup -c",
     "predeploy": "npm run build-storybook",
-    "deploy-storybook": "gh-pages -d storybook-static"
+    "deploy-storybook": "gh-pages -d storybook-static",
+    "test": "vitest"
   },
   "repository": {
     "type": "git",
@@ -54,13 +54,15 @@
     "sass": "^1.86.0",
     "sass-loader": "^16.0.5",
     "storybook": "^8.6.8",
-    "style-loader": "^4.0.0"
+    "style-loader": "^4.0.0",
+    "vitest": "^4.0.18"
   },
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "dependencies": {
-    "sample-ui-component-library": "^0.0.0-beta"
+    "leaflet": "^1.9.4",
+    "sample-ui-component-library": "^0.0.0-dev"
   }
 }
