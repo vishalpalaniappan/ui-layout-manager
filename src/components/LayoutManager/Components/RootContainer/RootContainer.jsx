@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState, useRef, useCallback, useContext } from "react";
 import PropTypes from 'prop-types';
 import { Container } from "../Container/Container";
+import { HandleBar } from "../HandleBar/HandleBar";
 import { useLayoutController } from "../../Providers/LayoutProvider";
 
 import "./RootContainer.scss"
@@ -41,11 +42,23 @@ export const RootContainer = () => {
             } else if (childNode.type === "handleBar") {
                 if (node.orientation === "horizontal") {
                     childElements.push(
-                        <div className="verticalLine"></div>
+                        <HandleBar 
+                            key={index}
+                            orientation="vertical" 
+                            parent={node.id}
+                            sibling1={childNode.sibling1}
+                            sibling2={childNode.sibling2}
+                        />
                     );
                 } else if (node.orientation === "vertical") {
                     childElements.push(
-                        <div className="horizontalLine"></div>
+                        <HandleBar 
+                            key={index}
+                            orientation="horizontal" 
+                            parent={node.id}
+                            sibling1={childNode.sibling1}
+                            sibling2={childNode.sibling2}
+                        />
                     );
                 }
             }
