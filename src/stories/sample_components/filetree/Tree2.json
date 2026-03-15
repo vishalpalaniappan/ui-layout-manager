@@ -1,0 +1,60 @@
+{
+    "tree": [
+        {
+            "id": 1,
+            "name": "TraceViewer",
+            "type": "folder",
+            "children": [
+                {
+                    "id": 2,
+                    "name": "FileBrowser.stories.js",
+                    "type": "file"
+                },
+                {
+                    "id": 3,
+                    "name": "FileBrowserStories.scss",
+                    "type": "file"
+                },
+                {
+                    "id": 4,
+                    "name": "FlowDiagram.stories.js",
+                    "type": "file"
+                },
+                {
+                    "id": 5,
+                    "name": "FlowDiagram.scss",
+                    "type": "file"
+                }
+            ]
+        }, 
+        {
+            "id": 6,
+            "name": "Data",
+            "type": "folder",
+            "children": [
+                {
+                    "id": 7,
+                    "name": "fileTree.json",
+                    "type": "file"
+                },
+                {
+                    "id": 8,
+                    "name": "FileBrowser",
+                    "type": "folder",
+                    "children": [
+                        {
+                            "id": 9,
+                            "name": "fileTree.json",
+                            "type": "file"
+                        },
+                        {
+                            "id": 10,
+                            "name": "Tree2.json",
+                            "type": "file"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

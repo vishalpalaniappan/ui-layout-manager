@@ -36,6 +36,10 @@ const Template = (args) => {
             import('./sample_components/map/MapSample').then((m) => ({
             default: m.default,
         })),
+        FileBrowser: () =>
+            import('./sample_components/filetree/FileTree').then((m) => ({
+            default: m.default,
+        })),
     }), []);
 
     useEffect(() => {

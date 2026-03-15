@@ -1,6 +1,6 @@
 {
-  "name": "ui-layout-manager",
-  "version": "0.0.1",
+  "name": "ui-layout-manager-dev",
+  "version": "0.0.12",
   "description": "A react component to manage layout and themes in single page applications.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -63,6 +63,6 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
-    "sample-ui-component-library": "^0.0.0-beta"
+    "sample-ui-component-library": "^0.0.0-dev"
   }
 }

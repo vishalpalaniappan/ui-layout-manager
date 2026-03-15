@@ -165,6 +165,19 @@
                     "containerId": "stackContainer",
                     "type": "container",
                     "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "stackContainer",
+                    "sibling2": "stackContainer2"
+                },
+                {
+                    "containerId": "stackContainer2",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" }
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
@@ -174,6 +187,11 @@
         },
         "stackContainer": {
             "id": "stackContainer",
+            "component": "FileBrowser",
+            "background": "#1e1e1e"
+        },
+        "stackContainer2": {
+            "id": "stackContainer2",
             "component": "Stack",
             "background": "#1e1e1e"
         },
