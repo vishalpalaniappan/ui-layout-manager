@@ -101,7 +101,7 @@ export class HandleRulesEnforcer {
 
 
      /**
-     * Process the vertical containers.
+     * Process the horizontal containers.
      */
     processHorizontalContainers () {
         const totalHeight = this.handleMetadata.sizes[this.parent.id].height;
