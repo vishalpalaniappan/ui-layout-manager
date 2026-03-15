@@ -22,6 +22,10 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
      * It does the following:
      * - Determines the dynamic prop being modified (width or height)
      * - Determines the mouse down property to track (clientY or clientX)
+     * - Gets the references to the sibling elements
+     * - Gets the sibling sizes from the layout
+     * - Gets the sibling sizes from the layout reference
+     * - Saves the information in drag start info ref for access
      * @param {MouseEvent} e 
      */
     const handleMouseDown = (e) => {
