@@ -145,12 +145,16 @@
                 {
                     "containerId": "stackContainer2",
                     "type": "container",
-                    "size": { "initial": { "type": "fill" }}
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" }
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
                 }
             ]
         },
         "fileTabsContainer": {
             "id": "fileTabsContainer",
+            "component": "FileBrowser",
             "background": "#1e1e1e"
         },
         "stackContainer": {
