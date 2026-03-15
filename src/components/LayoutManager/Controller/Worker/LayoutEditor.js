@@ -154,7 +154,7 @@ export class LayoutEditor {
         const parent = this.ldf.containers[containerId];        
 
         // If node is not split, then it has no children and is a leaf node, so we return.
-        if ((!parent.type ? parent.type === "split": false) || (!("children" in parent))) {
+        if (parent.type !== "split" || !("children" in parent)) {
             return;
         }
 
