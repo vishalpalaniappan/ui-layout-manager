@@ -158,8 +158,11 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
         e.stopPropagation();
         document.removeEventListener("mousemove", handleMouseMove);
         document.removeEventListener("mouseup", handleMouseUp);
-        handleRef.current.classList.remove(dragStartInfo.current.hoverClass);  
-        dragStartInfo.current = null;           
+        clearTimeout(timerRef.current);  
+        if (handleRef.current && dragStartInfo.current) {
+            handleRef.current.classList.remove(dragStartInfo.current.hoverClass);
+        }
+        dragStartInfo.current = null;
     }
 
 
