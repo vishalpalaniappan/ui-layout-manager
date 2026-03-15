@@ -75,22 +75,18 @@ export class LayoutEditor {
                         childStyle["flex"] = "0 0 auto";
                         break;
                     case "fill":
-                        childStyle["flexGrow"] = 1;
+                        childStyle["flex-grow"] = 1;
                         break;
                     default:
                         throw new Error(`Unknown size type "${child.size.initial.type}" in LDF configuration`);
                 }
 
                 if ("min" in child.size) {
-                    // styles have to be in camel case since im using style[key] = value to apply style
-                    const camelCaseProp = props["dynamic"].charAt(0).toUpperCase() + props["dynamic"].slice(1)
-                    childStyle["min" + camelCaseProp] = child.size.min.value + "px"  ;
+                    childStyle["min-" + props["dynamic"]] = child.size.min.value + "px"  ;
                 }
 
                 if ("max" in child.size) {
-                    // styles have to be in camel case since im using style[key] = value to apply style
-                    const camelCaseProp = props["dynamic"].charAt(0).toUpperCase() + props["dynamic"].slice(1)
-                    childStyle["max" + camelCaseProp] = child.size.max.value + "px" ;
+                    childStyle["max-" + props["dynamic"]] = child.size.max.value + "px" ;
                 }
 
                 const childContainer = this.ldf.containers[child.containerId];
