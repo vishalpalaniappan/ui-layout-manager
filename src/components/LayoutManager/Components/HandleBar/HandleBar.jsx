@@ -162,6 +162,14 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
         dragStartInfo.current = null;           
     }
 
+
+    useEffect(() => {
+        return () => {        
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+        }
+    }, []);
+
     return (
         <React.Fragment > 
             {
