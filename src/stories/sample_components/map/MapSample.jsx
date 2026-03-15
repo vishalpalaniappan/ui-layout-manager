@@ -37,7 +37,7 @@ const MapSample = () => {
         }
     }, []);
 
-    return <div ref={containerRef} style={{ backgroundColor:"#00000", height: "100%", width: "100%" }} />;
+    return <div ref={containerRef} style={{ backgroundColor:"#000000", height: "100%", width: "100%" }} />;
 };
 
 export default MapSample;
