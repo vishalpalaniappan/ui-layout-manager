@@ -153,7 +153,18 @@ export const RootContainer = () => {
      * Callback for when drag ends.
      */
     const handleDragEnd = (event) =>{
+        const { active, over } = event;
         console.log("Drag Ended");
+        const rect = event.activatorEvent;
+
+        console.log(over );
+
+        if (over) {
+            console.log("Dragged item:", active.id);
+            console.log("Dropped on:", over.id);
+        } else {
+            console.log("Dropped outside any droppable");
+        }
     }
 
     /**
