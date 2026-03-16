@@ -8,6 +8,9 @@ import {
     DragOverlay,
     useDraggable,
     useDroppable,
+    PointerSensor,
+    useSensor,
+    useSensors
 } from "@dnd-kit/core";
 
 import "./RootContainer.scss"
@@ -155,10 +158,6 @@ export const RootContainer = () => {
     const handleDragEnd = (event) =>{
         const { active, over } = event;
         console.log("Drag Ended");
-        const rect = event.activatorEvent;
-
-        console.log(over );
-
         if (over) {
             console.log("Dragged item:", active.id);
             console.log("Dropped on:", over.id);
@@ -174,8 +173,16 @@ export const RootContainer = () => {
         console.log("Drag Started");
     }
 
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 8
+            }
+        })
+    );
+
     return (
-        <DndContext onDragStart={onDragStart} onDragEnd={handleDragEnd}>
+        <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={handleDragEnd}>
             <div className="root-container">
                 <div ref={rootRef} className="relative-container">
                     {childElements}
