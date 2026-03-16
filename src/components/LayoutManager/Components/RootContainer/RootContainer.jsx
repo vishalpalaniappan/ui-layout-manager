@@ -3,8 +3,48 @@ import PropTypes from 'prop-types';
 import { Container } from "../Container/Container";
 import { HandleBar } from "../HandleBar/HandleBar";
 import { useLayoutController } from "../../Providers/LayoutProvider";
+import {
+    DndContext,
+    DragOverlay,
+    useDraggable,
+    useDroppable,
+} from "@dnd-kit/core";
 
 import "./RootContainer.scss"
+
+
+/**
+ * Preview for the div being dragged.
+ * @returns 
+ */
+function DragPreview({ label }) {
+    return (
+        <div
+        style={{
+            padding: "6px 12px",
+            background: "#2d2d2d",
+            color: "white",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+            opacity:0.3
+        }}
+        >
+        {label}
+        </div>
+    );
+}
+
+/**
+ * Offset for the drag overlay.
+ * @returns 
+ */
+const offsetOverlay = ({ transform }) => {
+  return {
+    ...transform,
+    x: transform.x + 20,
+    y: transform.y + 20
+  };
+};
+
 /**
  * Root node for the layout tree. This component will start 
  * rendering the tree and it will also watch for changes in the
@@ -109,11 +149,30 @@ export const RootContainer = () => {
         }
     }, [controller]);
 
+    /**
+     * Callback for when drag ends.
+     */
+    const handleDragEnd = (event) =>{
+        console.log("Drag Ended");
+    }
+
+    /**
+     * Callback for when drag is started.
+     */
+    const onDragStart = (event) => {
+        console.log("Drag Started");
+    }
+
     return (
-        <div className="root-container">
-            <div ref={rootRef} className="relative-container">
-                {childElements}
+        <DndContext onDragStart={onDragStart} onDragEnd={handleDragEnd}>
+            <div className="root-container">
+                <div ref={rootRef} className="relative-container">
+                    {childElements}
+                </div>
             </div>
-        </div>
+            <DragOverlay modifiers={[offsetOverlay]} dropAnimation={null}>
+                <DragPreview label={"preview"}/>
+            </DragOverlay>
+        </DndContext>
     );
 }
