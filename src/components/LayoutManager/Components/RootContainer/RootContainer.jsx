@@ -14,6 +14,8 @@ import {
     useSensors
 } from "@dnd-kit/core";
 
+import { useDragState } from "../../Providers/DragProvider";
+
 import "./RootContainer.scss"
 
 
@@ -27,21 +29,23 @@ import "./RootContainer.scss"
 export const RootContainer = () => {
     const controller = useLayoutController();
 
+    const { handleDragStart, handleDragOver, clearDrag } = useDragState();
+
     const rootRef = useRef(null);
     const timerRef = useRef(null);
     const resizingRef = useRef(false);
-    
+
     // Create the container API that will be used by the controller.
     const rootContainerAPI = useRef({});
     rootContainerAPI.current = {};
 
     const [childElements, setChildElements] = useState(null);
-    
+
     /**
      * Renders child containers recursively.
      */
     const processContainer = useCallback((node) => {
-        const childElements = [];      
+        const childElements = [];
         for (let index = 0; index < node.children.length; index++) {
             const childNode = node.children[index];
 
@@ -49,14 +53,14 @@ export const RootContainer = () => {
                 const child = controller.ldf.containers[node.children[index].containerId];
                 child.parent = node;
                 childElements.push(
-                    <Container key={index} meta={node.children[index]} id={child.id} node={child}/>
+                    <Container key={index} meta={node.children[index]} id={child.id} node={child} />
                 );
             } else if (childNode.type === "handleBar") {
                 if (node.orientation === "horizontal") {
                     childElements.push(
-                        <HandleBar 
+                        <HandleBar
                             key={index}
-                            orientation="vertical" 
+                            orientation="vertical"
                             parent={node.id}
                             sibling1={childNode.sibling1}
                             sibling2={childNode.sibling2}
@@ -64,9 +68,9 @@ export const RootContainer = () => {
                     );
                 } else if (node.orientation === "vertical") {
                     childElements.push(
-                        <HandleBar 
+                        <HandleBar
                             key={index}
-                            orientation="horizontal" 
+                            orientation="horizontal"
                             parent={node.id}
                             sibling1={childNode.sibling1}
                             sibling2={childNode.sibling2}
@@ -76,16 +80,16 @@ export const RootContainer = () => {
             }
         };
         return childElements;
-    },[controller]);
+    }, [controller]);
 
 
     useLayoutEffect(() => {
-        if (controller) {            
+        if (controller) {
             const rootNode = controller.ldf.containers[controller.ldf.layoutRoot];
             const hasChildren = rootNode.children && rootNode.children.length > 0
             controller.registerContainer(rootNode.id, rootContainerAPI, rootRef.current);
 
-            if (hasChildren) {                          
+            if (hasChildren) {
                 if (rootNode.orientation === "horizontal") {
                     rootRef.current.style.flexDirection = "row";
                 } else if (rootNode.orientation === "vertical") {
@@ -93,7 +97,7 @@ export const RootContainer = () => {
                 }
             }
 
-            setChildElements(hasChildren?processContainer(rootNode):null);
+            setChildElements(hasChildren ? processContainer(rootNode) : null);
 
             // Create resize observer to monitor changes in the root container size.
             const observer = new ResizeObserver((entries) => {
@@ -121,27 +125,6 @@ export const RootContainer = () => {
         }
     }, [controller]);
 
-    /**
-     * Callback for when drag ends.
-     */
-    const handleDragEnd = (event) =>{
-        const { active, over } = event;
-        console.log("Drag Ended");
-        if (over) {
-            console.log("Dragged item:", active.id);
-            console.log("Dropped on:", over.id);
-        } else {
-            console.log("Dropped outside any droppable");
-        }
-    }
-
-    /**
-     * Callback for when drag is started.
-     */
-    const onDragStart = (event) => {
-        console.log("Drag Started");
-    }
-
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -151,14 +134,18 @@ export const RootContainer = () => {
     );
 
     return (
-        <DndContext sensors={sensors} onDragStart={onDragStart} onDragEnd={handleDragEnd}>
+        <DndContext sensors={sensors}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnd={clearDrag}
+            onDragCancel={clearDrag}>
             <div className="root-container">
                 <div ref={rootRef} className="relative-container">
                     {childElements}
                 </div>
             </div>
             <DragOverlay modifiers={[offsetOverlay]} dropAnimation={null}>
-                <DragPreview label={"preview"}/>
+                <DragPreview label={"preview"} />
             </DragOverlay>
         </DndContext>
     );

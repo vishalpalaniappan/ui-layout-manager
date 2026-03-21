@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { RootContainer } from "./Components/RootContainer/RootContainer";
 import ComponentRegistryContext from "./Providers/ComponentRegistryContext";
 import { LayoutControllerProvider } from "./Providers/LayoutProvider";
+import { DragProvider } from "./Providers/DragProvider";
 
 import "./LayoutManager.scss";
 
@@ -15,13 +16,16 @@ import "./LayoutManager.scss";
  * @return {React.ReactElement}
  */
 export const LayoutManager = ({ldf, registry}) => {
+    
 
     return (
-        <LayoutControllerProvider layout={ldf}>
-            <ComponentRegistryContext.Provider value={registry}>
-                <RootContainer/>
-            </ComponentRegistryContext.Provider>
-        </LayoutControllerProvider> 
+        <DragProvider>
+            <LayoutControllerProvider layout={ldf}>
+                <ComponentRegistryContext.Provider value={registry}>
+                    <RootContainer/>
+                </ComponentRegistryContext.Provider>
+            </LayoutControllerProvider> 
+        </DragProvider>
     );
 }
 
