@@ -13,9 +13,12 @@ const FileTree = () => {
         }, 3000);
     }, []);
 
+    const onSelectFile = (node) => {
+        console.log("Selected Node:", node);
+    }
 
     return (
-        <FileBrowser ref={fileBrowserRef} />  
+        <FileBrowser ref={fileBrowserRef} onSelectFile={onSelectFile}/>  
     );
 };
 

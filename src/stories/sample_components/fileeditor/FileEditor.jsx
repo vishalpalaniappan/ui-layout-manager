@@ -18,19 +18,22 @@ const FileEditor = () => {
     const { drop } = useDragState();
 
     useEffect(() => {
-        console.log("Dropped:", drop);
-        if (drop?.overId) {
-            if (drop.activeData.type === "EditorTab" && drop.overData.type === "EditorTabGutter") {
-                editorRef.current.moveTab(drop.activeData.node.uid, drop.overData.index);
-            } else {
-                editorRef.current.addTab(drop.activeData.node);
-            }
+        if (!drop?.overId) {
+            return;
+        }
+        
+        const activeType = drop.activeData.type;
+        const overType = drop.overData.type;
+        if (activeType === "EditorTab" && overType === "EditorTabGutter") {
+            editorRef.current.moveTab(drop.activeData.node.uid, drop.overData.index);
+        } else if (activeType === "FileTreeNode" && overType === "EditorTabGutter") {
+            editorRef.current.addTab(drop.activeData.node, drop.overData.index);
         }
     }, [drop]);
 
     useLayoutEffect(() => {
         editorRef.current.setTabGroupId("tab-group-1");
-        flattenTree(fileTree.tree).forEach((node, index) => {
+        flattenTree(fileTree.tree).forEach((node) => {
             if (node.type === "file") {
                 editorRef.current.addTab(node);
             }
