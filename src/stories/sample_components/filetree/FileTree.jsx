@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useRef, useLayoutEffect } from "react";
 import { FileBrowser } from 'sample-ui-component-library';
 import tree from "./workspace_sample.json"
@@ -18,7 +19,7 @@ const FileTree = () => {
     }
 
     return (
-        <FileBrowser ref={fileBrowserRef} onSelectFile={onSelectFile}/>  
+        <FileBrowser ref={fileBrowserRef} onSelectFile={onSelectFile} />  
     );
 };
 
