@@ -30,7 +30,6 @@ export const DragProvider = ({ children }) => {
     const [drop, setDrop] = useState(null);
 
     const handleDragStart = useCallback((event) => {
-        console.log("Drag Started", event.active?.id);
         setDragState({
             activeId: event.active?.id ?? null,
             activeData: event.active?.data?.current ?? null,
@@ -41,7 +40,6 @@ export const DragProvider = ({ children }) => {
     }, []);
 
     const handleDragOver = useCallback((event) => {
-        console.log("Drag Over Element:", event.over?.id);
         setDragState((prev) => ({
             ...prev,
             overId: event.over?.id ?? null,
@@ -50,7 +48,6 @@ export const DragProvider = ({ children }) => {
     }, []);
 
     const clearDrag = useCallback((event) => {
-        console.log("Cleared Drag");
         setDrop({
             activeId: event.active?.id ?? null,
             activeData: event.active?.data?.current ?? null,

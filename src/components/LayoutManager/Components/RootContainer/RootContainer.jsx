@@ -3,12 +3,8 @@ import PropTypes from 'prop-types';
 import { Container } from "../Container/Container";
 import { HandleBar } from "../HandleBar/HandleBar";
 import { useLayoutController } from "../../Providers/LayoutProvider";
-import { DragPreview, offsetOverlay } from "./DragPreview";
 import {
     DndContext,
-    DragOverlay,
-    useDraggable,
-    useDroppable,
     PointerSensor,
     useSensor,
     useSensors
@@ -29,7 +25,7 @@ import "./RootContainer.scss"
 export const RootContainer = () => {
     const controller = useLayoutController();
 
-    const { handleDragStart, handleDragOver, clearDrag } = useDragState();
+    const { dragState, handleDragStart, handleDragOver, clearDrag } = useDragState();
 
     const rootRef = useRef(null);
     const timerRef = useRef(null);
@@ -133,20 +129,35 @@ export const RootContainer = () => {
         })
     );
 
+    // Manually track the drag position for smooth overlay
+    const [dragPos, setDragPos] = useState({ left: 0, top: 0 });
+    useEffect(() => {
+        if (!dragState.isDragging) return;
+        const handleMove = (e) => {setDragPos({ left: e.clientX, top: e.clientY })};
+        window.addEventListener("pointermove", handleMove);
+        return () => {
+            window.removeEventListener("pointermove", handleMove);
+        };
+    }, [dragState.isDragging]);
+
     return (
         <DndContext sensors={sensors}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={clearDrag}
             onDragCancel={clearDrag}>
+            
             <div className="root-container">
                 <div ref={rootRef} className="relative-container">
                     {childElements}
                 </div>
             </div>
-            <DragOverlay modifiers={[offsetOverlay]} dropAnimation={null}>
-                <DragPreview label={"preview"} />
-            </DragOverlay>
+
+            {dragState.isDragging && (
+                <div className="drag-overlay" style={dragPos}>
+                    {dragState?.activeData?.preview}
+                </div>
+            )}
         </DndContext>
     );
 }

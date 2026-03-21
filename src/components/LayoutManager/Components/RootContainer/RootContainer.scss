@@ -11,3 +11,9 @@
     height: 100%;
     overflow: hidden;
 }
+
+.drag-overlay {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+}
