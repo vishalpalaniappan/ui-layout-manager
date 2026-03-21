@@ -23,8 +23,11 @@ export const DragProvider = ({ children }) => {
         activeData: null,
         overId: null,
         overData: null,
-        isDragging: false,
+        isDragging: false
     });
+
+
+    const [drop, setDrop] = useState(null);
 
     const handleDragStart = useCallback((event) => {
         console.log("Drag Started", event.active?.id);
@@ -33,7 +36,7 @@ export const DragProvider = ({ children }) => {
             activeData: event.active?.data?.current ?? null,
             overId: null,
             overData: null,
-            isDragging: true,
+            isDragging: true
         });
     }, []);
 
@@ -46,8 +49,14 @@ export const DragProvider = ({ children }) => {
         }));
     }, []);
 
-    const clearDrag = useCallback(() => {
+    const clearDrag = useCallback((event) => {
         console.log("Cleared Drag");
+        setDrop({
+            activeId: event.active?.id ?? null,
+            activeData: event.active?.data?.current ?? null,
+            overId: event.over?.id ?? null,
+            overData: event.over?.data?.current ?? null,
+        });
         setDragState({
             activeId: null,
             activeData: null,
@@ -59,10 +68,11 @@ export const DragProvider = ({ children }) => {
 
     const value = useMemo(() => ({
         dragState,
+        drop,
         handleDragStart,
         handleDragOver,
         clearDrag,
-    }), [dragState, handleDragStart, handleDragOver, clearDrag]);
+    }), [dragState, drop, handleDragStart, handleDragOver, clearDrag]);
 
     return (
         <DragContext.Provider value={value}>
