@@ -8,10 +8,9 @@ const FileTree = () => {
 
     useLayoutEffect(() => {
         fileBrowserRef.current.addFileTree(tree.tree);
-
-        setTimeout(() => {
-            fileBrowserRef.current.selectNode("dir-f6459410-1634-4dbc-8d76-35896822158d");
-        }, 3000);
+        // setTimeout(() => {
+        //     fileBrowserRef.current.selectNode("dir-f6459410-1634-4dbc-8d76-35896822158d");
+        // }, 3000);
     }, []);
 
     const onSelectFile = (node) => {
