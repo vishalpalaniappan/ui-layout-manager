@@ -5,6 +5,7 @@ import { HandleBar } from "../HandleBar/HandleBar";
 import { useLayoutController } from "../../Providers/LayoutProvider";
 import {
     DndContext,
+    closestCenter,
     PointerSensor,
     useSensor,
     useSensors
@@ -142,6 +143,7 @@ export const RootContainer = () => {
 
     return (
         <DndContext sensors={sensors}
+            collisionDetection={closestCenter}
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={clearDrag}
