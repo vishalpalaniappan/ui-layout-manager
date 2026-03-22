@@ -29,17 +29,24 @@ const FileEditor = () => {
         
         const activeType = drop.activeData.type;
         const overType = drop.overData.type;
-        const parentId = drop.overData.parentId;
+        const activeParent = drop.activeData.parentId;
+        const overParent = drop.overData.parentId;
 
         console.log(drop.activeData, drop.overData);
 
         if (activeType === "EditorTab" && overType === "EditorTabGutter") {
-            if (drop.overData.index === parentIdRef.current) {
-                editorRef.current.moveTab(drop.activeData.node.uid, drop.overData.index);
-            } else {
-                editorRef.current.addTab(drop.activeData.node, drop.overData.index);
+            if (activeParent === overParent) {
+                if (overParent === parentIdRef.current) {
+                    editorRef.current.moveTab(drop.activeData.node.uid, drop.overData.index);
+                }
+            } else  {
+                if (overParent === parentIdRef.current) {
+                    editorRef.current.addTab(drop.activeData.node, drop.overData.index);
+                } else if (activeParent === parentIdRef.current) {
+                    editorRef.current.closeTab(drop.activeData.node.uid);
+                }
             }
-        } else if (activeType === "FileTreeNode" && overType === "EditorTabGutter" && parentId === parentIdRef.current) {
+        } else if (activeType === "FileTreeNode" && overType === "EditorTabGutter" && overParent === parentIdRef.current) {
             editorRef.current.addTab(drop.activeData.node, drop.overData.index);
         }
     }, [drop]);
