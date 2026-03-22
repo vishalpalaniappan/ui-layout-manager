@@ -7,11 +7,17 @@ import { useDragState } from "../../../components/LayoutManager/Providers/DragPr
 
 import { flattenTree } from "./helper";
 
+import { useLayoutSubscription } from "../../../components/LayoutManager/Providers/LayoutEventProvider";
+
 
 
 const FileEditor = () => {
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
+    
+    useLayoutSubscription("file:selected", (event) => {
+        editorRef.current.addTab(event.payload);
+    });
 
     const { drop } = useDragState();
     useEffect(() => {

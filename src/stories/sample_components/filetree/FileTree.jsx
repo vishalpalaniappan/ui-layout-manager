@@ -3,8 +3,11 @@ import { useRef, useLayoutEffect } from "react";
 import { FileBrowser } from 'sample-ui-component-library';
 import tree from "./workspace_sample.json"
 
+import { useLayoutPublisher } from "../../../components/LayoutManager/Providers/LayoutEventProvider";
+
 const FileTree = () => {
     const fileBrowserRef = useRef(null);
+    const publish = useLayoutPublisher();
 
     useLayoutEffect(() => {
         fileBrowserRef.current.addFileTree(tree.tree);
@@ -14,7 +17,11 @@ const FileTree = () => {
     }, []);
 
     const onSelectFile = (node) => {
-        console.log("Selected Node:", node);
+        publish({
+          type: "file:selected",
+          payload: node,
+          source: "file-tree",
+        })
     }
 
     return (
