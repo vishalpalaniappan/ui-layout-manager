@@ -14,8 +14,13 @@ const flattenTree = (tree, level = 0) =>
 
 const FileEditor = () => {
     const editorRef = useRef(null);
+    const parentIdRef = useRef(null);
 
     const { drop } = useDragState();
+
+    useEffect(() => {
+        parentIdRef.current = crypto.randomUUID();
+    }, []);
 
     useEffect(() => {
         if (!drop?.overId) {
@@ -24,15 +29,23 @@ const FileEditor = () => {
         
         const activeType = drop.activeData.type;
         const overType = drop.overData.type;
+        const parentId = drop.overData.parentId;
+
+        console.log(drop.activeData, drop.overData);
+
         if (activeType === "EditorTab" && overType === "EditorTabGutter") {
-            editorRef.current.moveTab(drop.activeData.node.uid, drop.overData.index);
-        } else if (activeType === "FileTreeNode" && overType === "EditorTabGutter") {
+            if (drop.overData.index === parentIdRef.current) {
+                editorRef.current.moveTab(drop.activeData.node.uid, drop.overData.index);
+            } else {
+                editorRef.current.addTab(drop.activeData.node, drop.overData.index);
+            }
+        } else if (activeType === "FileTreeNode" && overType === "EditorTabGutter" && parentId === parentIdRef.current) {
             editorRef.current.addTab(drop.activeData.node, drop.overData.index);
         }
     }, [drop]);
 
     useLayoutEffect(() => {
-        editorRef.current.setTabGroupId("tab-group-1");
+        editorRef.current.setTabGroupId(parentIdRef.current);
         flattenTree(fileTree.tree).forEach((node) => {
             if (node.type === "file") {
                 editorRef.current.addTab(node);
@@ -41,7 +54,7 @@ const FileEditor = () => {
     }, []);
 
     return (
-        <Editor  ref={editorRef} />  
+        <Editor ref={editorRef} />  
     );
 };
 

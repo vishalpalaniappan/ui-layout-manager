@@ -4,6 +4,7 @@ import { LayoutManager } from "../components/LayoutManager";
 import defaultLayoutJSON from "./layouts/vsCode/default.json";
 import sample1JSON from "./layouts/vsCode/sample1.json";
 import workbenchJSON from "./layouts/vsCode/workbench.json";
+import workbench2JSON from "./layouts/vsCode/workbench2.json";
 
 import "./LayoutManager.stories.scss";
 
@@ -73,4 +74,12 @@ export const workbench = Template.bind({})
 workbench.args = {
     ldf: workbenchJSON
 }
+
+
+export const workbench2 = Template.bind({})
+
+workbench2.args = {
+    ldf: workbench2JSON
+}
+
 
