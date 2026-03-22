@@ -117,10 +117,7 @@ export const Container = ({node}) => {
             
             setChildElements(hasChildren?processContainer(node):<LazyLoader content={node} />);
             
-            controller.registerContainer(node.id, containerAPI, containerRef.current);
-            return () => {
-                controller.unregisterContainer(node.id);
-            }
+            return controller.registerContainer(node.id, containerAPI, containerRef.current);
         }
     }, [node, controller, processContainer]);
 
