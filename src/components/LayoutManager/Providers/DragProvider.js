@@ -63,13 +63,25 @@ export const DragProvider = ({ children }) => {
         });
     }, []);
 
+
+    const cancelDrag = useCallback((event) => {
+        setDragState({
+            activeId: null,
+            activeData: null,
+            overId: null,
+            overData: null,
+            isDragging: false,
+        });
+    }, []);
+
     const value = useMemo(() => ({
         dragState,
         drop,
         handleDragStart,
         handleDragOver,
         clearDrag,
-    }), [dragState, drop, handleDragStart, handleDragOver, clearDrag]);
+        cancelDrag
+    }), [dragState, drop, handleDragStart, handleDragOver, clearDrag, cancelDrag]);
 
     return (
         <DragContext.Provider value={value}>

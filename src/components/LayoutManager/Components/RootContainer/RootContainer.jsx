@@ -25,7 +25,7 @@ import "./RootContainer.scss"
 export const RootContainer = () => {
     const controller = useLayoutController();
 
-    const { dragState, handleDragStart, handleDragOver, clearDrag } = useDragState();
+    const { dragState, handleDragStart, handleDragOver, clearDrag, cancelDrag } = useDragState();
 
     const rootRef = useRef(null);
     const timerRef = useRef(null);
@@ -145,7 +145,7 @@ export const RootContainer = () => {
             onDragStart={handleDragStart}
             onDragOver={handleDragOver}
             onDragEnd={clearDrag}
-            onDragCancel={clearDrag}>
+            onDragCancel={cancelDrag}>
             
             <div className="root-container">
                 <div ref={rootRef} className="relative-container">
