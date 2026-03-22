@@ -5,11 +5,8 @@ import fileTree from "./workspace_sample.json";
 
 import { useDragState } from "../../../components/LayoutManager/Providers/DragProvider";
 
-const flattenTree = (tree, level = 0) =>
-  tree.flatMap(node => [
-    { ...node, level },
-    ...(node.children ? flattenTree(node.children, level + 1) : [])
-]);
+import { flattenTree } from "./helper";
+
 
 
 const FileEditor = () => {
@@ -26,6 +23,11 @@ const FileEditor = () => {
         const overType = drop.overData.type;
         const activeParent = drop.activeData.parentId;
         const overParent = drop.overData.parentId;
+
+        // Only drop files, not folders.
+        if (drop.activeData.node.type !== "file") {
+            return;
+        }
 
         // TODO: This is a temporary solution while I switch to event based arch.
         if (activeType === "EditorTab" && overType === "EditorTabGutter") {
@@ -51,15 +53,11 @@ const FileEditor = () => {
     useEffect(() => {
         parentIdRef.current = crypto.randomUUID();
         editorRef.current.setTabGroupId(parentIdRef.current);
-        const files = [];
-        flattenTree(fileTree.tree).forEach((node) => {
-            if (node.type === "file") {
-                files.push(node);
-            }
-        });
 
+        // This is only for demo purposes, I am randomly loading 2 files.
+        const files = flattenTree(fileTree.tree).filter((node) => node.type === "file");
         for (let i = 0; i < 4; i++) {
-            editorRef.current.addTab(files[Math.floor(Math.random() * 3) + 1]);
+            editorRef.current.addTab(files[Math.floor(Math.random() * 2) + 1]);
         }
     }, []);
 
