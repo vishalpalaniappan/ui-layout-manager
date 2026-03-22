@@ -81,10 +81,14 @@ export class LayoutController {
             console.log("All containers registered, layout is ready.");
             this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX);
         }
-
-        return () => {
-            delete this.containers[id];
-        };
+    }
+    
+    /**
+     * Allows containers to unregister themselves with the controller.
+     * @param {String} id 
+     */
+    unregisterContainer(id) {
+        delete this.containers[id];
     }
 
     /**
