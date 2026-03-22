@@ -17,11 +17,6 @@ const FileEditor = () => {
     const parentIdRef = useRef(null);
 
     const { drop } = useDragState();
-
-    useEffect(() => {
-        parentIdRef.current = crypto.randomUUID();
-    }, []);
-
     useEffect(() => {
         if (!drop?.overId) {
             return;
@@ -53,7 +48,8 @@ const FileEditor = () => {
         }
     }, [drop]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
+        parentIdRef.current = crypto.randomUUID();
         editorRef.current.setTabGroupId(parentIdRef.current);
         const files = [];
         flattenTree(fileTree.tree).forEach((node) => {
