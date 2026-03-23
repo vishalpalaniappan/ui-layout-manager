@@ -2,19 +2,33 @@
     position:relative;
     width:100%;
     height:100%;
+    background: #222425;
+    display:flex;
+    justify-content: space-between;
+}
+
+.container-tabs-row > .container-tabs {
     display:flex;
     flex-direction: row;
     gap: 5px;
     margin-left:20px;
-    background: #222425;
 }
 
-.container-tabs-row > .container-tab {
-    padding: 0 10px;
-    height:28px;
-    color:#bbbbbb;
-    font-size: 13px;
+.container-tabs-row > .container-tabs > .container-tab {
     display:flex;
     align-items: center;
     cursor: pointer;
+    padding: 0 10px;
+    height: 28px;
+    font-size: 13px;
+    color:#bbbbbb;
+}
+
+.container-tabs-row > .container-close {
+    display:flex;
+    align-items: center;
+    cursor: pointer;
+    color:white;
+    font-size: 11px;
+    margin-right:10px;
 }

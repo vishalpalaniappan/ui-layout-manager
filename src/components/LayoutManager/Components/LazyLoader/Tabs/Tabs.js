@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import {XLg} from "react-bootstrap-icons";
 import "./Tabs.scss"
 
 /**
@@ -10,6 +11,7 @@ import "./Tabs.scss"
 export const Tabs = ({tabs, onTabClick}) => {
     return (
         <div className="container-tabs-row">
+            <div className="container-tabs">
             {tabs.map((tab) => (
                 <div 
                     style={{ borderBottom: tab.selected ? "solid 1px white" : "none" }}
@@ -18,6 +20,11 @@ export const Tabs = ({tabs, onTabClick}) => {
                     {tab.name}
                 </div>
             ))}
+            </div>
+
+            <div className="container-close">
+                <XLg/>
+            </div>
         </div>
     );
 }
