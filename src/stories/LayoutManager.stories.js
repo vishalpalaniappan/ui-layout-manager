@@ -3,6 +3,9 @@ import { useArgs } from "@storybook/preview-api";
 import { LayoutManager } from "../components/LayoutManager";
 import defaultLayoutJSON from "./layouts/vsCode/default.json";
 import sample1JSON from "./layouts/vsCode/sample1.json";
+import workbenchJSON from "./layouts/vsCode/workbench.json";
+import workbench2JSON from "./layouts/vsCode/workbench2.json";
+import workbench3JSON from "./layouts/vsCode/workbench3.json";
 
 import "./LayoutManager.stories.scss";
 
@@ -20,8 +23,8 @@ const Template = (args) => {
     const [, updateArgs] = useArgs();
     
     const registry = useMemo(() => ({
-        EditorVSCode: () =>
-            import('./sample_components/editor/EditorVSCode').then((m) => ({
+        FileEditor: () =>
+            import('./sample_components/fileeditor/FileEditor').then((m) => ({
             default: m.default,
         })),
         Stack: () =>
@@ -36,7 +39,7 @@ const Template = (args) => {
             import('./sample_components/map/MapSample').then((m) => ({
             default: m.default,
         })),
-        FileBrowser: () =>
+        FileTree: () =>
             import('./sample_components/filetree/FileTree').then((m) => ({
             default: m.default,
         })),
@@ -65,4 +68,26 @@ export const sample1 = Template.bind({})
 sample1.args = {
     ldf: sample1JSON
 }
+
+
+export const workbench = Template.bind({})
+
+workbench.args = {
+    ldf: workbenchJSON
+}
+
+
+export const workbench2 = Template.bind({})
+
+workbench2.args = {
+    ldf: workbench2JSON
+}
+
+
+export const workbench3 = Template.bind({})
+
+workbench3.args = {
+    ldf: workbench3JSON
+}
+
 

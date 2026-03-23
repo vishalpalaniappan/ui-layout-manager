@@ -1,0 +1,159 @@
+{
+    "title": "Workbench Layout Configuration A",
+    "layoutRoot": "root",
+    "containers": {
+        "root": {
+            "id": "root",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "header",
+                    "type": "container",
+                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }}
+                },
+                {
+                    "containerId": "mainBody",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "containerId": "footer",
+                    "type": "container",
+                    "size": { "initial": { "value": 25, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
+                }
+            ]
+        },
+        "header": {
+            "id": "header",
+            "background": "#3c3c3c"
+        },
+        "mainBody": {
+            "id": "mainBody",
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "sidebar",
+                    "type": "container",
+                    "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }},
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" },
+                    "showHandlebar": true
+                },
+                {
+                    "containerId": "contentContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "contentContainer": {
+            "id": "contentContainer",
+            "background": "#3c3c3c",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "content",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "content",
+                    "sibling2": "terminal"
+                },
+                {
+                    "containerId": "terminal",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "min": { "value": 100, "unit": "px"}
+                    },
+                    "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
+                }
+            ]
+        },
+        "terminal": {
+            "id": "terminal",
+            "component": "FileEditor",
+            "background": "#252526"
+        },
+        "content": {
+            "id": "content",
+            "background": "#007acc",
+            "type": "split",
+            "orientation": "horizontal",
+            "children": [
+                {
+                    "containerId": "menuContainer",
+                    "type": "container",
+                    "size": { 
+                        "initial": { "value": 400, "unit": "px", "type": "fixed" },
+                        "min": { "value": 200, "unit": "px"},
+                        "max": { "value": 500, "unit": "px"}
+                    },
+                    "collapse": { "value": 700, "condition": "lessThan", "relative": "parent" }
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "menuContainer",
+                    "sibling2": "editorContainer"
+                },
+                {
+                    "containerId": "editorContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                },
+                {
+                    "type": "handleBar",
+                    "sibling1": "editorContainer",
+                    "sibling2": "editorContainer2"
+                },
+                {
+                    "containerId": "editorContainer2",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "footer": {
+            "id": "footer",
+            "background": "#007acc"
+        },
+        "sidebar": {
+            "id": "sidebar",
+            "background": "#333"
+        },
+        "menuContainer": {
+            "id": "menuContainer",
+            "background": "#252526",
+            "type": "split",
+            "orientation": "vertical",
+            "children": [
+                {
+                    "containerId": "fileTabsContainer",
+                    "type": "container",
+                    "size": { "initial": { "type": "fill" }}
+                }
+            ]
+        },
+        "fileTabsContainer": {
+            "id": "fileTabsContainer",
+            "component": "FileTree",
+            "background": "#1e1e1e"
+        },
+        "editorContainer": {
+            "id": "editorContainer",
+            "component": "FileEditor",
+            "background": "#1e1e1e"
+        },
+        "editorContainer2": {
+            "id": "editorContainer2",
+            "component": "FileEditor",
+            "background": "#1e1e1e"
+        }
+    }
+}

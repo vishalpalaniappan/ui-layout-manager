@@ -21,7 +21,7 @@ export default [
             },
         ],
         plugins: [
-            external(['react', 'react-dom']),
+            external(['react', 'react-dom', '@dnd-kit/core']),
             resolve({
                 extensions: ['.js', '.jsx'],
             }),
