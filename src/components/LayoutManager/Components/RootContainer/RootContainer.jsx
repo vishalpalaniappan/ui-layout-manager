@@ -11,8 +11,7 @@ import {
     useSensors
 } from "@dnd-kit/core";
 
-import { useDragState } from "../../Providers/DragProvider";
-
+import useDragEventController from "./DragController";
 import "./RootContainer.scss"
 
 
@@ -24,9 +23,8 @@ import "./RootContainer.scss"
  * @return {React.ReactElement}
  */
 export const RootContainer = () => {
-    const controller = useLayoutController();
-
-    const { dragState, handleDragStart, handleDragOver, clearDrag, cancelDrag } = useDragState();
+    const layoutController = useLayoutController();
+    const dragController = useDragEventController();
 
     const rootRef = useRef(null);
     const timerRef = useRef(null);
@@ -47,7 +45,7 @@ export const RootContainer = () => {
             const childNode = node.children[index];
 
             if (childNode.type === "container") {
-                const child = controller.ldf.containers[node.children[index].containerId];
+                const child = layoutController.ldf.containers[node.children[index].containerId];
                 child.parent = node;
                 childElements.push(
                     <Container key={index} meta={node.children[index]} id={child.id} node={child} />
@@ -77,14 +75,14 @@ export const RootContainer = () => {
             }
         };
         return childElements;
-    }, [controller]);
+    }, [layoutController]);
 
 
     useLayoutEffect(() => {
-        if (controller) {
-            const rootNode = controller.ldf.containers[controller.ldf.layoutRoot];
+        if (layoutController) {
+            const rootNode = layoutController.ldf.containers[layoutController.ldf.layoutRoot];
             const hasChildren = rootNode.children && rootNode.children.length > 0
-            controller.registerContainer(rootNode.id, rootContainerAPI, rootRef.current);
+            layoutController.registerContainer(rootNode.id, rootContainerAPI, rootRef.current);
 
             if (hasChildren) {
                 if (rootNode.orientation === "horizontal") {
@@ -108,7 +106,7 @@ export const RootContainer = () => {
 
                     timerRef.current = setTimeout(() => {
                         resizingRef.current = false;
-                        controller.handleRootResize(width, height);
+                        layoutController.handleRootResize(width, height);
                     }, 1);
                 }
             });
@@ -116,11 +114,11 @@ export const RootContainer = () => {
             observer.observe(rootRef.current);
 
             return () => {
-                controller.unregisterContainer(controller.ldf.layoutRoot);
+                layoutController.unregisterContainer(layoutController.ldf.layoutRoot);
                 observer.disconnect();
             }
         }
-    }, [controller]);
+    }, [layoutController]);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -133,21 +131,21 @@ export const RootContainer = () => {
     // Manually track the drag position for smooth overlay
     const [dragPos, setDragPos] = useState({ left: 0, top: 0 });
     useEffect(() => {
-        if (!dragState.isDragging) return;
+        if (!dragController.isDragging()) return;
         const handleMove = (e) => {setDragPos({ left: e.clientX, top: e.clientY })};
         window.addEventListener("pointermove", handleMove);
         return () => {
             window.removeEventListener("pointermove", handleMove);
         };
-    }, [dragState.isDragging]);
+    }, [dragController.isDragging()]);
 
     return (
         <DndContext sensors={sensors}
             collisionDetection={closestCenter}
-            onDragStart={handleDragStart}
-            onDragOver={handleDragOver}
-            onDragEnd={clearDrag}
-            onDragCancel={cancelDrag}>
+            onDragStart={dragController.onDragStart}
+            onDragOver={dragController.onDragOver}
+            onDragEnd={dragController.onDragEnd}
+            onDragCancel={dragController.onDragCancel}>
             
             <div className="root-container">
                 <div ref={rootRef} className="relative-container">
@@ -155,9 +153,9 @@ export const RootContainer = () => {
                 </div>
             </div>
 
-            {dragState.isDragging && (
+            {dragController.isDragging() && (
                 <div className="drag-overlay" style={dragPos}>
-                    {dragState?.activeData?.preview}
+                    {dragController.getDragPreview()}
                 </div>
             )}
         </DndContext>
