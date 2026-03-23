@@ -1,0 +1,11 @@
+.titleContainer {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    color:#bbbbbb;
+}
+
+.titleContainer > .title {
+    padding-left: 30px;
+    font-size: 11px;
+}

@@ -7,10 +7,12 @@ import "./MenuBar.scss"
  * 
  * @param {Object} node
  */
-export const MenuBar = ({node}) => {
+export const MenuBar = ({title}) => {
 
     return (
-        <></>
+        <div className="titleContainer">
+            <div className="title">{title}</div>
+        </div>
     );
 }
 
