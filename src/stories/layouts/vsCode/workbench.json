@@ -85,7 +85,7 @@
                 },
                 {
                     "name": "FileTree",
-                    "component": "FileTree"
+                    "component": "FileEditor"
                 }
             ],
             "background": "#252526"
