@@ -78,7 +78,16 @@
         },
         "terminal": {
             "id": "terminal",
-            "component": "Flow",
+            "tabs": [
+                {
+                    "name": "Flow",
+                    "component": "Flow"
+                },
+                {
+                    "name": "FileTree",
+                    "component": "FileTree"
+                }
+            ],
             "background": "#252526"
         },
         "content": {

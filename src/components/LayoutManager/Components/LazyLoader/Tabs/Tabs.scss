@@ -1,0 +1,19 @@
+.container-tabs-row{
+    position:relative;
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-left:5px;
+}
+
+.container-tabs-row > .container-tab {
+    padding: 0 10px;
+    height:28px;
+    color:#bbbbbb;
+    font-size: 12px;
+    display:flex;
+    align-items: center;
+    cursor: pointer;
+}

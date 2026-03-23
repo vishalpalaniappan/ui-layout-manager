@@ -2,6 +2,7 @@ import React, { lazy, useMemo, Suspense, useContext, useEffect, useState } from 
 import PropTypes from 'prop-types';
 import ComponentRegistryContext from "../../Providers/ComponentRegistryContext";
 import { MenuBar } from "./MenuBar/MenuBar";
+import { Tabs } from "./Tabs/Tabs";
 
 import "./LazyLoader.scss"
 
@@ -14,24 +15,48 @@ import "./LazyLoader.scss"
 export const LazyLoader = ({node}) => {
     const registry = useContext(ComponentRegistryContext);
     const [showTitle, setShowTitle] = useState(false);
+    const [showTab, setShowTab] = useState(false);
 
     const [lazyContainerTop, setLazyContainerTop] = useState(0);
+    const [tabsTop, setTabsTop] = useState(0);
+    const [selectedComponent, setSelectedComponent] = useState("");
 
     const LazyComponent = useMemo(() => {
-        if (registry && node && "component" in node && node["component"] in registry) {
-            return lazy(registry[node["component"]]);
+        if (registry && selectedComponent in registry) {
+            return lazy(registry[selectedComponent]);
         }
-    }, [registry, node]);
+    }, [registry, selectedComponent]);
 
     useEffect(() => {
+        let _lazyContainerTop = 0;
+        let _tabsTop = 0;
         if ("title" in node) {
             setShowTitle(true);
-            setLazyContainerTop(35)
-        } else {
-            setShowTitle(false);
-            setLazyContainerTop(0)
+            _tabsTop += 35;
+            _lazyContainerTop += 35;
         }
+        if ("tabs" in node) {
+            setShowTab(true);
+            _lazyContainerTop += 35;
+            selectTab(node.tabs[0]);
+        } else {
+            setSelectedComponent(node.component);
+        }
+        setLazyContainerTop(_lazyContainerTop)
+        setTabsTop(_tabsTop);
     }, [node]);
+
+
+    const selectTab = (selectedTab) => {
+        node.tabs.forEach((tab) => {
+            if (tab === selectedTab) {
+                tab.selected = true;
+                setSelectedComponent(tab.component);
+            } else {
+                tab.selected = false;
+            }
+        });
+    }
 
     return (
         <div className="absoluteContainer">
@@ -40,6 +65,12 @@ export const LazyLoader = ({node}) => {
                     showTitle && 
                         <div className="menuContainer">
                             <MenuBar title={node.title}/>
+                        </div>
+                }
+                {
+                    showTab && 
+                        <div className="tabsContainer" style={{ top: `${tabsTop}px`}}>
+                            <Tabs onTabClick={selectTab} tabs={node.tabs}/>
                         </div>
                 }
                 <div className="lazycontainer" style={{ top: `${lazyContainerTop}px`}}>
