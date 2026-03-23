@@ -27,6 +27,12 @@ export const LazyLoader = ({node}) => {
         }
     }, [registry, selectedComponent]);
 
+    /**
+     * Note: I am setting the top of the absolute position
+     * of the containers based on if the title and tabs are
+     * shown. This is a temporary implementation, I will be
+     * revisiting this and formally implementing it after.
+     */
     useEffect(() => {
         let _lazyContainerTop = 0;
         let _tabsTop = 0;
@@ -45,7 +51,6 @@ export const LazyLoader = ({node}) => {
         setLazyContainerTop(_lazyContainerTop)
         setTabsTop(_tabsTop);
     }, [node]);
-
 
     const selectTab = (selectedTab) => {
         node.tabs.forEach((tab) => {
