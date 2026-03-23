@@ -37,8 +37,8 @@ export function useLayoutEventSubscription(type, handler) {
     const controller = useContext(LayoutEventContext);
     const handlerRef = useRef(handler);
 
-    // Handler is saved in ref an passed into the subscription, this causes
-    // the publisher to invoke the handler and notify all subscribers
+    // Handler is saved in ref and passed into the subscription, this causes
+    // the publisher to invoke the handler and notify the subscriber
     handlerRef.current = handler;
 
     useEffect(() => {
