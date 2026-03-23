@@ -21,6 +21,7 @@ export const LazyLoader = ({node}) => {
     const [tabsTop, setTabsTop] = useState(0);
     const [selectedComponent, setSelectedComponent] = useState("");
 
+    // Lazy load the component when the selected component changes.
     const LazyComponent = useMemo(() => {
         if (registry && selectedComponent in registry) {
             return lazy(registry[selectedComponent]);
@@ -52,6 +53,10 @@ export const LazyLoader = ({node}) => {
         setTabsTop(_tabsTop);
     }, [node]);
 
+    /**
+     * Selects the provided tab.
+     * @param {Object} selectedTab 
+     */
     const selectTab = (selectedTab) => {
         node.tabs.forEach((tab) => {
             if (tab === selectedTab) {

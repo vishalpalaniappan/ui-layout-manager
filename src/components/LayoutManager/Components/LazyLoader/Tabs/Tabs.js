@@ -8,9 +8,6 @@ import "./Tabs.scss"
  * @param {Object} node
  */
 export const Tabs = ({tabs, onTabClick}) => {
-
-
-
     return (
         <div className="container-tabs-row">
             {tabs.map((tab) => (
