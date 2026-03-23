@@ -2,6 +2,8 @@ import React, { createContext, useState, useCallback, useMemo } from "react";
 
 const DragContext = createContext(null);
 
+import { useLayoutEventPublisher } from "./LayoutEventProvider";
+
 
 /**
  * Exposes the drag state through a hook. The state is updated
@@ -17,6 +19,7 @@ const DragContext = createContext(null);
  * will check to see if the drop was for them and ignore it if it isn't.
  */
 export const DragProvider = ({ children }) => {
+    const publish = useLayoutEventPublisher();
 
     const [dragState, setDragState] = useState({
         activeId: null,
@@ -37,6 +40,12 @@ export const DragProvider = ({ children }) => {
             overData: null,
             isDragging: true
         });
+        
+        publish({
+          type: "drag:start",
+          payload: event.active,
+          source: "drag-provider",
+        })
     }, []);
 
     const handleDragOver = useCallback((event) => {

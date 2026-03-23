@@ -17,7 +17,7 @@ export function LayoutEventProvider({ children }) {
  * Hook to publish an event.
  * @returns 
  */
-export function useLayoutPublisher() {
+export function useLayoutEventPublisher() {
     const controller = useContext(LayoutEventContext);
 
     if (!controller) {
@@ -33,7 +33,7 @@ export function useLayoutPublisher() {
  * @param {String} type 
  * @param {Function} handler 
  */
-export function useLayoutSubscription(type, handler) {
+export function useLayoutEventSubscription(type, handler) {
     const controller = useContext(LayoutEventContext);
     const handlerRef = useRef(handler);
 

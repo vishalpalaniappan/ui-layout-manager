@@ -3,11 +3,11 @@ import { useRef, useLayoutEffect } from "react";
 import { FileBrowser } from 'sample-ui-component-library';
 import tree from "./workspace_sample.json"
 
-import { useLayoutPublisher } from "../../../components/LayoutManager/Providers/LayoutEventProvider";
+import { useLayoutEventPublisher } from "../../../components/LayoutManager/Providers/LayoutEventProvider";
 
 const FileTree = () => {
     const fileBrowserRef = useRef(null);
-    const publish = useLayoutPublisher();
+    const publish = useLayoutEventPublisher();
 
     useLayoutEffect(() => {
         fileBrowserRef.current.addFileTree(tree.tree);

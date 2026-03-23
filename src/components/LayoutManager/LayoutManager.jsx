@@ -20,15 +20,15 @@ export const LayoutManager = ({ldf, registry}) => {
     
 
     return (
-        <DragProvider>
-            <LayoutControllerProvider layout={ldf}>
-                <LayoutEventProvider>
+        <LayoutControllerProvider layout={ldf}>
+            <LayoutEventProvider>
+                <DragProvider>
                     <ComponentRegistryContext.Provider value={registry}>
                         <RootContainer/>
                     </ComponentRegistryContext.Provider>
-                </LayoutEventProvider>
-            </LayoutControllerProvider> 
-        </DragProvider>
+                </DragProvider>
+            </LayoutEventProvider>
+        </LayoutControllerProvider> 
     );
 }
 
