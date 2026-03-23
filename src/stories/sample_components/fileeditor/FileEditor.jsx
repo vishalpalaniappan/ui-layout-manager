@@ -8,7 +8,6 @@ import { flattenTree } from "./helper";
 import { useLayoutEventSubscription } from "../../../components/LayoutManager/Providers/LayoutEventProvider";
 
 
-
 const FileEditor = () => {
     const editorRef = useRef(null);
     const parentIdRef = useRef(null);
