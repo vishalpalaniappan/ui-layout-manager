@@ -69,7 +69,7 @@
                     "containerId": "terminal",
                     "type": "container",
                     "size": { 
-                        "initial": { "value": 200, "unit": "px", "type": "fixed" },
+                        "initial": { "value": 300, "unit": "px", "type": "fixed" },
                         "min": { "value": 100, "unit": "px"}
                     },
                     "collapse": { "value": 500, "condition": "lessThan", "relative": "parent" }
@@ -78,7 +78,16 @@
         },
         "terminal": {
             "id": "terminal",
-            "component": "FileEditor",
+            "tabs": [
+                {
+                    "name": "Editor",
+                    "component": "FileEditor"
+                },
+                {
+                    "name": "FileTree",
+                    "component": "FileTree"
+                }
+            ],
             "background": "#252526"
         },
         "content": {
