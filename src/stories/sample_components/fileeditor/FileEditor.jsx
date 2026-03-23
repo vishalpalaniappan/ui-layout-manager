@@ -3,8 +3,6 @@ import { useRef, useLayoutEffect, useEffect } from "react";
 import { Editor } from 'sample-ui-component-library';
 import fileTree from "./workspace_sample.json";
 
-import { useDragState } from "../../../components/LayoutManager/Providers/DragProvider";
-
 import { flattenTree } from "./helper";
 
 import { useLayoutEventSubscription } from "../../../components/LayoutManager/Providers/LayoutEventProvider";
@@ -18,9 +16,9 @@ const FileEditor = () => {
     useLayoutEventSubscription("file:selected", (event) => {
         editorRef.current.addTab(event.payload);
     });
-
-    const { drop } = useDragState();
-    useEffect(() => {
+    
+    useLayoutEventSubscription("drag:drop", (event) => {
+        const drop = event.payload;
         if (!drop?.overId) {
             return;
         }
@@ -54,7 +52,7 @@ const FileEditor = () => {
             // Moving from fileTree to editor
             editorRef.current.addTab(drop.activeData.node, drop.overData.index);
         }
-    }, [drop]);
+    });
 
     useEffect(() => {
         parentIdRef.current = crypto.randomUUID();

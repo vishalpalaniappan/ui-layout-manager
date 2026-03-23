@@ -29,9 +29,6 @@ export const DragProvider = ({ children }) => {
         isDragging: false
     });
 
-
-    const [drop, setDrop] = useState(null);
-
     const handleDragStart = useCallback((event) => {
         setDragState({
             activeId: event.active?.id ?? null,
@@ -40,12 +37,6 @@ export const DragProvider = ({ children }) => {
             overData: null,
             isDragging: true
         });
-        
-        publish({
-          type: "drag:start",
-          payload: event.active,
-          source: "drag-provider",
-        })
     }, []);
 
     const handleDragOver = useCallback((event) => {
@@ -57,12 +48,16 @@ export const DragProvider = ({ children }) => {
     }, []);
 
     const clearDrag = useCallback((event) => {
-        setDrop({
-            activeId: event.active?.id ?? null,
-            activeData: event.active?.data?.current ?? null,
-            overId: event.over?.id ?? null,
-            overData: event.over?.data?.current ?? null,
-        });
+        publish({
+          type: "drag:drop",
+          payload: {
+                activeId: event.active?.id ?? null,
+                activeData: event.active?.data?.current ?? null,
+                overId: event.over?.id ?? null,
+                overData: event.over?.data?.current ?? null,
+            },
+          source: "drag-provider",
+        })
         setDragState({
             activeId: null,
             activeData: null,
@@ -85,12 +80,11 @@ export const DragProvider = ({ children }) => {
 
     const value = useMemo(() => ({
         dragState,
-        drop,
         handleDragStart,
         handleDragOver,
         clearDrag,
         cancelDrag
-    }), [dragState, drop, handleDragStart, handleDragOver, clearDrag, cancelDrag]);
+    }), [dragState, handleDragStart, handleDragOver, clearDrag, cancelDrag]);
 
     return (
         <DragContext.Provider value={value}>
