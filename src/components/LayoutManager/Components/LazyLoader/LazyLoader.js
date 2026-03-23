@@ -15,7 +15,7 @@ export const LazyLoader = ({node}) => {
     const registry = useContext(ComponentRegistryContext);
     const [showTitle, setShowTitle] = useState(false);
 
-    const [lazyContainerClass, setLazyContainerClass] = useState("absoluteContainer");
+    const [lazyContainerTop, setLazyContainerTop] = useState(0);
 
     const LazyComponent = useMemo(() => {
         if (registry && node && "component" in node && node["component"] in registry) {
@@ -26,10 +26,10 @@ export const LazyLoader = ({node}) => {
     useEffect(() => {
         if ("title" in node) {
             setShowTitle(true);
-            setLazyContainerClass("lazycontainer")
+            setLazyContainerTop(35)
         } else {
             setShowTitle(false);
-            setLazyContainerClass("absoluteContainer")
+            setLazyContainerTop(0)
         }
     }, [node]);
 
@@ -42,7 +42,7 @@ export const LazyLoader = ({node}) => {
                             <MenuBar title={node.title}/>
                         </div>
                 }
-                <div className={lazyContainerClass}>
+                <div className="lazycontainer" style={{ top: `${lazyContainerTop}px`}}>
                     <Suspense fallback={<div>Loading...</div>}>
                         {LazyComponent && <LazyComponent />}
                     </Suspense>
