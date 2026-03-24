@@ -4,6 +4,9 @@ import { useLayoutController } from "../../Providers/LayoutProvider";
 import { HandleBar } from "../HandleBar/HandleBar";
 import "./Container.scss"
 import { LazyLoader } from "../LazyLoader/LazyLoader";
+
+import { useLayoutEventSubscription } from "../../Providers/LayoutEventProvider";
+
 /**
  * Renders the node and creates containers for its children.
  * Also registers itself with the controller to allow the controller
