@@ -130,7 +130,7 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
             return;
         }
 
-        // If either of the containers are less than 50px and either one is not a fill type, then don't update size.
+        // If either of the containers are less than 50px, then don't update size.
         if (newSibling1Size < 50 || newSibling2Size < 50) {
             return;
         }
