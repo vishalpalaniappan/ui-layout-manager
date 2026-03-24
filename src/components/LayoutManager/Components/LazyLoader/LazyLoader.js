@@ -1,6 +1,8 @@
-import React, { lazy, useMemo, Suspense, useContext } from "react";
+import React, { lazy, useMemo, Suspense, useContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import ComponentRegistryContext from "../../Providers/ComponentRegistryContext";
+import { MenuBar } from "./MenuBar/MenuBar";
+import { Tabs } from "./Tabs/Tabs";
 
 import "./LazyLoader.scss"
 
@@ -10,20 +12,83 @@ import "./LazyLoader.scss"
  * 
  * @param {Object} content
  */
-export const LazyLoader = ({content}) => {
+export const LazyLoader = ({node}) => {
     const registry = useContext(ComponentRegistryContext);
+    const [showTitle, setShowTitle] = useState(false);
+    const [showTab, setShowTab] = useState(false);
 
+    const [lazyContainerTop, setLazyContainerTop] = useState(0);
+    const [tabsTop, setTabsTop] = useState(0);
+    const [selectedComponent, setSelectedComponent] = useState("");
+
+    // Lazy load the component when the selected component changes.
     const LazyComponent = useMemo(() => {
-        if (registry && content && "component" in content && content["component"] in registry) {
-            return lazy(registry[content["component"]]);
+        if (registry && selectedComponent in registry) {
+            return lazy(registry[selectedComponent]);
         }
-    }, [registry, content]);
+    }, [registry, selectedComponent]);
+
+    /**
+     * Note: I am setting the top of the absolute position
+     * of the containers based on if the title and tabs are
+     * shown. This is a temporary implementation, I will be
+     * revisiting this and formally implementing it after.
+     */
+    useEffect(() => {
+        let _lazyContainerTop = 0;
+        let _tabsTop = 0;
+        if ("menuBar" in node) {
+            setShowTitle(true);
+            _tabsTop += 35;
+            _lazyContainerTop += 35;
+        }
+        if ("tabsBar" in node) {
+            setShowTab(true);
+            _lazyContainerTop += 35;
+            selectTab(node.tabsBar.tabs[0]);
+        } else {
+            setSelectedComponent(node.component);
+        }
+        setLazyContainerTop(_lazyContainerTop)
+        setTabsTop(_tabsTop);
+    }, [node]);
+
+    /**
+     * Selects the provided tab.
+     * @param {Object} selectedTab 
+     */
+    const selectTab = (selectedTab) => {
+        node.tabsBar.tabs.forEach((tab) => {
+            if (tab === selectedTab) {
+                tab.selected = true;
+                setSelectedComponent(tab.component);
+            } else {
+                tab.selected = false;
+            }
+        });
+    }
 
     return (
-        <div className="lazyContainer">
-            <Suspense fallback={<div>Loading...</div>}>
-                {LazyComponent && <LazyComponent />}
-            </Suspense>
+        <div className="absoluteContainer">
+            <div className="contentContainer">
+                {
+                    showTitle && 
+                        <div className="menuContainer">
+                            <MenuBar node={node}/>
+                        </div>
+                }
+                {
+                    showTab && 
+                        <div className="tabsContainer" style={{ top: `${tabsTop}px`}}>
+                            <Tabs node={node} onTabClick={selectTab}/>
+                        </div>
+                }
+                <div className="lazycontainer" style={{ top: `${lazyContainerTop}px`}}>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        {LazyComponent && <LazyComponent />}
+                    </Suspense>
+                </div>
+            </div>
         </div>
     );
 }

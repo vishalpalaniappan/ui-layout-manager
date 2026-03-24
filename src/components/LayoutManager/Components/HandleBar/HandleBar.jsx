@@ -129,24 +129,14 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
             sibling2SizeKeys.includes("max") && newSibling2Size >= startInfo.sibling2LayoutConfig.max.value) {
             return;
         }
-        
-        // If both siblings are type fill, then set sizes. Set min size of sibling sizes to 50px;
-        // TODO: Make into constants and I think this should be evaluated inside the controller.
-        const sibling1Type = startInfo.sibling1LayoutConfig.initial.type;
-        const sibling2Type = startInfo.sibling2LayoutConfig.initial.type;
-        if (sibling1Type === "fill" && sibling2Type === "fill" && newSibling1Size > 50 && newSibling2Size > 50) {
-            controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
-            controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
+
+        // If either of the containers are less than 50px, then don't update size.
+        if (newSibling1Size < MIN_PANEL_SIZE || newSibling2Size < MIN_PANEL_SIZE) {
             return;
         }
-
-        // Don't update fill types, flex box will take care of that
-        if (!(sibling1Type === "fill")) {
-            controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
-        }
-        if (!(sibling2Type === "fill")) {
-            controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
-        }
+        
+        controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
+        controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
     }
 
     /**

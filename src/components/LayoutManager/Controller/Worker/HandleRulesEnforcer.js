@@ -83,6 +83,7 @@ export class HandleRulesEnforcer {
             const sibling = this.getSiblingProps(this.sibling1.id);
             if ("min" in sibling.size) {
                 this.args.style["min-width"] = sibling.size.min.value + sibling.size.min.unit;
+                this.args.style["width"] = sibling.size.min.value + sibling.size.min.unit;
             }
             this.sibling1.hidden = false;
             this.activeSibling = this.sibling1.id;
@@ -99,6 +100,7 @@ export class HandleRulesEnforcer {
             const sibling = this.getSiblingProps(this.sibling2.id);
             if ("min" in sibling.size) {
                 this.args.style["min-width"] = sibling.size.min.value + sibling.size.min.unit;
+                this.args.style["width"] = sibling.size.min.value + sibling.size.min.unit;
             }
             this.sibling2.hidden = false;
             this.activeSibling = this.sibling2.id;
@@ -131,6 +133,7 @@ export class HandleRulesEnforcer {
             const sibling = this.getSiblingProps(this.sibling1.id);
             if ("min" in sibling.size) {
                 this.args.style["min-height"] = sibling.size.min.value + sibling.size.min.unit;
+                this.args.style["height"] = sibling.size.min.value + sibling.size.min.unit;
             }
             this.sibling1.hidden = false;
             this.activeSibling = this.sibling1.id;
@@ -148,6 +151,7 @@ export class HandleRulesEnforcer {
             const sibling = this.getSiblingProps(this.sibling2.id);
             if ("min" in sibling.size) {
                 this.args.style["min-height"] = sibling.size.min.value + sibling.size.min.unit;
+                this.args.style["height"] = sibling.size.min.value + sibling.size.min.unit;
             }
             this.sibling2.hidden = false;
             this.activeSibling = this.sibling2.id;

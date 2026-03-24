@@ -39,8 +39,7 @@
                     "containerId": "sidebar",
                     "type": "container",
                     "size": { "initial": { "value": 50, "unit": "px", "type": "fixed" }},
-                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" },
-                    "showHandlebar": true
+                    "collapse": { "value": 400, "condition": "lessThan", "relative": "parent" }
                 },
                 {
                     "containerId": "contentContainer",
@@ -78,7 +77,20 @@
         },
         "terminal": {
             "id": "terminal",
-            "component": "Flow",
+            "tabsBar": {
+                "tabs": [
+                    {
+                        "name": "Flow",
+                        "component": "Flow"
+                    },
+                    {
+                        "name": "FileTree",
+                        "component": "FileTree"
+                    }
+                ],
+                "showClose": true,
+                "closeContainerId": "terminal"
+            },
             "background": "#252526"
         },
         "content": {
@@ -91,9 +103,9 @@
                     "containerId": "menuContainer",
                     "type": "container",
                     "size": { 
-                        "initial": { "value": 400, "unit": "px", "type": "fixed" },
+                        "initial": { "value": 250, "unit": "px", "type": "fixed" },
                         "min": { "value": 200, "unit": "px"},
-                        "max": { "value": 500, "unit": "px"}
+                        "max": { "value": 400, "unit": "px"}
                     },
                     "collapse": { "value": 700, "condition": "lessThan", "relative": "parent" }
                 },
@@ -143,6 +155,11 @@
         "fileTabsContainer": {
             "id": "fileTabsContainer",
             "component": "FileTree",
+            "menuBar": {
+                "showClose": true,
+                "closeContainerId": "menuContainer",
+                "title": "EXPLORER"
+            },
             "background": "#1e1e1e"
         },
         "editorContainer": {

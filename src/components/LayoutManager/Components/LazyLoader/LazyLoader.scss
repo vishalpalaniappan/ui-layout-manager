@@ -1,4 +1,41 @@
-.lazyContainer {
+/** 
+TODO: I agree that it is convoluted to use absolute, then relative and then absolute.
+However, the reason I am doing it is, it makes the layout of the monaco editor trivial
+and avoids resize observer loops when the container sizes change. I haven't thought
+about this enough and I will revisit it later.
+*/
+
+.absoluteContainer {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.contentContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.menuContainer {
+    position: absolute;
+    top: 0px;
+    height: 35px;
+    left: 0px;
+    right: 0px;
+}
+
+.tabsContainer {
+    position: absolute;
+    top: 0px;
+    height: 35px;
+    left: 0px;
+    right: 0px;
+}
+
+.lazycontainer {
     position: absolute;
     top: 0px;
     bottom: 0px;
