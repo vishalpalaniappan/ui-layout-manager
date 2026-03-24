@@ -1,4 +1,4 @@
-import PropTypes, { node } from "prop-types";
+import PropTypes from "prop-types";
 
 import "./MenuBar.scss";
 
@@ -26,7 +26,7 @@ export const MenuBar = ({ node }) => {
         <div className="titleContainer">
             <div className="title">{node?.menuBar?.title}</div>
             {
-                node.menuBar.showClose &&
+                node?.menuBar?.showClose &&
                 <div onClick={closeContainer} className="close">
                     <XLg />
                 </div>
