@@ -207,5 +207,6 @@ export class LayoutEditor {
             type: LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS,
             data: this.transformations
         });
+        this.transformations = [];
     }
 };
