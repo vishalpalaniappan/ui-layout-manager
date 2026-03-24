@@ -36,5 +36,5 @@ export const MenuBar = ({ node }) => {
 };
 
 MenuBar.propTypes = {
-    content: PropTypes.object,
+    node : PropTypes.object,
 };
