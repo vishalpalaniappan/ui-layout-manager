@@ -3,16 +3,28 @@ import PropTypes from 'prop-types';
 import {XLg} from "react-bootstrap-icons";
 import "./Tabs.scss"
 
+import { useLayoutController } from "../../../Providers/LayoutProvider";
+
 /**
  * Tabs component for the containers.
  * 
  * @param {Object} node
  */
-export const Tabs = ({tabs, onTabClick}) => {
+export const Tabs = ({node, onTabClick}) => {
+    const controller = useLayoutController();
+
+    const closeContainer = () => {
+        controller.invokeAction({
+            id: node?.tabsBar?.closeContainerId,
+            action: "close",
+            args: {},
+        });
+    };
+
     return (
         <div className="container-tabs-row">
             <div className="container-tabs">
-            {tabs.map((tab, index) => (
+            {node?.tabsBar?.tabs.map((tab, index) => (
                 <div 
                     key= {tab.name + String(index)}
                     style={{ borderBottom: tab.selected ? "solid 1px white" : "none" }}
@@ -23,9 +35,12 @@ export const Tabs = ({tabs, onTabClick}) => {
             ))}
             </div>
 
-            <div className="container-close">
-                <XLg/>
-            </div>
+            {
+                node?.tabsBar?.showClose && 
+                <div className="container-close">
+                    <XLg onClick={closeContainer}/>
+                </div>
+            }
         </div>
     );
 }

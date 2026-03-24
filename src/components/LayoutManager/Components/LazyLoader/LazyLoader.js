@@ -37,15 +37,15 @@ export const LazyLoader = ({node}) => {
     useEffect(() => {
         let _lazyContainerTop = 0;
         let _tabsTop = 0;
-        if ("title" in node) {
+        if ("menuBar" in node) {
             setShowTitle(true);
             _tabsTop += 35;
             _lazyContainerTop += 35;
         }
-        if ("tabs" in node) {
+        if ("tabsBar" in node) {
             setShowTab(true);
             _lazyContainerTop += 35;
-            selectTab(node.tabs[0]);
+            selectTab(node.tabsBar.tabs[0]);
         } else {
             setSelectedComponent(node.component);
         }
@@ -58,7 +58,7 @@ export const LazyLoader = ({node}) => {
      * @param {Object} selectedTab 
      */
     const selectTab = (selectedTab) => {
-        node.tabs.forEach((tab) => {
+        node.tabsBar.tabs.forEach((tab) => {
             if (tab === selectedTab) {
                 tab.selected = true;
                 setSelectedComponent(tab.component);
@@ -80,7 +80,7 @@ export const LazyLoader = ({node}) => {
                 {
                     showTab && 
                         <div className="tabsContainer" style={{ top: `${tabsTop}px`}}>
-                            <Tabs onTabClick={selectTab} tabs={node.tabs}/>
+                            <Tabs node={node} onTabClick={selectTab}/>
                         </div>
                 }
                 <div className="lazycontainer" style={{ top: `${lazyContainerTop}px`}}>

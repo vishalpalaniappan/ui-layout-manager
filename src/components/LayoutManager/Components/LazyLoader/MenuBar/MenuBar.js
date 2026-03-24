@@ -16,7 +16,7 @@ export const MenuBar = ({ node }) => {
 
     const closeContainer = () => {
         controller.invokeAction({
-            id: node.id,
+            id: node?.menuBar?.closeContainerId,
             action: "close",
             args: {},
         });
@@ -24,10 +24,13 @@ export const MenuBar = ({ node }) => {
 
     return (
         <div className="titleContainer">
-            <div className="title">{node.title}</div>
-            <div onClick={closeContainer} className="close">
-                <XLg />
-            </div>
+            <div className="title">{node?.menuBar?.title}</div>
+            {
+                node.menuBar.showClose &&
+                <div onClick={closeContainer} className="close">
+                    <XLg />
+                </div>
+            }
         </div>
     );
 };
