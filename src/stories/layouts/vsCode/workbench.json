@@ -77,16 +77,20 @@
         },
         "terminal": {
             "id": "terminal",
-            "tabs": [
-                {
-                    "name": "Flow",
-                    "component": "Flow"
-                },
-                {
-                    "name": "FileTree",
-                    "component": "FileTree"
-                }
-            ],
+            "tabsBar": {
+                "tabs": [
+                    {
+                        "name": "Flow",
+                        "component": "Flow"
+                    },
+                    {
+                        "name": "FileTree",
+                        "component": "FileTree"
+                    }
+                ],
+                "showClose": true,
+                "closeContainerId": "terminal"
+            },
             "background": "#252526"
         },
         "content": {
@@ -141,7 +145,11 @@
         "fileTabsContainer": {
             "id": "fileTabsContainer",
             "component": "FileTree",
-            "title": "EXPLORER",
+            "menuBar": {
+                "showClose": true,
+                "closeContainerId": "menuContainer",
+                "title": "EXPLORER"
+            },
             "background": "#1e1e1e"
         },
         "editorContainer": {
