@@ -180,4 +180,32 @@ export class LayoutEditor {
             }
         }
     }
+
+    /**
+     * Invoke a specific action on the given id.
+     * @param {Object} args 
+     */
+    invokeAction({id, action, args}) {
+        const props = this.getProps(this.ldf.containers[id].parent);
+
+        const style = {};
+        if (action === "close") {
+            style["min-" + props["dynamic"]] = 0;
+            style["display"] = "none";
+        } else if (action === "open") {
+            style["display"] = "flex";
+        }
+
+        this.transformations.push(
+            {
+                id: id, 
+                type: TRANSFORMATION_TYPES.UPDATE_SIZE,
+                args: {style: style}
+            }
+        );
+        postMessage({
+            type: LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS,
+            data: this.transformations
+        });
+    }
 };
