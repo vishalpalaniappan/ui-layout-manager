@@ -131,7 +131,7 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
         }
 
         // If either of the containers are less than 50px, then don't update size.
-        if (newSibling1Size < 50 || newSibling2Size < 50) {
+        if (newSibling1Size < MIN_PANEL_SIZE || newSibling2Size < MIN_PANEL_SIZE) {
             return;
         }
         
