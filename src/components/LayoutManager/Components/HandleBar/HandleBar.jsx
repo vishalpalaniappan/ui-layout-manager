@@ -144,7 +144,7 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
             return;
         }
         
-        // If one sibling is fill type but the other isn't, don't update, flex box will take care of that
+        // Don't update fill type siblings, if one of the siblings isn't fill type.
         if (!(sibling1Type === "fill")) {
             controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
         }
