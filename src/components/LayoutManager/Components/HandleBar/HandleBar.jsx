@@ -134,9 +134,23 @@ export const HandleBar = ({orientation, parent, sibling1, sibling2}) => {
         if (newSibling1Size < MIN_PANEL_SIZE || newSibling2Size < MIN_PANEL_SIZE) {
             return;
         }
+
+        // If both siblings are type fill, then set sizes.
+        const sibling1Type = startInfo.sibling1LayoutConfig.initial.type;
+        const sibling2Type = startInfo.sibling2LayoutConfig.initial.type;
+        if (sibling1Type === "fill" && sibling2Type === "fill") {
+            controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
+            controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
+            return;
+        }
         
-        controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
-        controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
+        // If one sibling is fill type but the other isn't, don't update, flex box will take care of that
+        if (!(sibling1Type === "fill")) {
+            controller.containerRefs[sibling1].style[startInfo.propKey] = newSibling1Size + "px";
+        }
+        if (!(sibling2Type === "fill")) {
+            controller.containerRefs[sibling2].style[startInfo.propKey] = newSibling2Size + "px";
+        }
     }
 
     /**
