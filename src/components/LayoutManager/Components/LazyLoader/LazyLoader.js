@@ -74,7 +74,7 @@ export const LazyLoader = ({node}) => {
                 {
                     showTitle && 
                         <div className="menuContainer">
-                            <MenuBar title={node.title}/>
+                            <MenuBar node={node}/>
                         </div>
                 }
                 {

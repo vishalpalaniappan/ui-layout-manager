@@ -1,28 +1,37 @@
-import PropTypes from 'prop-types';
+import PropTypes, { node } from "prop-types";
 
-import "./MenuBar.scss"
+import "./MenuBar.scss";
 
-import {XLg} from "react-bootstrap-icons";
+import { XLg } from "react-bootstrap-icons";
+
+import { useLayoutController } from "../../../Providers/LayoutProvider";
 
 /**
  * MenuBar component for the containers.
- * 
+ *
  * @param {Object} node
  */
-export const MenuBar = ({title}) => {
+export const MenuBar = ({ node }) => {
+    const controller = useLayoutController();
+
+    const closeContainer = () => {
+        controller.invokeAction({
+            id: node.id,
+            action: "close",
+            args: {},
+        });
+    };
 
     return (
         <div className="titleContainer">
-            <div className="title">
-                {title}
-            </div>
-            <div className="close">
-                <XLg/>
+            <div className="title">{node.title}</div>
+            <div onClick={closeContainer} className="close">
+                <XLg />
             </div>
         </div>
     );
-}
+};
 
 MenuBar.propTypes = {
     content: PropTypes.object,
-}
+};

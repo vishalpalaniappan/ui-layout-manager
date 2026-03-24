@@ -199,6 +199,20 @@ export class LayoutController {
     }
 
     /**
+     * Invoke a specific action on a container given the id.
+     */
+    invokeAction({id, action, args}) {
+        this.sendToWorker(
+            LAYOUT_WORKER_PROTOCOL.INVOKE_ACTION, 
+            { 
+                id: id,
+                action: action,
+                args: args
+            }
+        );
+    }
+
+    /**
      * Performs cleanup when the controller is destroyed.
      */
     destroy() {

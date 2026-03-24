@@ -25,6 +25,9 @@ self.onmessage = function (e) {
             case LAYOUT_WORKER_PROTOCOL.MOVE_HANDLE_BAR:
                 editor.moveHandleBar(args.metadata);
                 break;
+            case LAYOUT_WORKER_PROTOCOL.INVOKE_ACTION:
+                console.log(args);
+                break;
             default:
                 break;
         }
