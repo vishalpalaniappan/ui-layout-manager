@@ -12,8 +12,9 @@ export const Tabs = ({tabs, onTabClick}) => {
     return (
         <div className="container-tabs-row">
             <div className="container-tabs">
-            {tabs.map((tab) => (
+            {tabs.map((tab, index) => (
                 <div 
+                    key= {tab.name + String(index)}
                     style={{ borderBottom: tab.selected ? "solid 1px white" : "none" }}
                     onClick={(e) => onTabClick(tab)} 
                     className="container-tab">
@@ -30,5 +31,5 @@ export const Tabs = ({tabs, onTabClick}) => {
 }
 
 Tabs.propTypes = {
-    tabs: PropTypes.object,
+    tabs: PropTypes.array,
 }
