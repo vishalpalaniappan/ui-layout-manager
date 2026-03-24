@@ -24,7 +24,7 @@ export const Tabs = ({node, onTabClick}) => {
     return (
         <div className="container-tabs-row">
             <div className="container-tabs">
-            {node?.tabsBar?.tabs.map((tab, index) => (
+            {node?.tabsBar?.tabs?.map((tab, index) => (
                 <div 
                     key= {tab.name + String(index)}
                     style={{ borderBottom: tab.selected ? "solid 1px white" : "none" }}
@@ -46,5 +46,6 @@ export const Tabs = ({node, onTabClick}) => {
 }
 
 Tabs.propTypes = {
-    tabs: PropTypes.array,
+    node: PropTypes.array,
+    onTabsClick: PropTypes.func
 }
