@@ -46,6 +46,6 @@ export const Tabs = ({node, onTabClick}) => {
 }
 
 Tabs.propTypes = {
-    node: PropTypes.array,
+    node: PropTypes.object,
     onTabsClick: PropTypes.func
 }
