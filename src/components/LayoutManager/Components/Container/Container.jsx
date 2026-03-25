@@ -17,23 +17,23 @@ export const Container = ({node}) => {
     const controller = useLayoutController();
     const containerRef = useRef(null);    
     const parentOrientationRef = useRef(null);
+    const [selectedChild, setSelectedChild] = useState(null);
     const [childElements, setChildElements] = useState(null);
-   
-    /**
-     * Renders child containers recursively.
-     */
-    const processContainer = useCallback((node) => {
+
+
+    useEffect(() => {
+        if (!selectedChild) return;
         const childElements = [];      
-        for (let index = 0; index < node.children.length; index++) {
-            const childNode = node.children[index];
+        for (let index = 0; index < selectedChild.length; index++) {
+            const childNode = selectedChild[index];
 
             if (childNode.type === "container") {
-                const child = controller.ldf.containers[node.children[index].containerId];
+                const child = controller.ldf.containers[selectedChild[index].containerId];
                 child.parent = node;
                 childElements.push(
                     <Container 
                         key={index} 
-                        meta={node.children[index]} 
+                        meta={selectedChild[index]} 
                         id={child.id} 
                         node={child}/>
                 );
@@ -61,7 +61,13 @@ export const Container = ({node}) => {
                 }
             }
         };
-        return childElements;
+        setChildElements(childElements);
+    }, [selectedChild]);
+   
+    /**
+     * Renders child containers recursively.
+     */
+    const processContainer = useCallback((node) => {
     },[controller]);
 
     // Create the container API that will be used by the controller.
@@ -114,8 +120,11 @@ export const Container = ({node}) => {
                     containerRef.current.style.background = "transparent";
                 }
             }
-            
-            setChildElements(hasChildren?processContainer(node):<LazyLoader node={node} />);
+            if (hasChildren) {
+                setSelectedChild(node.children);
+            } else {
+                setChildElements(<LazyLoader node={node} />);
+            }
             
             controller.registerContainer(node.id, containerAPI, containerRef.current);
             return () => {
