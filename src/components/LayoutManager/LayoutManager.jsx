@@ -4,6 +4,7 @@ import { RootContainer } from "./Components/RootContainer/RootContainer";
 import ComponentRegistryContext from "./Providers/ComponentRegistryContext";
 import { LayoutControllerProvider } from "./Providers/LayoutProvider";
 import { LayoutEventProvider } from "./Providers/LayoutEventProvider";
+import { ModalProvider } from "./Providers/ModalProvider";
 
 import "./LayoutManager.scss";
 
@@ -19,13 +20,15 @@ export const LayoutManager = ({ldf, registry}) => {
     
 
     return (
-        <LayoutControllerProvider layout={ldf}>
-            <LayoutEventProvider>
-                <ComponentRegistryContext.Provider value={registry}>
-                    <RootContainer/>
-                </ComponentRegistryContext.Provider>
-            </LayoutEventProvider>
-        </LayoutControllerProvider> 
+        <ModalProvider>
+            <LayoutControllerProvider layout={ldf}>
+                <LayoutEventProvider>
+                    <ComponentRegistryContext.Provider value={registry}>
+                        <RootContainer/>
+                    </ComponentRegistryContext.Provider>
+                </LayoutEventProvider>
+            </LayoutControllerProvider> 
+        </ModalProvider>
     );
 }
 
