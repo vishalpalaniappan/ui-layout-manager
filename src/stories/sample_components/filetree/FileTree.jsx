@@ -27,9 +27,16 @@ const FileTree = () => {
         })
 
         if (node.name === "readme") {
-            openModal(({ close }) => (
-                <Stack   />
-            ));
+            const {id, close} = openModal({args:{
+                title:"Readme",
+                render: ({ close }) => {
+                    return <Stack />;
+                }
+            }});
+
+            setTimeout(() => {
+                close();
+            }, 2000);
         }
     }
 
