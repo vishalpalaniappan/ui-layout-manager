@@ -14,7 +14,6 @@ export function ModalProvider({ children }) {
     const [modal, setModal] = useState(null);
 
     const openModal = useCallback(({ args }) => {
-        console.log("Opening modal with title:", args.title);
         const close = () => {
             setModal(null);
         };
