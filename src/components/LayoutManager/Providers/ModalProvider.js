@@ -28,7 +28,11 @@ export function ModalProvider ({children}) {
             <>
                 {modal && (
                     <React.Fragment key={modal.id}>
-                        {modal.render({close: modal.close})}
+                        <div className="modal-backdrop" onClick={modal.close}>
+                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                                {modal.render({close: modal.close})}
+                            </div>
+                        </div>
                     </React.Fragment>
                 )}
             </>,

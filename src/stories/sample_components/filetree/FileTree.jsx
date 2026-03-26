@@ -5,6 +5,7 @@ import tree from "./workspace_sample.json"
 
 import { useLayoutEventPublisher } from "../../../components/LayoutManager/Providers/LayoutEventProvider";
 import { useModalManager } from "../../../components/LayoutManager/Providers/ModalProvider";
+import Stack from "../stack/Stack";
 
 const FileTree = () => {
     const fileBrowserRef = useRef(null);
@@ -27,12 +28,7 @@ const FileTree = () => {
 
         if (node.name === "readme") {
             openModal(({ close }) => (
-                <div className="modal-backdrop" onClick={close}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <h2 style={{ color: "white" }}>Selected file: {node.name}</h2>
-                        <button onClick={close}>Close</button>
-                    </div>
-                </div>
+                <Stack   />
             ));
         }
     }
