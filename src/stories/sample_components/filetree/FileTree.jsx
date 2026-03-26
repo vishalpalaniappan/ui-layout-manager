@@ -4,10 +4,12 @@ import { FileBrowser } from 'sample-ui-component-library';
 import tree from "./workspace_sample.json"
 
 import { useLayoutEventPublisher } from "../../../components/LayoutManager/Providers/LayoutEventProvider";
+import { useModalManager } from "../../../components/LayoutManager/Providers/ModalProvider";
 
 const FileTree = () => {
     const fileBrowserRef = useRef(null);
     const publish = useLayoutEventPublisher();
+    const { openModal } = useModalManager();
 
     useLayoutEffect(() => {
         fileBrowserRef.current.addFileTree(tree.tree);
@@ -22,6 +24,17 @@ const FileTree = () => {
           payload: node,
           source: "file-tree",
         })
+
+        if (node.name === "readme") {
+            openModal(({ close }) => (
+                <div className="modal-backdrop" onClick={close}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <h2 style={{ color: "white" }}>Selected file: {node.name}</h2>
+                        <button onClick={close}>Close</button>
+                    </div>
+                </div>
+            ));
+        }
     }
 
     return (
