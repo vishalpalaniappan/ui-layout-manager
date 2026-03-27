@@ -29,7 +29,7 @@ const FileTree = () => {
 
         // For demo purposes, if the readme file is selected, open a modal.
         if (node.name === "readme") {
-            const {id, close} = openModal({args:{
+            const {id, close} = openModal({
                 title:"Readme",
                 render: ({ close }) => {
                     return <>
@@ -37,7 +37,7 @@ const FileTree = () => {
                         <Stack />
                     </>;
                 }
-            }});
+            });
 
             // For demo purposes, automatically close the modal after 10 seconds.
             // setTimeout(() => {

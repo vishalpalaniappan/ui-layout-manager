@@ -21,7 +21,7 @@ export function ModalProvider({ children }) {
     const [modal, setModal] = useState(null);
 
     // Open a modal with the given content and title. Returns a function to close the modal.
-    const openModal = useCallback(({ args }) => {
+    const openModal = useCallback(( args ) => {
         const close = () => {
             setModal(null);
         };
