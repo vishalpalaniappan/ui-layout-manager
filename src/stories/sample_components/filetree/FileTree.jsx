@@ -32,7 +32,10 @@ const FileTree = () => {
             const {id, close} = openModal({args:{
                 title:"Readme",
                 render: ({ close }) => {
-                    return <Stack />;
+                    return <>
+                        <Stack />
+                        <Stack />
+                    </>;
                 }
             }});
 
