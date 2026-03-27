@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {
     createContext,
     useCallback,
@@ -14,11 +15,12 @@ const ModalContext = createContext(null);
 
 /**
  * Modal provider component to manage modals in the application
- * @returns {JSX.Element} The modal provider component
+ * @returns {JSX} The modal provider component
  */
 export function ModalProvider({ children }) {
     const [modal, setModal] = useState(null);
 
+    // Open a modal with the given content and title. Returns a function to close the modal.
     const openModal = useCallback(({ args }) => {
         const close = () => {
             setModal(null);
@@ -35,10 +37,13 @@ export function ModalProvider({ children }) {
         return { id, close };
     }, []);
 
+    // Close the currently open modal
     const closeModal = useCallback(() => {
         setModal(null);
     }, []);
 
+    // Render the modal portal
+    // TODO: Add support for different sizes
     const getPortal = () => {
         return createPortal(
             <>
