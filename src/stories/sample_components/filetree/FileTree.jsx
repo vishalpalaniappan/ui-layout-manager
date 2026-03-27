@@ -24,8 +24,10 @@ const FileTree = () => {
           type: "file:selected",
           payload: node,
           source: "file-tree",
-        })
+        });
 
+
+        // For demo purposes, if the readme file is selected, open a modal.
         if (node.name === "readme") {
             const {id, close} = openModal({args:{
                 title:"Readme",
@@ -34,9 +36,10 @@ const FileTree = () => {
                 }
             }});
 
-            setTimeout(() => {
-                close();
-            }, 2000);
+            // For demo purposes, automatically close the modal after 10 seconds.
+            // setTimeout(() => {
+            //     close();
+            // }, 10000);
         }
     }
 
