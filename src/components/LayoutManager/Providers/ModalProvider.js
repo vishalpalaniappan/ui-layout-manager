@@ -8,8 +8,14 @@ import React, {
 
 import { createPortal } from "react-dom";
 
+import {XLg} from "react-bootstrap-icons";
+
 const ModalContext = createContext(null);
 
+/**
+ * Modal provider component to manage modals in the application
+ * @returns {JSX.Element} The modal provider component
+ */
 export function ModalProvider({ children }) {
     const [modal, setModal] = useState(null);
 
@@ -39,12 +45,14 @@ export function ModalProvider({ children }) {
                 {modal && (
                     <React.Fragment key={modal.id}>
                         <div className="modal-backdrop" onClick={modal.close}>
-                            <div
-                                className="modal-content"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                {modal.title && <h2>{modal.title}</h2>}
-                                {modal.render({ close: modal.close })}
+                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                                <div className="modal-header">
+                                    <span className="title">{modal.title}</span>
+                                    <XLg className="close-button" onClick={modal.close} />
+                                </div>
+                                <div className="modal-body">
+                                    {modal.render({ close: modal.close })}
+                                </div>
                             </div>
                         </div>
                     </React.Fragment>
