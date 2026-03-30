@@ -21,13 +21,11 @@ export const LayoutManager = ({ldf, registry}) => {
 
     return (
         <LayoutControllerProvider layout={ldf}>
-            <LayoutEventProvider>
-                <ComponentRegistryContext.Provider value={registry}>
-                    <ModalProvider>
-                        <RootContainer/>
-                    </ModalProvider>
-                </ComponentRegistryContext.Provider>
-            </LayoutEventProvider>
+            <ComponentRegistryContext.Provider value={registry}>
+                <ModalProvider>
+                    <RootContainer/>
+                </ModalProvider>
+            </ComponentRegistryContext.Provider>
         </LayoutControllerProvider> 
     );
 }

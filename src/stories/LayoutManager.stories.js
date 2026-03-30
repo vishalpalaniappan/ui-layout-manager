@@ -7,6 +7,8 @@ import workbenchJSON from "./layouts/vsCode/workbench.json";
 import workbench2JSON from "./layouts/vsCode/workbench2.json";
 import workbench3JSON from "./layouts/vsCode/workbench3.json";
 
+import { LayoutEventProvider } from "../components/LayoutManager/Providers/LayoutEventProvider";
+
 import "./LayoutManager.stories.scss";
 
 export default {
@@ -50,9 +52,11 @@ const Template = (args) => {
     }, [updateArgs, registry]);
 
     return (
-        <div className="rootContainer">
-            <LayoutManager  {...args}/> 
-        </div>
+        <LayoutEventProvider>
+            <div className="rootContainer">
+                <LayoutManager  {...args}/> 
+            </div>
+        </LayoutEventProvider>
     )
 }
 
