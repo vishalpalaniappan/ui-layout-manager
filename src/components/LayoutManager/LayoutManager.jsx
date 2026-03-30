@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { RootContainer } from "./Components/RootContainer/RootContainer";
 import ComponentRegistryContext from "./Providers/ComponentRegistryContext";
 import { LayoutControllerProvider } from "./Providers/LayoutProvider";
-import { LayoutEventProvider } from "./Providers/LayoutEventProvider";
 import { ModalProvider } from "./Providers/ModalProvider";
 
 import "./LayoutManager.scss";
@@ -17,7 +16,6 @@ import "./LayoutManager.scss";
  * @return {React.ReactElement}
  */
 export const LayoutManager = ({ldf, registry}) => {
-    
 
     return (
         <LayoutControllerProvider layout={ldf}>
