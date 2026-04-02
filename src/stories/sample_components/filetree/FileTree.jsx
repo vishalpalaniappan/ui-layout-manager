@@ -31,9 +31,12 @@ const FileTree = () => {
         if (node.name === "readme") {
             const {id, close} = openModal({
                 title:"Readme",
-                render: ({ close }) => {
+                args: {
+                    sample: "sample arg"
+                },
+                render: ({ close, args }) => {
                     return <>
-                        <Stack />
+                        <Stack close={close} args={args} />
                         <Stack />
                     </>;
                 }

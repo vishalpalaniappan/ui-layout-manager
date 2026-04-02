@@ -1,8 +1,10 @@
 import { StackList } from 'sample-ui-component-library';
 
-const Stack = () => {
+const Stack = ({close, args}) => {
 
-    const args = [
+    console.log(args);
+
+    const args2 = [
         {functionName:"visit_arg", fileName: "helper.py", lineNumber: 3},
         {functionName:"__init__", fileName: "helper.py", lineNumber: 65},
         {functionName:"injectLogTypesA", fileName: "LogInjector.py", lineNumber: 3, selected: true},
@@ -14,7 +16,7 @@ const Stack = () => {
     ]
 
     return (
-        <StackList traces={args} />  
+        <StackList traces={args2} />  
     );
 };
 
