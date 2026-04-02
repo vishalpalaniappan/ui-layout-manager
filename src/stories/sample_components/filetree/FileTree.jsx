@@ -35,10 +35,7 @@ const FileTree = () => {
                     sample: "sample arg"
                 },
                 render: ({ close, args }) => {
-                    return <>
-                        <Stack close={close} args={args} />
-                        <Stack />
-                    </>;
+                    return <Stack close={close} args={args} />
                 }
             });
 
