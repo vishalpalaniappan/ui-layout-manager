@@ -16,8 +16,6 @@
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    max-width: 500px;
-    max-height: 500px;
     scrollbar-gutter: stable;
     scrollbar-color: #47474766 #252526;
     scrollbar-width: thin;
@@ -48,6 +46,4 @@
 
 .modal-body {
     flex: 1;
-    overflow: auto;
-    padding:10px;
 }
