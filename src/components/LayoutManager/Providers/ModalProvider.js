@@ -5,6 +5,7 @@ import React, {
     useContext,
     useMemo,
     useState,
+    useRef
 } from "react";
 
 import { createPortal } from "react-dom";
@@ -19,6 +20,7 @@ const ModalContext = createContext(null);
  */
 export function ModalProvider({ children }) {
     const [modal, setModal] = useState(null);
+    const downOnContentRef = useRef(false);
 
     // Open a modal with the given content and title. Returns a function to close the modal.
     const openModal = useCallback(( args ) => {
@@ -43,6 +45,22 @@ export function ModalProvider({ children }) {
         setModal(null);
     }, []);
 
+
+    // Prevent close when mouse first down on content
+    // and then dragged onto backdrop
+    const clickedBackdrop = (e) => {
+        e.stopPropagation()
+        if (!downOnContentRef.current) {
+            closeModal();
+        }
+        downOnContentRef.current = false;
+    }
+
+    const downOnContent = (e) => {
+        e.stopPropagation()
+        downOnContentRef.current = true;
+    }
+
     // Render the modal portal
     // TODO: Add support for different sizes
     const getPortal = () => {
@@ -50,8 +68,8 @@ export function ModalProvider({ children }) {
             <>
                 {modal && (
                     <React.Fragment key={modal.id}>
-                        <div className="modal-backdrop" onClick={modal.close}>
-                            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-backdrop" onClick={clickedBackdrop}>
+                            <div className="modal-content"  onMouseDown={downOnContent}>
                                 <div className="modal-header">
                                     <span className="title">{modal.title}</span>
                                     <XLg className="close-button" onClick={modal.close} />
