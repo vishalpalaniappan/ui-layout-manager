@@ -30,6 +30,7 @@ export function ModalProvider({ children }) {
         setModal({
             id: id,
             title: args.title,
+            args: args.args,
             render: args.render,
             close: close,
         });
@@ -56,7 +57,7 @@ export function ModalProvider({ children }) {
                                     <XLg className="close-button" onClick={modal.close} />
                                 </div>
                                 <div className="modal-body">
-                                    {modal.render({ close: modal.close })}
+                                    {modal.render({ close: modal.close , args: modal.args })}
                                 </div>
                             </div>
                         </div>
