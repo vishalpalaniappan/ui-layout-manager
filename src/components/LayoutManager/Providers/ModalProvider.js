@@ -46,7 +46,7 @@ export function ModalProvider({ children }) {
     }, []);
 
 
-    // Prevent close when mouse first down on content
+    // Prevent close when mouse down first happens on content
     // and then dragged onto backdrop
     const clickedBackdrop = (e) => {
         e.stopPropagation()
