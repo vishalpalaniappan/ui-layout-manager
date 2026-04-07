@@ -185,6 +185,8 @@ export class LayoutController {
             case LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX:
                 transformations = event.data.data;
                 this.applyTransformations(transformations, true);
+                // TODO: Only make containers visible after the layout
+                // is applied to avoid glitchy rendering.
                 break;
             case LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS:
                 transformations = event.data.data;
