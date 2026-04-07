@@ -185,8 +185,8 @@ export class LayoutController {
             case LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX:
                 transformations = event.data.data;
                 this.applyTransformations(transformations, true);
-                // TODO: Only make containers visible after the layout
-                // is applied to avoid glitchy rendering.
+                // After initial layout is applied, we can hide the loading overlay.
+                this.containers["root"].current.hideOverlay();
                 break;
             case LAYOUT_WORKER_PROTOCOL.TRANSFORMATIONS:
                 transformations = event.data.data;
