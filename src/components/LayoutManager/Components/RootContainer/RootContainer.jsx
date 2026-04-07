@@ -153,7 +153,11 @@ export const RootContainer = () => {
             onDragEnd={dragController.onDragEnd}
             onDragCancel={dragController.onDragCancel}>
             
-                {showOverlay && <div className="loading-overlay" ref={loadingOverlayRef}></div>}
+            {showOverlay && <div className="loading-overlay" ref={loadingOverlayRef}>
+                <div className="loading-bar">
+                    <div className="loading-bar-fill"></div>
+                </div>
+            </div>}
             <div className="root-container">
                 <div ref={rootRef} className="relative-container">
                     {childElements}
