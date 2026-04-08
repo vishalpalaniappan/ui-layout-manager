@@ -79,8 +79,7 @@ export class LayoutController {
 
         if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
             // console.log("All containers registered, layout is ready.");
-            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX, 
-            { sizes: this.getContainerSizes() });
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX);
         }
     }
     
@@ -179,11 +178,16 @@ export class LayoutController {
                         break;
                 }
             };
-            if (isInitial) {
-                // After the initial transformations have been applied, we can hide
-                // the loading screen for the root container.
+            if (this.layoutLoaded && !isInitial) {
                 this.containers[this.ldf.layoutRoot].current.hideLoadingScreen();
                 console.log("Layout is ready, hiding loading screen.");
+            }
+            if (isInitial) {
+                // After the initial style has been applied, we request the worker
+                // to apply layout before we hide the loading screen so containers
+                // are set to correct initial state.
+                this.layoutLoaded = true;
+                this.handleRootResize();
             }
         });
     };
