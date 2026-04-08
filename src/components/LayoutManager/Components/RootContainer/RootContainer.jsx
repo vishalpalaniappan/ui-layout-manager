@@ -30,13 +30,13 @@ export const RootContainer = () => {
     const timerRef = useRef(null);
     const resizingRef = useRef(false);
     const loadingOverlayRef = useRef(null);
-    const [showOverlay, setShowOverlay] = useState(true);
+    const [showLoadingScreen, setShowLoadingScreen] = useState(true);
 
     // Create the container API that will be used by the controller.
     const rootContainerAPI = useRef({});
     rootContainerAPI.current = {
-        hideOverlay: () => {
-            setShowOverlay(false);
+        hideLoadingScreen: () => {
+            setShowLoadingScreen(false);
         }
     };
 
@@ -124,7 +124,7 @@ export const RootContainer = () => {
                 observer.disconnect();
             }
         }
-    }, [layoutController, setShowOverlay, showOverlay]);
+    }, [layoutController]);
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -153,7 +153,7 @@ export const RootContainer = () => {
             onDragEnd={dragController.onDragEnd}
             onDragCancel={dragController.onDragCancel}>
             
-            {showOverlay && <div className="loading-overlay" ref={loadingOverlayRef}>
+            {showLoadingScreen && <div className="loading-overlay" ref={loadingOverlayRef}>
                 <div className="loading-bar">
                     <div className="loading-bar-fill"></div>
                 </div>
