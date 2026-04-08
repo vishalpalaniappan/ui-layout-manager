@@ -171,7 +171,12 @@ export class LayoutController {
             };
             if (isInitial) {
                 this.layoutLoaded = true;
-                // After initial layout is applied, we can hide the loading screen.
+                // Call root resize to apply the layout rules after initial transformations
+                // are applied, this applies the layout rules to hide the containers.
+                this.handleRootResize();
+            } else {
+                // After the initial transformations have been applied, we can hide
+                // the loading screen for the root container.
                 this.containers[this.ldf.layoutRoot].current.hideLoadingScreen();
             }
         });

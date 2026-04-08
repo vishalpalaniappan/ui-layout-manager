@@ -36,7 +36,9 @@ export const RootContainer = () => {
     const rootContainerAPI = useRef({});
     rootContainerAPI.current = {
         hideLoadingScreen: () => {
-            setShowLoadingScreen(false);
+            if (showLoadingScreen) {
+                setShowLoadingScreen(false);
+            }
         }
     };
 
