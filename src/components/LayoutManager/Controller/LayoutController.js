@@ -75,11 +75,12 @@ export class LayoutController {
         this.containers[id] = containerApi;
         this.containerRefs[id] = containerRef;
 
-        console.log(`Registered container with id: ${id} `);
+        // console.log(`Registered container with id: ${id} `);
 
         if (this.registeredContainers === this.numberOfContainers && !this.layoutLoaded) {
-            console.log("All containers registered, layout is ready.");
-            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX);
+            // console.log("All containers registered, layout is ready.");
+            this.sendToWorker(LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX, 
+            { sizes: this.getContainerSizes() });
         }
     }
     
@@ -91,6 +92,25 @@ export class LayoutController {
         delete this.containers[id];
     }
 
+
+    /**
+     * Retuns the sizes of the containers.
+     * @return {Object} Size of containers.
+     */
+    getContainerSizes() {
+        const containerSizes = {};
+        for (const id in this.containerRefs) {
+            if (this.containerRefs.hasOwnProperty(id)) {
+                const boundingRect = this.containerRefs[id].getBoundingClientRect();
+                containerSizes[id] = {
+                    width: boundingRect.width, 
+                    height: boundingRect.height
+                };
+            }
+        }        
+        return containerSizes;
+    }
+
     /**
      * This function is called when the root container is resized.
      * It will notify the worker to process the layout changes.
@@ -98,19 +118,9 @@ export class LayoutController {
     handleRootResize() { 
         if (!this.layoutLoaded) return;
         // console.log("Root container resized to:", width, height);
-        const sizes = {};
-        for (const id in this.containerRefs) {
-            if (this.containerRefs.hasOwnProperty(id)) {
-                const boundingRect = this.containerRefs[id].getBoundingClientRect();
-                sizes[id] = {
-                    width: boundingRect.width, 
-                    height: boundingRect.height
-                };
-            }
-        }        
         this.sendToWorker(
             LAYOUT_WORKER_PROTOCOL.APPLY_SIZES, 
-            { sizes: sizes }
+            { sizes: this.getContainerSizes() }
         );    
     }
 
@@ -170,7 +180,10 @@ export class LayoutController {
                 }
             };
             if (isInitial) {
-                this.layoutLoaded = true;
+                // After the initial transformations have been applied, we can hide
+                // the loading screen for the root container.
+                this.containers[this.ldf.layoutRoot].current.hideLoadingScreen();
+                console.log("Layout is ready, hiding loading screen.");
             }
         });
     };

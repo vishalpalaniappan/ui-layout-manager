@@ -29,10 +29,18 @@ export const RootContainer = () => {
     const rootRef = useRef(null);
     const timerRef = useRef(null);
     const resizingRef = useRef(false);
+    const loadingOverlayRef = useRef(null);
+    const [showLoadingScreen, setShowLoadingScreen] = useState(true);
 
     // Create the container API that will be used by the controller.
     const rootContainerAPI = useRef({});
-    rootContainerAPI.current = {};
+    rootContainerAPI.current = {
+        hideLoadingScreen: () => {
+            if (showLoadingScreen) {
+                setShowLoadingScreen(false);
+            }
+        }
+    };
 
     const [childElements, setChildElements] = useState(null);
 
@@ -147,6 +155,11 @@ export const RootContainer = () => {
             onDragEnd={dragController.onDragEnd}
             onDragCancel={dragController.onDragCancel}>
             
+            {showLoadingScreen && <div className="loading-overlay" ref={loadingOverlayRef}>
+                <div className="loading-bar">
+                    <div className="loading-bar-fill"></div>
+                </div>
+            </div>}
             <div className="root-container">
                 <div ref={rootRef} className="relative-container">
                     {childElements}
