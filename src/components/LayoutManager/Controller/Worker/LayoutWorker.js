@@ -17,7 +17,7 @@ self.onmessage = function (e) {
                 editor = new LayoutEditor(args.ldf);
                 break;
             case LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX:
-                editor.initializeFlexBox(args.sizes);
+                editor.initializeFlexBox();
                 break;
             case LAYOUT_WORKER_PROTOCOL.APPLY_SIZES:
                 editor.applySizes(args.sizes);

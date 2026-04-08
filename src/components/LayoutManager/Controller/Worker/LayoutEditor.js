@@ -19,10 +19,8 @@ export class LayoutEditor {
      * Initializes flexbox layout by processing LDF file.
      * @param {Object} sizes Initial sizes of the containers.
      */
-    initializeFlexBox(sizes) {
-        this.initializeNode(this.ldf.containers[this.ldf.layoutRoot]);   
-        this.sizes = sizes; 
-        this.applyLayoutToNode(this.ldf.layoutRoot);           
+    initializeFlexBox() {
+        this.initializeNode(this.ldf.containers[this.ldf.layoutRoot]);  
         postMessage({
             type: LAYOUT_WORKER_PROTOCOL.INITIALIZE_FLEXBOX,
             data: this.transformations
