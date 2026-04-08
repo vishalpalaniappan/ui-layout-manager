@@ -22,6 +22,8 @@ export function ModalProvider({ children }) {
     const [modal, setModal] = useState(null);
     const downOnContentRef = useRef(false);
 
+    // TODO: Implement functionality to return values to component that created the modal.
+
     // Open a modal with the given content and title. Returns a function to close the modal.
     const openModal = useCallback(( args ) => {
         const close = () => {
