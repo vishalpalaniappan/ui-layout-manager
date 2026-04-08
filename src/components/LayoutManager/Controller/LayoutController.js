@@ -172,7 +172,7 @@ export class LayoutController {
             if (isInitial) {
                 this.layoutLoaded = true;
                 // After initial layout is applied, we can hide the loading screen.
-                this.containers["root"].current.hideLoadingScreen();
+                this.containers[this.ldf.layoutRoot].current.hideLoadingScreen();
             }
         });
     };
