@@ -180,7 +180,6 @@ export class LayoutController {
             };
             if (this.layoutLoaded && !isInitial) {
                 this.containers[this.ldf.layoutRoot].current.hideLoadingScreen();
-                console.log("Layout is ready, hiding loading screen.");
             }
             if (isInitial) {
                 // After the initial style has been applied, we request the worker
